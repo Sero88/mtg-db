@@ -1,0 +1,60 @@
+Doing: 
+
+Add functionality  
+Follows what we're adding to the db in our collection. The same fields.
+* Plan it - when search have a + sign to add to collection or remove
+** Add card will depend on the name of the card in order to search the API
+*** We will do an autocomplete functionality after a certain pause in typing
+*** We will show results and query both the collection and the API
+
+*** continue working on getting search results working with typescript - plan it if necessary take some time to get the Typescript down
+
+=========================
+Tasks
+
+About: 
+The site will basically be a user API to access the database. Without logging in, the user won't have access. 
+
+Calling scryfall API
+This is the structure of how the db will be saved. Pretty much just data 
+that pertains to our collection. 
+
+ID (automatically by MongoDB)
+Card Name  
+Quantity
+SetName
+ScryfallId
+OracleId
+
+
+
+Develop search functionality
+* Plan it, view scryfall to get ideas. 
+
+
+
+
+===done
+
+Develop the header 
+*Setup icons and add them to the navigation links
+Develop the home page structure
+
+
+Authentication
+* Set up authentication on App.js - if user is not logged in, take user to the logging page
+** Continue figuring out how to make sure user is authenticated. Remember - if using front-end then you 
+need to use client-side rendering - otherwise you can use back-end for everything. 
+
+==> So in order to make sure the user is signed, we will use a <secureLayout> component that first check whether
+the user is logged in to know what type of data to show. 
+Q: Will this be pre-rendered or will we need to do server side rendering or even client side - fetch as needed. 
+Answer:  Client side, because it will use UseEffect by react to update when session changes. So it depends on client side code!, 
+but the regular static page is the login page message. 
+
+
+Start creating todo outline and planning
+
+* get familiar with authentication
+* get familiar with authorization - how to know when user is logged in.
+
