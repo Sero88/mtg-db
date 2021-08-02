@@ -6,8 +6,10 @@ Follows what we're adding to the db in our collection. The same fields.
 ** Add card will depend on the name of the card in order to search the API
 *** We will do an autocomplete functionality after a certain pause in typing
 *** We will show results and query both the collection and the API
-
 *** continue working on getting search results working with typescript - plan it if necessary take some time to get the Typescript down
+
+*** continue writing down the fields that we want to store in the database and thus create a type: card
+**** quickly review fields and then continue with next task of querying the db for a card and showing results
 
 =========================
 Tasks
@@ -19,12 +21,48 @@ Calling scryfall API
 This is the structure of how the db will be saved. Pretty much just data 
 that pertains to our collection. 
 
+Treat cards that are two-cards-in-one separate. If the card_face object exists, save the other face in a separate table. 
+These type of cards won't count against total. Will have their own entries, but when doing search will join these tables with $lookup
+
 ID (automatically by MongoDB)
-Card Name  
-Quantity
-SetName
-ScryfallId
-OracleId
+(don't need scryfall id because we will hold many different types/sets)
+
+OracleId: string (same across reprinted card editions)
+
+Card Name: string
+mana_cost: we need to write a regular expression to convert mana_cost value if dual cards
+color_identity: string[],
+sets: string[], 
+Quantity: number,
+oracle_text: string[],
+OracleId: string,
+keywords: string[],
+card_type: "normal|dual" (my own field based on scryfall face count)
+legalities: {}
+loyalty: number|null
+name: string
+power: string
+toughness: string
+type_line: string
+artist: string
+flavor_text: string|null
+image_uri = using image_uris field get one url (normal)
+rarity: string
+sets: string[]
+
+
+
+
+
+
+
+
+
+
+===> Correction with these. Since we plan on doing a comprehensive search, we need 
+all the fields that Scryfall provides. Example: I want to search all green colored cards. 
+With the fields above I wouldn't be able to do, however if I save all the scryfall data, I can easily query
+data like this. 
 
 
 

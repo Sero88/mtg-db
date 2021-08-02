@@ -1,17 +1,20 @@
+import {list} from '../types/list';
 
-type list = [
-    data: [],
-    has_more: boolean,
-    next_page: string,
-    total_cards: number,
-    warnings: []
-]
-export default function SearchResults({results, ...props}:list[]){
+type SearchProps = {
+    results: list,
+}
 
-    
+export default function SearchResults({results}:SearchProps){    
     return(
         <div className="results">
-            
+            <h2>Cards:</h2>
+            {
+                results.data.map( (result, index) => {
+                    return(
+                        <p>{result.card}</p>
+                    )
+                })
+            }
         </div>
     );
 }
