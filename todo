@@ -4,13 +4,9 @@ Add functionality
 Follows what we're adding to the db in our collection. The same fields.
 * Plan it - when search have a + sign to add to collection or remove
 ** Add card will depend on the name of the card in order to search the API
-*** We will do an autocomplete functionality after a certain pause in typing
 *** We will show results and query both the collection and the API
-*** continue working on getting search results working with typescript - plan it if necessary take some time to get the Typescript down
 
-*** continue writing down the fields that we want to store in the database and thus create a type: card
-**** quickly review fields and then continue with next task of querying the db for a card and showing results
-
+* Add the set selection functionality (any set - or specify the set)
 =========================
 Tasks
 
@@ -28,14 +24,12 @@ ID (automatically by MongoDB)
 (don't need scryfall id because we will hold many different types/sets)
 
 OracleId: string (same across reprinted card editions)
-
 Card Name: string
 mana_cost: we need to write a regular expression to convert mana_cost value if dual cards
 color_identity: string[],
-sets: string[], 
+sets: string[] (use unique print or prints_search_uri), 
 Quantity: number,
 oracle_text: string[],
-OracleId: string,
 keywords: string[],
 card_type: "normal|dual" (my own field based on scryfall face count)
 legalities: {}
@@ -73,6 +67,18 @@ Develop search functionality
 
 
 ===done
+
+**** troubleshoot issue with missing results - fine tune what shows when. Right now results are dissapearing b/c it resets to false, do we need to separat
+**** Finish suggestion functionality - pass the name to the input field
+****delete the suggestions after user chooses one
+*** continue working on getting search results working with typescript - plan it if necessary take some time to get the Typescript down
+
+*** We will do an autocomplete functionality after a certain pause in typing
+
+*** continue writing down the fields that we want to store in the database and thus create a type: card
+**** quickly review fields and then continue with next task of querying the api for a card and showing results
+**** organize todo. Then architect scryfall api call better. Do we need a repository structure - probably not. But we do need to structure it better, maybe move Scryfall functionality to its own class
+**** Continue figuring out when to show the suggestion box. May have to move to search by name rather than suggestion box
 
 Develop the header 
 *Setup icons and add them to the navigation links

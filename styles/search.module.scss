@@ -1,0 +1,24 @@
+.displayNone {
+    display: none;
+}
+
+.displayBlock{
+    display: block;
+}
+
+
+.suggestionBox {
+    display: none;
+    
+    &:focus{
+        display: block;
+    }
+}
+
+.searchByName{    
+    &:focus {
+        .searchSuggestions {
+            display: block;
+        }
+    }
+}

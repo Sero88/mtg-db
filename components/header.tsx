@@ -7,18 +7,18 @@ export default function Header(){
         <header>
         <div className="siteIdentity">
             <Link href="/">
-                <a>Lover's Standard</a>
+                <a>Lovers' Standard</a>
             </Link>
         </div>
         <nav>
             <ul>
                 <li>
-                    <Link href="/cards/search">
+                    <Link href="/collection/search">
                         <a><Icon icon="search"/> Search</a>
                     </Link>                                        
                 </li>
                 <li>
-                    <Link href="/cards/add">
+                    <Link href="/collection/add">
                         <a><Icon icon="plus"/> Add Cards</a>
                     </Link>
                 </li>

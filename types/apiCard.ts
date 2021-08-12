@@ -12,7 +12,7 @@ export type apiCard = {
     type_line: string,
     artist: string,
     flavor_text: string|null,
-    image_uris: {},
+    image_uris: {small:string, normal:string},
     rarity: string
 }
 
