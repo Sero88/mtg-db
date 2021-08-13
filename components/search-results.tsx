@@ -12,7 +12,6 @@ export default function SearchResults({cards, showResults}:SearchProps){
         return null;
     }
 
-    console.log(cards);
     //map the results
     let displayResults = [<p>No results found.</p>];
     if(cards) {

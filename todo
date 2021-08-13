@@ -68,6 +68,7 @@ Develop search functionality
 
 ===done
 
+**** show prints when user searches for specific card or if the general results show only one of that card (general results only show one, but can have many prints)
 **** troubleshoot issue with missing results - fine tune what shows when. Right now results are dissapearing b/c it resets to false, do we need to separat
 **** Finish suggestion functionality - pass the name to the input field
 ****delete the suggestions after user chooses one

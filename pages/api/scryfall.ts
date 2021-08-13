@@ -14,8 +14,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } */
 
     const apiUrl = 'https://api.scryfall.com';
-    const {query} = req.query;    
-    const results = await fetch(`${apiUrl}/cards/search/?q=${query}`);
+    const {query, unique, order} = req.query;    
+    //?order=released&q=elvish&unique=prints
+    const uniquePrintsQuery = unique ? '&unique=prints':  '';
+    const orderQuery = order ? `&order=${order}` : '&order=released';
+    console.log(`making call: ${apiUrl}/cards/search/?q=${query}${orderQuery}${uniquePrintsQuery}`);
+    const results = await fetch(`${apiUrl}/cards/search/?q=${query}${orderQuery}${uniquePrintsQuery}`);
+    
+    
     const jsonResults = await results.json();
     res.status(200).json(jsonResults);    
 }

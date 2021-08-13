@@ -20,24 +20,36 @@ export default function AddPage(){
     const[showSuggestions, setShowSuggestions] = useState(false);
     const[showResults, setShowResults] = useState(false);
     const[fetchedQuery, setFetchedQuery] = useState('');
+    const[showPrints, setShowPrints] = useState(false);
 
 
     //function to search cards
-    const searchCards = (cardName:string, showResults:boolean, showSuggestions:boolean) => {
+    const searchCards = (cardName:string, showResults:boolean, showSuggestions:boolean, showPrints:boolean = false) => {
         
         //user is no longer typing                 
-        setIsTyping(false);
-
-        console.log(apiResults.data.length);
+        setIsTyping(false);      
         
+        console.log('showprints', showPrints);
         //fetch new data only if the new search string (cardName) is different than what we already fetched
-        if( cardName != fetchedQuery || (cardName == fetchedQuery && apiResults.data.length == 0) ){
-            fetch('/api/scryfall/?query=' + cardName)
+        if( cardName != fetchedQuery || (cardName == fetchedQuery && 'data' in apiResults && apiResults.data.length == 0) ){
+            const endpoint =  showPrints 
+                ? '/api/scryfall/?order=released&unique=prints&query=' + cardName
+                : '/api/scryfall/?query=' + cardName
+            fetch(endpoint)
             .then(response => response.json())
             .then(data => 
                 {          
-                    
-                    console.log('fetching new data');
+                    console.log('querying: ', endpoint, data);
+                
+                    //if the retrieved data is of only one card, query for the multiple prints that specific card
+                    if(data.total_cards == 1 && !showPrints){
+                        searchCards(cardName, true, false, true);
+                        setShowPrints(true);
+                        return;
+                    }
+
+                    setShowPrints(showPrints);
+
                     //show the results
                     setShowResults(showResults);
 
@@ -48,7 +60,9 @@ export default function AddPage(){
                     setFetchedQuery(cardName);
 
                     //set the api results
-                    setApiResults(data);                                       
+                    setApiResults(data);      
+                    
+                    
                 }
             );
         } else { 
@@ -89,7 +103,7 @@ export default function AddPage(){
             const cardName = event.target.innerHTML;            
             setShowSuggestions(false);                    
             setSearchText(cardName);            
-            searchCards(cardName, true, false);     
+            searchCards(cardName, true, false, true);     
         };
 
     }
