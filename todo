@@ -23,26 +23,39 @@ These type of cards won't count against total. Will have their own entries, but 
 ID (automatically by MongoDB)
 (don't need scryfall id because we will hold many different types/sets)
 
+
+
+CARD OBJECT: 
 OracleId: string (same across reprinted card editions)
 Card Name: string
-mana_cost: we need to write a regular expression to convert mana_cost value if dual cards
 color_identity: string[],
 sets: string[] (use unique print or prints_search_uri), 
 Quantity: number,
-oracle_text: string[],
-keywords: string[],
 card_type: "normal|dual" (my own field based on scryfall face count)
 legalities: {}
 loyalty: number|null
 name: string
-power: string
-toughness: string
 type_line: string
 artist: string
-flavor_text: string|null
-image_uri = using image_uris field get one url (normal)
 rarity: string
 sets: string[]
+
+
+Each card is going to have a face, regardless if it only has one.
+Face properties:
+mana_cost: string | null ( we need to write a regular expression to convert mana_cost value if dual cards)
+keywords: string[],
+name: string (each face has a name apart from full card name)
+power: string | null
+toughness: string | null 
+oracle_text: string[],
+flavor_text: string|null
+image_uri = using image_uris field get one url (normal)
+
+
+
+
+
 
 
 

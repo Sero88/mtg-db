@@ -6,7 +6,6 @@ import { getSession } from 'next-auth/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const session = await getSession({req});
-    console.log('making call');
 
     //todo uncomment after you are done testing
     /* if(!session){

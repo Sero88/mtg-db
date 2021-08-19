@@ -13,7 +13,13 @@ export type apiCard = {
     artist: string,
     flavor_text: string|null,
     image_uris: {small:string, normal:string},
-    rarity: string
+    rarity: string,
+    card_faces: CardFace[],
+    layout: string
+}
+
+type CardFace = {
+    image_uris: {small:string, normal:string}
 }
 
 

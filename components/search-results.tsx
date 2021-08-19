@@ -1,13 +1,16 @@
 import {list} from '../types/list';
 import { apiCard } from '../types/apiCard';
-import Image from 'next/image';
+import Card from '../components/card';
 
 type SearchProps = {
     cards: apiCard[] | null,    
-    showResults: boolean
+    showResults: boolean,
+    showPrints: boolean,
+    clickHandler: (event:React.MouseEvent) => void,
 }
 
-export default function SearchResults({cards, showResults}:SearchProps){    
+
+export default function SearchResults({cards, showResults, showPrints, clickHandler}:SearchProps){    
     if(!showResults){
         return null;
     }
@@ -17,11 +20,9 @@ export default function SearchResults({cards, showResults}:SearchProps){
     if(cards) {
         displayResults = cards.map((card:apiCard, index) => {
             return(
-                <Image
-                    src={card.image_uris.normal}
-                    width={196}
-                    height={273}
-                    />
+                <li>
+                    <Card data={card} key={index} showPrints={showPrints}/>
+                </li>
             );
         })
     }
@@ -29,7 +30,10 @@ export default function SearchResults({cards, showResults}:SearchProps){
     return(    
         <div className="results">
             <h2>Cards:</h2>
-            { displayResults }
+            <ul onClick={clickHandler}>
+                { displayResults }
+            </ul>
+            
         </div>
     );
 }

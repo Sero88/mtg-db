@@ -12,7 +12,7 @@ export default function SearchSuggestions({cards}:SuggestionsProps){
         <ul>
             {
                 cards && (cards.map((card, index) => {
-                    return (<li key={index}>{card}</li>);
+                    return (<li key={index} data-name={card}>{card}</li>);
                 }))            
              }
         </ul>

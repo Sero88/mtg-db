@@ -29,7 +29,6 @@ export default function AddPage(){
         //user is no longer typing                 
         setIsTyping(false);      
         
-        console.log('showprints', showPrints);
         //fetch new data only if the new search string (cardName) is different than what we already fetched
         if( cardName != fetchedQuery || (cardName == fetchedQuery && 'data' in apiResults && apiResults.data.length == 0) ){
             const endpoint =  showPrints 
@@ -99,13 +98,20 @@ export default function AddPage(){
 
     //click handler
     const clickHandler = (event: any) => {  
-        if(event.target.matches('li')){
-            const cardName = event.target.innerHTML;            
+        if('dataset' in event.target && 'name' in event.target.dataset) {
+            if(event.target.matches('img')){
+                if('type' in event.target.dataset) {
+                    if(event.target.dataset.type == 'print'){
+                        //show modole to add to collection
+                        return;
+                    }
+                }
+            }
+            const cardName = event.target.dataset.name;            
             setShowSuggestions(false);                    
             setSearchText(cardName);            
             searchCards(cardName, true, false, true);     
-        };
-
+        }
     }
 
     //changes to oposite
@@ -128,7 +134,11 @@ export default function AddPage(){
                 isFocused={isFocused}
             />
 
-            <SearchResults cards={apiResults.data} showResults={showResults} />
+            <SearchResults 
+                cards={apiResults.data} 
+                showResults={showResults} 
+                showPrints={showPrints}
+                clickHandler={clickHandler}/>
         </>
     )
 }
