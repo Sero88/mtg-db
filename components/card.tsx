@@ -1,6 +1,6 @@
 import { apiCard } from "../types/apiCard";
 import Image from 'next/image';
-
+import { CollectionCardMenu } from "./collection-card-menu";
 
 function showCardImage(imageUri:string, name:string, type:string, key: number = 1) {
 
@@ -46,6 +46,7 @@ export default function CardApi({data, showPrints}:CardApiProps){
                     })
                 })
                 {showCardDetails(data)}
+                {showPrints && <CollectionCardMenu /> } 
             </div>
         )
     } else {
@@ -53,6 +54,7 @@ export default function CardApi({data, showPrints}:CardApiProps){
             <div className="card">
                 {showCardImage(data.image_uris.normal, data.name, type)}
                 {showCardDetails(data)}
+                {showPrints && <CollectionCardMenu /> } 
             </div>)
         ;
         

@@ -1,7 +1,8 @@
 import SearchByName from "../../components/search-by-name";
-import React, {useState } from "react";
+import React, {useState, useEffect } from "react";
 import SearchResults from "../../components/search-results";
 import {list} from "../../types/list";
+import {ApiSet} from "../../types/apiSet";
 
 let searchTimeout: NodeJS.Timeout;
 
@@ -21,19 +22,23 @@ export default function AddPage(){
     const[showResults, setShowResults] = useState(false);
     const[fetchedQuery, setFetchedQuery] = useState('');
     const[showPrints, setShowPrints] = useState(false);
-
+    const[cardSets, setCardSets] = useState<ApiSet[]>([]);
+    const[selectedSet, setSelectedSet] = useState("");
 
     //function to search cards
     const searchCards = (cardName:string, showResults:boolean, showSuggestions:boolean, showPrints:boolean = false) => {
         
         //user is no longer typing                 
         setIsTyping(false);      
+
+        const set = selectedSet ? ` set:${selectedSet}` : '';
+        const endpoint =  showPrints 
+            ? '/api/scryfall/cards/?order=released&unique=prints&query=' + encodeURIComponent(cardName + set)
+            : '/api/scryfall/cards/?query=' + encodeURIComponent(cardName + set);
         
         //fetch new data only if the new search string (cardName) is different than what we already fetched
-        if( cardName != fetchedQuery || (cardName == fetchedQuery && 'data' in apiResults && apiResults.data.length == 0) ){
-            const endpoint =  showPrints 
-                ? '/api/scryfall/?order=released&unique=prints&query=' + cardName
-                : '/api/scryfall/?query=' + cardName
+        if( endpoint != fetchedQuery || (endpoint == fetchedQuery && 'data' in apiResults && apiResults.data.length == 0) ){
+            
             fetch(endpoint)
             .then(response => response.json())
             .then(data => 
@@ -72,6 +77,8 @@ export default function AddPage(){
         
     }
 
+   
+
     //search handler
     const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {  
 
@@ -98,7 +105,9 @@ export default function AddPage(){
 
     //click handler
     const clickHandler = (event: any) => {  
-        if('dataset' in event.target && 'name' in event.target.dataset) {
+        if('name' in event.target.dataset) {
+        
+            //show the add cards module
             if(event.target.matches('img')){
                 if('type' in event.target.dataset) {
                     if(event.target.dataset.type == 'print'){
@@ -118,7 +127,29 @@ export default function AddPage(){
     const focusHandler = () => {            
         setisFocused(!isFocused);                
     }
-        
+
+    const getCardSets = () => {
+        console.log('getting card sets');
+        //setCardSets([{name:'test', code:'afr', released_at:'2021-10-29'}]);
+        const endpoint = '/api/scryfall/sets';
+        fetch(endpoint)
+        .then(response => response.json())
+        .then(setsList => 
+            {
+                setCardSets(setsList.data);
+            }
+        );
+
+    }
+
+    const setChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        console.log('set changed to: ', event.target.value);
+        setSelectedSet(event.target.value);
+    }
+
+    //get the sets on load
+    useEffect(getCardSets,[false]); //can leave [] so it never updates, but setting false explicitely to remember it is not meant to update
+    
     return (
         <>
             <h1>Add Cards</h1>
@@ -128,7 +159,9 @@ export default function AddPage(){
                 focusHandler={focusHandler}
                 clickHandler={clickHandler}
                 submitHandler={submitHandler}
+                setChangeHandler={setChangeHandler}
                 cards={apiResults.data && apiResults.data.map(card =>card.name)} //show the suggestion only when user hasn't picked one
+                sets={cardSets}
                 showSuggestions={showSuggestions}
                 isTyping={isTyping}
                 isFocused={isFocused}

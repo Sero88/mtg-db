@@ -16,12 +16,16 @@ export default function SearchResults({cards, showResults, showPrints, clickHand
     }
 
     //map the results
-    let displayResults = [<p>No results found.</p>];
+    let results = [<p>No results found.</p>];
     if(cards) {
-        displayResults = cards.map((card:apiCard, index) => {
+        results = cards.map((card:apiCard, index) => {
             return(
                 <li>
-                    <Card data={card} key={index} showPrints={showPrints}/>
+                    <Card 
+                        data={card} 
+                        key={index} 
+                        showPrints={showPrints}
+                    />
                 </li>
             );
         })
@@ -31,9 +35,8 @@ export default function SearchResults({cards, showResults, showPrints, clickHand
         <div className="results">
             <h2>Cards:</h2>
             <ul onClick={clickHandler}>
-                { displayResults }
-            </ul>
-            
+                { results }
+            </ul>            
         </div>
     );
 }

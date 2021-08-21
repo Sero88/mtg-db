@@ -1,9 +1,10 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSearch, faPlus, faQuoteLeft, faQuoteRight} from '@fortawesome/free-solid-svg-icons';
+import {faSearch, faPlus, faMinus, faQuoteLeft, faQuoteRight} from '@fortawesome/free-solid-svg-icons';
 
 const icons = {
     search: faSearch,
     plus: faPlus,
+    minus: faMinus,
     quoteLeft: faQuoteLeft,
     quoteRight: faQuoteRight,
 }

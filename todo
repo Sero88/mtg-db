@@ -7,6 +7,9 @@ Follows what we're adding to the db in our collection. The same fields.
 *** We will show results and query both the collection and the API
 
 * Add the set selection functionality (any set - or specify the set)
+*** Read about hooks for React - we need to get the sets after the components are mounted
+*** Add an allowed set_type list for sets to avoid showing irrelevant sets. Then continue with the listener for set change.
+*** Finish testing sets. Then move on to adding the add functionality.
 =========================
 Tasks
 
