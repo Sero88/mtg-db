@@ -15,10 +15,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const apiUrl = 'https://api.scryfall.com';
     const {query, unique, order} = req.query;    
     //?order=released&q=elvish&unique=prints
-    const uniquePrintsQuery = unique ? '&unique=prints':  '';
+    const apiQuery = query + ' game:paper';
+    const uniquePrintsQuery = unique ? '&unique=prints': '';
     const orderQuery = order ? `&order=${order}` : '&order=released';
-    console.log(`making call: ${apiUrl}/cards/search/?q=${query}${orderQuery}${uniquePrintsQuery}`);
-    const results = await fetch(`${apiUrl}/cards/search/?q=${query}${orderQuery}${uniquePrintsQuery}`);
+    console.log(`making call: ${apiUrl}/cards/search/?q=${apiQuery}${orderQuery}${uniquePrintsQuery}`);
+    const results = await fetch(`${apiUrl}/cards/search/?q=${apiQuery}${orderQuery}${uniquePrintsQuery}`);
     
     
     const jsonResults = await results.json();

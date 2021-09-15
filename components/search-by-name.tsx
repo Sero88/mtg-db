@@ -42,9 +42,9 @@ export default function SearchByName(
                     <select onChange={setChangeHandler}>
                         <option value="">All sets</option>
                         {(
-                            sets.map( (set:ApiSet) => {
+                            sets.map( (set:ApiSet, index:number) => {
                                 if(!set.digital && allowedSets.includes(set.set_type) ){
-                                    return  (<option value={set.code}>{set.name}</option>);
+                                    return  (<option value={set.code} key={index}>{set.name}</option>);
                                 }                              
                             })
                         )}

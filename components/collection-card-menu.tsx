@@ -1,14 +1,23 @@
-import {Icon} from './font-awesome-icon';
+import { apiCard } from '../types/apiCard';
+import {Icon} from './font-awesome-icon'; 
+
 
 type CollectionCardMenuProp  = {
+    cardData: apiCard,
     quantity: number,
+    cardId: string,
+    updateCollectionHandler: (event:React.MouseEvent) => void,
 }
-export function CollectionCardMenu(){
+export function CollectionCardMenu({quantity, updateCollectionHandler, cardData}:CollectionCardMenuProp){
+    const updateHandler = (e) => {
+        updateCollectionHandler(e, cardData);
+    }
+
     return (
-        <div className="cardCollectionMenu">
-            <Icon icon="plus" />
-            <Icon icon="minus"/>
-            <span>2</span>
-        </div>
+        <ul className="cardCollectionMenu">
+            <li onClick={updateHandler} data-collection_menu_action="add"><Icon icon="plus"/></li>
+            <li onClick={updateHandler} data-collection_menu_action="remove"><Icon icon="minus"/></li>
+            <li>2</li>
+        </ul>
     );
 }

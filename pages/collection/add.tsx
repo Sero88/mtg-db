@@ -36,48 +36,45 @@ export default function AddPage(){
             ? '/api/scryfall/cards/?order=released&unique=prints&query=' + encodeURIComponent(cardName + set)
             : '/api/scryfall/cards/?query=' + encodeURIComponent(cardName + set);
         
-        //fetch new data only if the new search string (cardName) is different than what we already fetched
-        if( endpoint != fetchedQuery || (endpoint == fetchedQuery && 'data' in apiResults && apiResults.data.length == 0) ){
+        //fetch new data only if the new search query is different than what we already fetched
+        if( endpoint != fetchedQuery ){
             
             fetch(endpoint)
             .then(response => response.json())
             .then(data => 
                 {          
                     console.log('querying: ', endpoint, data);
-                
-                    //if the retrieved data is of only one card, query for the multiple prints that specific card
+
+                     //if the retrieved data is of only one card, query for the multiple prints that specific card
                     if(data.total_cards == 1 && !showPrints){
-                        searchCards(cardName, true, false, true);
-                        setShowPrints(true);
+                        searchCards(cardName, true, false, true);                    
                         return;
                     }
 
-                    setShowPrints(showPrints);
-
-                    //show the results
-                    setShowResults(showResults);
+                    console.log('retrieved data from api: ', data);
+                    
+                    //set the api results
+                    setApiResults(data);  
 
                     //show suggestions
-                    setShowSuggestions(showSuggestions);
+                    setShowSuggestions(showSuggestions);                    
 
+                    setShowPrints(showPrints);  
+                    
                     //set the new fetched query value
-                    setFetchedQuery(cardName);
+                    setFetchedQuery(endpoint);
+                    
+                    setShowResults(showResults);    
 
-                    //set the api results
-                    setApiResults(data);      
-                    
-                    
+                                                                                      
                 }
             );
         } else { 
-            showResults ? setShowResults(true): setShowResults(false);
-            showSuggestions ? setShowSuggestions(true): setShowSuggestions(false);
-            
+            showResults ? setShowResults(true) : setShowResults(false);
+            showSuggestions ? setShowSuggestions(true): setShowSuggestions(false);            
         }
         
     }
-
-   
 
     //search handler
     const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {  
@@ -167,11 +164,13 @@ export default function AddPage(){
                 isFocused={isFocused}
             />
 
-            <SearchResults 
-                cards={apiResults.data} 
-                showResults={showResults} 
-                showPrints={showPrints}
-                clickHandler={clickHandler}/>
+            {showResults && 
+                <SearchResults 
+                    cards={apiResults.data} 
+                    showPrints={showPrints}
+                    clickHandler={clickHandler}
+                    fetchedQuery={fetchedQuery}/>
+            }
         </>
     )
 }

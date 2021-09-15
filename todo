@@ -1,15 +1,19 @@
-Doing: 
+Doing:
+Continue working on incorporating the collection data into the add search . 
 
-Add functionality  
-Follows what we're adding to the db in our collection. The same fields.
-* Plan it - when search have a + sign to add to collection or remove
-** Add card will depend on the name of the card in order to search the API
+Will also need to fix set issue. Not show sets or allow multiple sets to be chosen, or similar sets are checked, when user selects kaldheim, all the kaldheim sets available are checked.
+
 *** We will show results and query both the collection and the API
+**** Since the card component is going to be used on both the "add" and "search" functionalities the card state will be in search Results along with the handler to add/remove cards.
+**** [cont] we will pass getCollection data from search to card component
 
 * Add the set selection functionality (any set - or specify the set)
 *** Read about hooks for React - we need to get the sets after the components are mounted
 *** Add an allowed set_type list for sets to avoid showing irrelevant sets. Then continue with the listener for set change.
 *** Finish testing sets. Then move on to adding the add functionality.
+
+*** continue combining collection with results data - working on getting collection without creating an infinite loop
+*** does the collection have a set array and there keep quantity. --> No, it is better to have an object for each card, since one set can have multiple types of the same card
 =========================
 Tasks
 
@@ -29,6 +33,8 @@ ID (automatically by MongoDB)
 
 
 CARD OBJECT: 
+_id: object
+scryfallId: string
 OracleId: string (same across reprinted card editions)
 Card Name: string
 color_identity: string[],
@@ -41,7 +47,8 @@ name: string
 type_line: string
 artist: string
 rarity: string
-sets: string[]
+sets: object[{khm: 5}] does the collection have a set array and there keep quantity
+number: string 
 
 
 Each card is going to have a face, regardless if it only has one.
@@ -83,6 +90,21 @@ Develop search functionality
 
 
 ===done
+
+We can now add to the db. Finetune the response you get from the update query. Fix headers sent error. Finish adding cards functionality then proceed to combine when making a search.
+
+
+Continue working on add functionality. I have passed the card object from the PUT request, now is time to pass it to the db. Upsert and add one to the quantity.
+Add functionality
+
+
+I just added the listener functioanlity for add card collection menu. Next step is to add a card to the database.
+* Solve issue about game:paper, to only show paper sets and also issue about collection number and set_type. Showing collection number with promo next to it. P for prmo, S for prerelease
+
+Follows what we're adding to the db in our collection. The same fields.
+* Plan it - when search have a + sign to add to collection or remove
+** Add card will depend on the name of the card in order to search the API
+*  Make sure you distinguish between promos
 
 **** show prints when user searches for specific card or if the general results show only one of that card (general results only show one, but can have many prints)
 **** troubleshoot issue with missing results - fine tune what shows when. Right now results are dissapearing b/c it resets to false, do we need to separat
