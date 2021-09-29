@@ -1,7 +1,15 @@
 Doing:
-Continue working on incorporating the collection data into the add search . 
 
-Will also need to fix set issue. Not show sets or allow multiple sets to be chosen, or similar sets are checked, when user selects kaldheim, all the kaldheim sets available are checked.
+Continue Testing add functionality. Once it is working correctly remember to push it with git (smaller push incremements).
+
+Push Add functionality to git.
+
+Continue working on building card collection object. Build one field at a time. Just got done with collection number and types. 
+After that continue with mana_cost values.
+
+Work on remove functionality.
+
+Will also need to fix set issue. Not show sets or allow multiple sets to be chosen, or similar sets are checked, when user selects kaldheim, all the kaldheim sets available are checked. FIX: remove promo sets but add them in the search, they seem to be prefixed with a "p" for promos. Commander products are ones we usually don't buy, except for commander legends, but that is not a "commander" product per se, according to scryfall. We need to find a way to include it.
 
 *** We will show results and query both the collection and the API
 **** Since the card component is going to be used on both the "add" and "search" functionalities the card state will be in search Results along with the handler to add/remove cards.
@@ -14,8 +22,16 @@ Will also need to fix set issue. Not show sets or allow multiple sets to be chos
 
 *** continue combining collection with results data - working on getting collection without creating an infinite loop
 *** does the collection have a set array and there keep quantity. --> No, it is better to have an object for each card, since one set can have multiple types of the same card
-=========================
-Tasks
+
+================================
+Bugs: 
+*When searching for progenitus I'm shown all prints rather than general cards. May be an issue of how I'm searching for cards. Since the word "progenitus" is part of other cards, getting prints?
+
+
+
+
+===============================
+NOTES About project
 
 About: 
 The site will basically be a user API to access the database. Without logging in, the user won't have access. 
@@ -31,65 +47,59 @@ ID (automatically by MongoDB)
 (don't need scryfall id because we will hold many different types/sets)
 
 
-
 CARD OBJECT: 
-_id: object
 scryfallId: string
-OracleId: string (same across reprinted card editions)
-Card Name: string
-color_identity: string[],
-sets: string[] (use unique print or prints_search_uri), 
-Quantity: number,
-card_type: "normal|dual" (my own field based on scryfall face count)
-legalities: {}
-loyalty: number|null
 name: string
-type_line: string
+colorIdentity: string[],
+set: string,
+isPromo: boolean,
+qty: number,
 artist: string
 rarity: string
-sets: object[{khm: 5}] does the collection have a set array and there keep quantity
-number: string 
+collectionNumber: string,
+types: string[], //breaking down typeline into array to have separate searchable values
 
 
+//optional params for each card
+loyalty: number|null
+keywords: string[] | [], 
+promoTypes: string[]
+
+//face properties - each card has at least one face
+cardFaces: 
 Each card is going to have a face, regardless if it only has one.
 Face properties:
 mana_cost: string | null ( we need to write a regular expression to convert mana_cost value if dual cards)
-keywords: string[],
-name: string (each face has a name apart from full card name)
-power: string | null
-toughness: string | null 
-oracle_text: string[],
-flavor_text: string|null
+oracleText: string[],
 image_uri = using image_uris field get one url (normal)
 
+//optional face properties
+power: string | null
+toughness: string | null 
+flavor_text: string|null
 
 
+//Discarded
+legalities: {} // i don't think i need this for lover's standard
+cardFaceType: "normal|multiface" // we don't need this as a field. Can get value from getting card face count
+OracleId: string (same across reprinted card editions, but don't really need it.
 
 
+======================================
+DONE
+
+Work on setting promo and their types. It will make it easy to search later on.
+
+Continue figuring out how to handle CMC. Do we need mana_cost in our collection data? Regarding CMC, There are many variations, {U}, {2/U}, {G/B}. Solve for these and continue looking for more variations. Cards that can help troubleshoot are: avalanche, biomass, beseech the queen.
 
 
+Continue working on cardFaces. Images are tricky because not all multiface cards have different images, such as kitsune. The "Layout" is different. 
 
+Adding collection card object to add functionality. Issue: faces, where do I place some of the data, inside the face? But for normal cards, we also have to search inside face. - yeah I guess that is how it will work. We can proceed this way and modify as necessary. Or make a quick prototype and try to query different data.
 
+Continue working on incorporating the collection data into the add search. (currently at passing collection data into state, but as an array, will need it as an object instead)
 
-
-
-
-
-
-===> Correction with these. Since we plan on doing a comprehensive search, we need 
-all the fields that Scryfall provides. Example: I want to search all green colored cards. 
-With the fields above I wouldn't be able to do, however if I save all the scryfall data, I can easily query
-data like this. 
-
-
-
-Develop search functionality
-* Plan it, view scryfall to get ideas. 
-
-
-
-
-===done
+Ran into an issue. Projection for find query not working. Can't limit the query by just retrieving scryfallid and qty. should we continue troubleshooting? ====> issue solved. was using the wrong documentation
 
 We can now add to the db. Finetune the response you get from the update query. Fix headers sent error. Finish adding cards functionality then proceed to combine when making a search.
 
@@ -118,6 +128,10 @@ Follows what we're adding to the db in our collection. The same fields.
 **** quickly review fields and then continue with next task of querying the api for a card and showing results
 **** organize todo. Then architect scryfall api call better. Do we need a repository structure - probably not. But we do need to structure it better, maybe move Scryfall functionality to its own class
 **** Continue figuring out when to show the suggestion box. May have to move to search by name rather than suggestion box
+
+
+Develop search functionality
+* Plan it, view scryfall to get ideas. 
 
 Develop the header 
 *Setup icons and add them to the navigation links

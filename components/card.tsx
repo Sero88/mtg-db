@@ -1,8 +1,7 @@
 import { apiCard } from "../types/apiCard";
 import Image from 'next/image';
 import { CollectionCardMenu } from "./collection-card-menu";
-import {useState} from "react";
-
+import { helpers } from "../util/helpers";
 
 function showCardImage(imageUri:string, name:string, type:string, key: number = 1) {
 
@@ -19,21 +18,11 @@ function showCardImage(imageUri:string, name:string, type:string, key: number = 
 }
 
 function showCardDetails(data:apiCard, showPrints:boolean){
-    //get the collector number
-    const findLetterRegex = /[a-z]+/gi;
-    const regex = new RegExp(findLetterRegex);
-    const regexResult = regex.exec(data.collector_number);
-    const collectionPromoType = regexResult && '0' in regexResult ?  regexResult[0] : '';
-    const collectorNumber = collectionPromoType ? data.collector_number.replace(collectionPromoType,'') : data.collector_number;
-    const collectionType = {
-        s: 'pre-release',
-        p: 'promo'
-    };
-
-    const collectionText = collectionPromoType && collectionPromoType in collectionType ? collectionType[collectionPromoType] : '';
+    const collectorsData = helpers.getCollectorsData(data);
+    
     const printDetails = 
         <div>
-            <p>{collectorNumber}{ collectionText && ` (${collectionText})`}</p>
+            <p>{collectorsData.number}{ collectorsData.type && ` (${collectorsData.type})`}</p>
             <p>{data.set_name}</p>
         </div>
     
@@ -48,19 +37,19 @@ function showCardDetails(data:apiCard, showPrints:boolean){
 type CardApiProps = {
     data: apiCard,
     showPrints: boolean,
-    collectionData: string[],
+    quantity: number,
     updateCollectionHandler: (event:React.MouseEvent) => void,
 
 }
 
-export default function CardApi({data, showPrints, collectionData, updateCollectionHandler}:CardApiProps){
+export default function CardApi({data, showPrints, quantity, updateCollectionHandler}:CardApiProps){
     const type = showPrints ? 'print' : 'general';
     
     //if the card doesn't have an image_uri 
     if( !('image_uris' in data) && 'card_faces' in data ){
         return (
             <div className="card dual-card">
-                ({
+                {
                     data.card_faces.map((cardFace, index)=> {
                         if('image_uris' in cardFace){
                             return(
@@ -70,9 +59,9 @@ export default function CardApi({data, showPrints, collectionData, updateCollect
                         
                         return;
                     })
-                })
+                }
                 {showCardDetails(data, showPrints)}
-                {showPrints && <CollectionCardMenu updateCollectionHandler={updateCollectionHandler} cardData={data}/> } 
+                {showPrints && <CollectionCardMenu quantity={quantity} updateCollectionHandler={updateCollectionHandler} cardData={data}/> } 
             </div>
         )
     } else {
@@ -80,9 +69,9 @@ export default function CardApi({data, showPrints, collectionData, updateCollect
             <div className="card">
                 {showCardImage(data.image_uris.normal, data.name, type)}
                 {showCardDetails(data,showPrints)}
-                {showPrints && <CollectionCardMenu updateCollectionHandler={updateCollectionHandler} cardData={data} /> } 
+                {showPrints && <CollectionCardMenu quantity={quantity} updateCollectionHandler={updateCollectionHandler} cardData={data} /> } 
             </div>)
         ;
         
-    }    z
+    }
 }

@@ -5,43 +5,73 @@ import {connectToDatabase} from "../../../util/mongodb";
 import { helpers } from '../../../util/helpers';
 
 
-function apiResponse(status, message){
-    return {
-        status,
-        message
-    }
-}
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    function buildCollectionCardObject(apiData){
+        //prepare values
+        const collectorsData = helpers.getCollectorsData(apiData);
+        const types = helpers.getTypes(apiData);
+        const cardFaces = helpers.getCardFacesValues(apiData);
+        const set = helpers.getCardSet(apiData.set);
+    
+        const cardCollectionObject =  {
+            scryfallId: apiData.id,
+            name: apiData.name,
+            colorIdentity: apiData.color_identity.length > 0 ? apiData.color_identity : null,
+            set,
+            isPromo: apiData.promo,
+            artist: apiData.artist,
+            rarity: apiData.rarity,
+            collectionNumber: collectorsData.number,
+            types,
+            cardFaces
+        }
+
+        console.log('cardObject: ', cardCollectionObject);
+
+        //optional values
+        'loyalty' in apiData ? cardCollectionObject.loyalty = apiData.loyalty : false;
+        'keywords' in apiData && apiData.keywords.length > 0 ? cardCollectionObject.keywords = apiData.keywords : false;
+        'promo_types' in apiData ? cardCollectionObject.promoTypes = apiData.promo_types: false;
+
+        return cardCollectionObject;
+    }
+
+    const updateProjection = {
+        scryfallId: 1, 
+        quantity: 1,
+        _id: 0
+    }
 
     async function addCard(card){
+        const cardCollectionObject = buildCollectionCardObject(card);
+
         const filter = {
             scryfallId: card.id
         };
 
         const update = {
-            $set: {
-                name: card.name,
-                collectorNumber: card.collector_number,
-                set: card.set_name
-            }, 
+            $set: cardCollectionObject, 
             $inc: {
-                qty: 1,
+                quantity: 1,
             }
         }
 
         const options = {
-            upsert: true
+            upsert: true,
+            returnDocument: 'after', 
+            projection: updateProjection
         }
         
-        const results = await db.collection(process.env.DATABASE_TABLE_CARDS).updateOne(filter, update, options);
+        const results = await db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndUpdate(filter, update, options);
+
+        console.log('after update: ', results);
         
         //verify card was added if not, return false 
-        if( !('result' in results) || !('n' in results.result) || results.result.n < 1){
-            return false;
+        if('value' in results && results.value){
+            return results.value;
         }
         
-        return true;
+        return false;
     }
 
     function removeCard(card){
@@ -68,13 +98,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     switch (action){
         case 'add':
-            addCard(card)
-            .then((response) => {
-                response 
-                    ? res.status(200).send(apiResponse('success', 'card was added successfully to collection'))
-                    : res.status(401).send(apiResponse('error', 'something went wrong, unable to add card to collection check server logs'));
-            })
-            .catch( e => console.error(e));
+            const response = await addCard(card);
+            response
+                ? res.status(200).json(helpers.collectionApiResponse('success', 'card was added successfully to collection', response))
+                : res.status(400).json(helpers.collectionApiResponse('error', 'something went wrong, unable to add card to collection check server logs'));
             break;
 
         case 'remove':

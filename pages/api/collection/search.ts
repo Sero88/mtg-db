@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/client';
 import {connectToDatabase} from "../../../util/mongodb";
+import { helpers } from '../../../util/helpers';
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -13,7 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(401).send('You must be logged in');
     } */
     
-    //connect to Db
     const {client, db} = await connectToDatabase();    
     const isConnected = await client.isConnected();
 
@@ -21,9 +21,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(500).json('unable to connect to database');
         return;
     }
-  
-    console.log('cards', req.body);
-    res.status(200).json(req.body);
+
+    const {cards} = JSON.parse(req.body);
+
+    console.log('getting cards from collection: ', cards);
+
+    const projection = {projection:{scryfallId:1, quantity: 1}};
+    const results = await db.collection(process.env.DATABASE_TABLE_CARDS).find({scryfallId:{$in:cards}}, projection).toArray();
+
+    res.status(200).json(helpers.collectionApiResponse('success', 'collection data retrieved successfully', results));
 }
 
 

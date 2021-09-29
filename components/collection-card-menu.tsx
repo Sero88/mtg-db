@@ -5,7 +5,6 @@ import {Icon} from './font-awesome-icon';
 type CollectionCardMenuProp  = {
     cardData: apiCard,
     quantity: number,
-    cardId: string,
     updateCollectionHandler: (event:React.MouseEvent) => void,
 }
 export function CollectionCardMenu({quantity, updateCollectionHandler, cardData}:CollectionCardMenuProp){
@@ -17,7 +16,7 @@ export function CollectionCardMenu({quantity, updateCollectionHandler, cardData}
         <ul className="cardCollectionMenu">
             <li onClick={updateHandler} data-collection_menu_action="add"><Icon icon="plus"/></li>
             <li onClick={updateHandler} data-collection_menu_action="remove"><Icon icon="minus"/></li>
-            <li>2</li>
+            <li>{quantity ?? 0}</li>
         </ul>
     );
 }

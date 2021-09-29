@@ -2,7 +2,7 @@ export type apiCard = {
     id: string, //unique to scryfall 
     oracle_id: string, //unique to card on MTG's Oracle, but shares across same card name. So two cards across different sets have the same oracle_id
     name: string,
-    mana_cost: string,
+    mana_cost: string | null,
     color_identity: string[],    
     oracle_text: string[],
     keywords: string[],
@@ -21,6 +21,8 @@ export type apiCard = {
     set: string,
     set_name: string,
     set_type: string,
+    promo: boolean,
+    promo_types: string[]
 }
 
 type CardFace = {

@@ -13,7 +13,7 @@ type SearchProps = {
 
 
 export default function SearchResults({cards, showPrints, clickHandler, fetchedQuery}:SearchProps){    
-    const [collectionData, setCollectionData] = useState(['']); 
+    const [collectionData, setCollectionData] = useState({}); 
     const [showResults, setShowResults] = useState(false);
 
     function getCollectionData(cards){
@@ -29,8 +29,20 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
             body: JSON.stringify({cards:searchCards})
         })
         .then(response => response.json())
-        .then(data => {
-            setShowResults(true);                
+        .then(apiResponse => {
+            if( !('status' in apiResponse) || ('status' in apiResponse) && apiResponse.status != 'success') {
+                return false;
+            }
+
+            //construct collection data
+            apiResponse.data.forEach( collectionObj => {
+                collectionData[collectionObj.scryfallId] =  collectionObj.quantity;
+            });
+
+            console.log('setting collection data: ', collectionData);
+            setCollectionData({...collectionData}); 
+            setShowResults(true);     
+                    
         })
         .catch( e => {console.error(e)});
         
@@ -43,7 +55,6 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
         }
     },[fetchedQuery]);                    
     
-
     const addCollection = (card) => {
         const endpoint = `/api/collection/update`;
         fetch(endpoint, {
@@ -54,8 +65,13 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
             })
         })
         .then(response => response.json())
-        .then(data => {
-            console.log(data);
+        .then(response => {
+            if('status' in response && response.status == 'success'){
+                console.log(response);
+                collectionData[response.data.scryfallId] =  response.data.quantity;
+                console.log('setting new collection data', {...collectionData});
+                setCollectionData({...collectionData});
+            }
         })
     }
 
@@ -78,11 +94,8 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
         } else {
 
         }
-   
     }
    
-
-    //map the results
     let results = [<li key={1}>No results found.</li>];
     if(cards) {        
         results = cards.map((card:apiCard, index) => {
@@ -92,7 +105,7 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
                         data={card} 
                         key={index} 
                         showPrints={showPrints}
-                        collectionData={collectionData}
+                        quantity={collectionData[card.id]}
                         updateCollectionHandler={updateCollectionHandler}
                     />
                 </li>
