@@ -9,7 +9,7 @@ type CollectionCardMenuProp  = {
 }
 export function CollectionCardMenu({quantity, updateCollectionHandler, cardData}:CollectionCardMenuProp){
     const updateHandler = (e) => {
-        updateCollectionHandler(e, cardData);
+        updateCollectionHandler(e, cardData, quantity);
     }
 
     return (

@@ -26,8 +26,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             cardFaces
         }
 
-        console.log('cardObject: ', cardCollectionObject);
-
         //optional values
         'loyalty' in apiData ? cardCollectionObject.loyalty = apiData.loyalty : false;
         'keywords' in apiData && apiData.keywords.length > 0 ? cardCollectionObject.keywords = apiData.keywords : false;
@@ -63,8 +61,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
         
         const results = await db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndUpdate(filter, update, options);
-
-        console.log('after update: ', results);
         
         //verify card was added if not, return false 
         if('value' in results && results.value){
@@ -74,8 +70,64 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return false;
     }
 
-    function removeCard(card){
-        
+    async function removeCard(card, quantity){
+        //there are no cards to remove ignore 
+        if(!quantity){
+            return false;
+        }
+
+        //updating the quantity depends how many we already have
+        const updateAction = quantity > 1 ? 'decrease' : 'delete';
+
+        switch (updateAction){
+            case 'decrease':
+                const decreaseResults = await decreaseCard(card);    
+
+                if('value' in decreaseResults && decreaseResults.value){
+                    return decreaseResults.value;
+                }
+            break;
+
+            case 'delete': 
+                const deleteResults = await deleteCard(card);
+                
+                if('value' in deleteResults && deleteResults.value){
+                    deleteResults.value.quantity = 0;
+                    return deleteResults.value;
+                }
+            break;
+
+        }
+
+        return false;
+
+    }
+
+    async function decreaseCard(card){
+        const filter = {
+            scryfallId: card.id
+        };
+
+        const update = {
+            $inc: {
+                quantity: -1,
+            }
+        }
+
+        const options = {
+            returnDocument: 'after', 
+            projection: updateProjection
+        }
+
+        return await db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndUpdate(filter, update, options);
+    }
+
+    async function deleteCard(card){
+        const filter = {
+            scryfallId: card.id
+        };
+        return await db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndDelete(filter);
+
     }
 
     const session = await getSession({req});
@@ -94,18 +146,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return;
     }
 
-    const {card, action} = JSON.parse(req.body);
+    const {card, action, quantity} = JSON.parse(req.body);
     
     switch (action){
         case 'add':
-            const response = await addCard(card);
-            response
-                ? res.status(200).json(helpers.collectionApiResponse('success', 'card was added successfully to collection', response))
+            const addResponse = await addCard(card);
+            addResponse
+                ? res.status(200).json(helpers.collectionApiResponse('success', 'card was added successfully to collection', addResponse))
                 : res.status(400).json(helpers.collectionApiResponse('error', 'something went wrong, unable to add card to collection check server logs'));
             break;
 
         case 'remove':
-            removeCard(card);
+            const removeResponse = await removeCard(card, quantity);
+            removeResponse
+                ? res.status(200).json(helpers.collectionApiResponse('success', 'card was decreased/removed successfully from collection', removeResponse))
+                : res.status(400).json(helpers.collectionApiResponse('error', 'something went wrong, unable to remove card to collection check server logs'));
             break;
     }
     

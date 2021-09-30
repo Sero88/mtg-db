@@ -55,13 +55,14 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
         }
     },[fetchedQuery]);                    
     
-    const addCollection = (card) => {
+    const updateCollection = (card, action, quantity) => {
         const endpoint = `/api/collection/update`;
         fetch(endpoint, {
             method: 'PUT', 
             body: JSON.stringify({
                 card, 
-                action: 'add'
+                action: action,
+                quantity
             })
         })
         .then(response => response.json())
@@ -75,7 +76,8 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
         })
     }
 
-    const updateCollectionHandler = (event, card) => {
+
+    const updateCollectionHandler = (event, card, quantity) => {
         console.log('updateCollectionHandler: ', card);
         if(!card){
             console.error('Missing card parameter, unable to modify collection.');
@@ -90,9 +92,9 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
         const action = target.dataset['collection_menu_action']
         //add functionality
         if(action == 'add'){
-            addCollection(card);
+            updateCollection(card, 'add', quantity);
         } else {
-
+           quantity ? updateCollection(card, 'remove', quantity) : false;
         }
     }
    
