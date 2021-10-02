@@ -1,7 +1,7 @@
 import { apiCard } from "../types/apiCard";
 import Image from 'next/image';
 import { CollectionCardMenu } from "./collection-card-menu";
-import { helpers } from "../util/helpers";
+import { CollectionCard } from "../util/collectionCard";
 
 function showCardImage(imageUri:string, name:string, type:string, key: number = 1) {
 
@@ -18,7 +18,7 @@ function showCardImage(imageUri:string, name:string, type:string, key: number = 
 }
 
 function showCardDetails(data:apiCard, showPrints:boolean){
-    const collectorsData = helpers.getCollectorsData(data);
+    const collectorsData = CollectionCard.getCollectorsData(data);
     
     const printDetails = 
         <div>
