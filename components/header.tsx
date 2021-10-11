@@ -7,7 +7,7 @@ export default function Header(){
         <header>
         <div className="siteIdentity">
             <Link href="/">
-                <a>Lovers' Standard</a>
+                <a>Lovers&#39; Standard</a>
             </Link>
         </div>
         <nav>

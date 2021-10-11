@@ -1,22 +1,25 @@
-import {list} from '../types/list';
-import { apiCard } from '../types/apiCard';
+import { ApiCard } from '../types/apiCard';
+import { CollectionCardType } from '../types/collectionCard';
 import Card from '../components/card';
 import {useState, useEffect} from 'react';
 
 
 type SearchProps = {
-    cards: apiCard[] | null,    
+    cards: ApiCard[],    
     showPrints: boolean,
     fetchedQuery: string,
     clickHandler: (event:React.MouseEvent) => void,
 }
 
+type CollectionData = {
+    [key:string]: number
+};
 
 export default function SearchResults({cards, showPrints, clickHandler, fetchedQuery}:SearchProps){    
-    const [collectionData, setCollectionData] = useState({}); 
+    const [collectionData, setCollectionData] = useState<CollectionData>({}); 
     const [showResults, setShowResults] = useState(false);
 
-    function getCollectionData(cards){
+    function getCollectionData(cards:ApiCard[]){
 
         const searchCards = cards.map( card => {
             return card.id;
@@ -30,13 +33,14 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
         })
         .then(response => response.json())
         .then(apiResponse => {
-            if( !('status' in apiResponse) || ('status' in apiResponse) && apiResponse.status != 'success') {
+            if( !('status' in apiResponse) || (('status' in apiResponse) && apiResponse.status != 'success') ) {
                 return false;
             }
 
             //construct collection data
-            apiResponse.data.forEach( collectionObj => {
-                collectionData[collectionObj.scryfallId] =  collectionObj.quantity;
+            apiResponse.data.forEach( (collectionObj:CollectionCardType) => {
+                const quantity = collectionObj.quantity ?? 0;
+                collectionData[collectionObj.scryfallId] = quantity;
             });
 
             console.log('setting collection data: ', collectionData);
@@ -45,8 +49,6 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
                     
         })
         .catch( e => {console.error(e)});
-        
-       
     }
 
     useEffect( () => {
@@ -55,7 +57,7 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
         }
     },[fetchedQuery]);                    
     
-    const updateCollection = (card, action, quantity) => {
+    const updateCollection = (card:ApiCard, action:string, quantity:number) => {
         const endpoint = `/api/collection/update`;
         fetch(endpoint, {
             method: 'PUT', 
@@ -68,7 +70,6 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
         .then(response => response.json())
         .then(response => {
             if('status' in response && response.status == 'success'){
-                console.log(response);
                 collectionData[response.data.scryfallId] =  response.data.quantity;
                 console.log('setting new collection data', {...collectionData});
                 setCollectionData({...collectionData});
@@ -76,15 +77,15 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
         })
     }
 
-
-    const updateCollectionHandler = (event, card, quantity) => {
+    const updateCollectionHandler = (event: React.MouseEvent<Element, MouseEvent>, card:ApiCard, quantity:number) => {
         console.log('updateCollectionHandler: ', card);
+
         if(!card){
             console.error('Missing card parameter, unable to modify collection.');
             return;
         }
         
-        const target = event.currentTarget;
+        const target = event.currentTarget as HTMLElement;
         if(!('collection_menu_action' in target.dataset) ){
             return;
         }
@@ -100,7 +101,7 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
    
     let results = [<li key={1}>No results found.</li>];
     if(cards) {        
-        results = cards.map((card:apiCard, index) => {
+        results = cards.map((card:ApiCard, index) => {
             return(
                 <li key={index}>
                     <Card 

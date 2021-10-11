@@ -1,14 +1,14 @@
-import { apiCard } from '../types/apiCard';
+import { ApiCard } from '../types/apiCard';
 import {Icon} from './font-awesome-icon'; 
 
 
 type CollectionCardMenuProp  = {
-    cardData: apiCard,
+    cardData: ApiCard,
     quantity: number,
-    updateCollectionHandler: (event:React.MouseEvent) => void,
+    updateCollectionHandler: (event:React.MouseEvent, card: ApiCard, quantity:number) => void,
 }
 export function CollectionCardMenu({quantity, updateCollectionHandler, cardData}:CollectionCardMenuProp){
-    const updateHandler = (e) => {
+    const updateHandler = (e: React.MouseEvent<Element, MouseEvent>) => {
         updateCollectionHandler(e, cardData, quantity);
     }
 

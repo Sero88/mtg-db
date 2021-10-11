@@ -1,4 +1,4 @@
-import { apiCard } from "../types/apiCard";
+import { ApiCard } from "../types/apiCard";
 import Image from 'next/image';
 import { CollectionCardMenu } from "./collection-card-menu";
 import { CollectionCard } from "../util/collectionCard";
@@ -13,11 +13,12 @@ function showCardImage(imageUri:string, name:string, type:string, key: number = 
             key={key}
             data-name={name}
             data-type={type}
+            alt={name}
         />
     );
 }
 
-function showCardDetails(data:apiCard, showPrints:boolean){
+function showCardDetails(data:ApiCard, showPrints:boolean){
     const collectorsData = CollectionCard.getCollectorsData(data);
     
     const printDetails = 
@@ -35,18 +36,19 @@ function showCardDetails(data:apiCard, showPrints:boolean){
 }
 
 type CardApiProps = {
-    data: apiCard,
+    data: ApiCard,
     showPrints: boolean,
     quantity: number,
-    updateCollectionHandler: (event:React.MouseEvent) => void,
+    updateCollectionHandler: (event:React.MouseEvent, card:ApiCard, quantity:number) => void,
 
 }
 
 export default function CardApi({data, showPrints, quantity, updateCollectionHandler}:CardApiProps){
     const type = showPrints ? 'print' : 'general';
+    const cardImageUrl = 'image_uris' in data && data.image_uris && 'normal' in data.image_uris ? data.image_uris.normal : '';
     
-    //if the card doesn't have an image_uri 
-    if( !('image_uris' in data) && 'card_faces' in data ){
+    //if the card doesn't have an image_uri - check card faces
+    if( !cardImageUrl && 'card_faces' in data && data.card_faces ){
         return (
             <div className="card dual-card">
                 {
@@ -67,7 +69,7 @@ export default function CardApi({data, showPrints, quantity, updateCollectionHan
     } else {
         return(
             <div className="card">
-                {showCardImage(data.image_uris.normal, data.name, type)}
+                {showCardImage(cardImageUrl, data.name, type)}
                 {showCardDetails(data,showPrints)}
                 {showPrints && <CollectionCardMenu quantity={quantity} updateCollectionHandler={updateCollectionHandler} cardData={data} /> } 
             </div>)

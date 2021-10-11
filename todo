@@ -1,7 +1,11 @@
 Doing:
 
- Don't forget to refactor some of the React code
+Rewrite how we get the collection number I think it can only be p or s, but may want to all letters in case more are added. We're not interested in them only the set code.
+
+Don't forget to refactor some of the React code - fix typescript errors
 Organize update (api) code. Move DB to its own model module. 
+
+Remember to add optional values for card
 
 Will also need to fix set issue. Not show sets or allow multiple sets to be chosen, or similar sets are checked, when user selects kaldheim, all the kaldheim sets available are checked. FIX: remove promo sets but add them in the search, they seem to be prefixed with a "p" for promos. Commander products are ones we usually don't buy, except for commander legends, but that is not a "commander" product per se, according to scryfall. We need to find a way to include it.
 

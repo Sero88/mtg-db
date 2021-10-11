@@ -93,7 +93,7 @@ export default function AddPage(){
     }
 
     //submit handler 
-    const submitHandler = (event: any) => {
+    const submitHandler = (event: React.FormEvent<Element>) => {
         event.preventDefault();        
         setShowSuggestions(false); // user has submitted an entry, do not show any suggestions 
         clearInterval(searchTimeout);
@@ -101,19 +101,20 @@ export default function AddPage(){
     }
 
     //click handler
-    const clickHandler = (event: any) => {  
-        if('name' in event.target.dataset) {
-        
+    const clickHandler = (event: React.MouseEvent<Element, MouseEvent>) => {  
+        const clickedElement = event.target as HTMLElement;
+        if('name' in clickedElement) {
             //show the add cards module
-            if(event.target.matches('img')){
-                if('type' in event.target.dataset) {
-                    if(event.target.dataset.type == 'print'){
+            if(clickedElement.matches('img')){
+            
+                if('type' in clickedElement.dataset) {
+                    if(clickedElement.dataset.type == 'print'){
                         //show modole to add to collection
                         return;
                     }
                 }
             }
-            const cardName = event.target.dataset.name;            
+            const cardName = clickedElement.dataset.name ? clickedElement.dataset.name : '';            
             setShowSuggestions(false);                    
             setSearchText(cardName);            
             searchCards(cardName, true, false, true);     

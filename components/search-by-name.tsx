@@ -1,5 +1,4 @@
 import SearchSuggestions from './search-suggestions';
-import {apiCard} from '../types/apiCard';
 import {ApiSet} from '../types/apiSet';
 import style from '../styles/search.module.scss';
 import React from 'react';

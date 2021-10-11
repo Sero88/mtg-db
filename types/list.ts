@@ -1,6 +1,6 @@
-import { apiCard } from "./apiCard"
+import { ApiCard } from "./apiCard"
 export type list = {
-    data: apiCard[],
+    data: ApiCard[],
     has_more: boolean,
     next_page: string,
     total_cards: number,

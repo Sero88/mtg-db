@@ -1,38 +1,34 @@
-export type apiCard = { 
+export type ApiCard = { 
     id: string, //unique to scryfall 
     oracle_id: string, //unique to card on MTG's Oracle, but shares across same card name. So two cards across different sets have the same oracle_id
     name: string,
-    mana_cost: string | null,
-    color_identity: string[],    
-    oracle_text: string[],
+    color_identity: string[],
     keywords: string[],
     legalities: {},
-    loyalty: number|null,    
-    power: string,
-    toughness: string,
     type_line: string,
-    artist: string,
-    flavor_text: string|null,
-    image_uris: {small:string, normal:string},
     rarity: string,
-    card_faces: CardFace[],
     layout: string
     collector_number: string,
     set: string,
     set_name: string,
     set_type: string,
     promo: boolean,
-    promo_types: string[]
+    
+    //can be missing or nullable
+    mana_cost?: string,
+    flavor_text?: string,
+    loyalty?: number,
+    oracle_text?: string,
+    power?: string,
+    toughness?: string, 
+    artist?: string,
+    image_uris?: {small:string, normal:string},
+    card_faces?: CardFace[],
+    promo_types?: string[],
+    
 }
 
-type CardFace = {
-    image_uris: {small:string, normal:string}
+export type CardFace = {
+    image_uris: {small:string, normal:string},
+    mana_cost: string
 }
-
-
-/*
-todo remove - my fields for the db
-sets: string[] (use unique print or prints_search_uri), 
-quantity: number,
-card_type: "normal|dual" (my own field based on scryfall face count)
-*/

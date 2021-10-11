@@ -1,5 +1,5 @@
 export const helpers = {
-    collectionApiResponse: function(status, message, data = []){
+    collectionApiResponse: function(status:string, message:string, data = {}){
         return {
             status,
             message, 

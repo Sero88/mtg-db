@@ -1,10 +1,10 @@
 import {connectToDatabase} from "../util/mongodb";
 import { CollectionCard } from "../util/collectionCard";
-import { apiCard } from "../types/apiCard";
+import { ApiCard } from "../types/apiCard";
 
 export class CardCollection{
-    private client;
-    private db;
+    private client: any; //no types exists for these from the library
+    private db: any;
 
     private updateProjection =  {
         scryfallId: 1, 
@@ -19,7 +19,7 @@ export class CardCollection{
         }
     }
     
-    private async decreaseCard(card:apiCard){
+    private async decreaseCard(card:ApiCard){
         const filter = {
             scryfallId: card.id
         };
@@ -38,7 +38,7 @@ export class CardCollection{
         return await this.db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndUpdate(filter, update, options);
     }
 
-    private async deleteCard(card:apiCard){
+    private async deleteCard(card:ApiCard){
         const filter = {
             scryfallId: card.id
         };
@@ -67,7 +67,7 @@ export class CardCollection{
         return true;
     }
 
-    async addCard(card: apiCard){
+    async addCard(card: ApiCard){
 
         if(!this.verifyConnection()){
             return this.responseObject('error', 'No db set. No connection to db');
@@ -102,7 +102,7 @@ export class CardCollection{
         return this.responseObject('error', 'Unable to add card to collection');
     }
 
-    async removeCard(card:apiCard, quantity: number){
+    async removeCard(card:ApiCard, quantity: number){
         //there are no cards to remove ignore 
         if(!quantity){
             return this.responseObject('error', 'Remove action missing quantity');
