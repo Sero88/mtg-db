@@ -21,6 +21,10 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
 
     function getCollectionData(cards:ApiCard[]){
 
+        if(!cards || cards.length == 0){
+            return;
+        }
+
         const searchCards = cards.map( card => {
             return card.id;
         } );

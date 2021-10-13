@@ -1,29 +1,11 @@
 Doing:
 
-Rewrite how we get the collection number I think it can only be p or s, but may want to all letters in case more are added. We're not interested in them only the set code.
+Add a loading animation to give the user feedback when cards are being fetched.
+After that we can work on styles to make it presentable so we can start using it at least to populate new cards we get. We can use the search for later on.
 
-Don't forget to refactor some of the React code - fix typescript errors
-Organize update (api) code. Move DB to its own model module. 
-
-Remember to add optional values for card
-
-Will also need to fix set issue. Not show sets or allow multiple sets to be chosen, or similar sets are checked, when user selects kaldheim, all the kaldheim sets available are checked. FIX: remove promo sets but add them in the search, they seem to be prefixed with a "p" for promos. Commander products are ones we usually don't buy, except for commander legends, but that is not a "commander" product per se, according to scryfall. We need to find a way to include it.
-
-*** We will show results and query both the collection and the API
-**** Since the card component is going to be used on both the "add" and "search" functionalities the card state will be in search Results along with the handler to add/remove cards.
-**** [cont] we will pass getCollection data from search to card component
-
-* Add the set selection functionality (any set - or specify the set)
-*** Read about hooks for React - we need to get the sets after the components are mounted
-*** Add an allowed set_type list for sets to avoid showing irrelevant sets. Then continue with the listener for set change.
-*** Finish testing sets. Then move on to adding the add functionality.
-
-*** continue combining collection with results data - working on getting collection without creating an infinite loop
-*** does the collection have a set array and there keep quantity. --> No, it is better to have an object for each card, since one set can have multiple types of the same card
 
 ================================
 Bugs: 
-*When searching for progenitus I'm shown all prints rather than general cards. May be an issue of how I'm searching for cards. Since the word "progenitus" is part of other cards, getting prints?
 
 
 
@@ -85,6 +67,23 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+Fix Bugs
+
+Set Bug
+Will also need to fix set issue. Not show sets or allow multiple sets to be chosen, or similar sets are checked, when user selects kaldheim, all the kaldheim sets available are checked. Probable_FIX: remove promo sets but add them in the search, they seem to be prefixed with a "p" for promos. Commander products are ones we usually don't buy, except for commander legends, but that is not a "commander" product per se, according to scryfall. FIX: In the collection data I'm just tracking the three-digit code for set. When I search scryfall I use the prefixes 's' and 'p' to get all type of cards under that set. 's' is for pre release and 'p' is for promo. These are technically sets created by scryfall. 
+
+Search Bug
+*When searching for progenitus I'm shown all prints rather than general cards. May be an issue of how I'm searching for cards. Since the word "progenitus" is part of other cards, getting prints?
+FIX: Had to add exact card name when searching for prints (could have also added oracleID since it is unique among all cards with same name but different sets)
+
+
+Do we need to refactor some of the React code? A: not at the moment, maybe later on we will have to refactor the search results a little bit to unite with collection search when the search functionality is built
+
+fix typescript errors + Remember to add optional values for card
+
+Organize update (api) code. Move DB to its own model module. 
+
+Rewrite how we get the collection number I think it can only be p or s, but may want to all letters in case more are added. We're not interested in them only the set code.
 
 Just finished refactoring addCard in Collection model. Continue testing then move on to remove.
 
@@ -115,6 +114,19 @@ We can now add to the db. Finetune the response you get from the update query. F
 
 Continue working on add functionality. I have passed the card object from the PUT request, now is time to pass it to the db. Upsert and add one to the quantity.
 Add functionality
+
+*** continue combining collection with results data - working on getting collection without creating an infinite loop
+*** does the collection have a set array and there keep quantity. --> No, it is better to have an object for each card, since one set can have multiple types of the same card
+
+*** We will show results and query both the collection and the API
+**** Since the card component is going to be used on both the "add" and "search" functionalities the card state will be in search Results along with the handler to add/remove cards.
+**** [cont] we will pass getCollection data from search to card component
+
+
+* Add the set selection functionality (any set - or specify the set)
+*** Read about hooks for React - we need to get the sets after the components are mounted
+*** Add an allowed set_type list for sets to avoid showing irrelevant sets. Then continue with the listener for set change.
+*** Finish testing sets. Then move on to adding the add functionality.
 
 
 I just added the listener functioanlity for add card collection menu. Next step is to add a card to the database.

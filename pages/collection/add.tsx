@@ -31,8 +31,15 @@ export default function AddPage(){
         //user is no longer typing                 
         setIsTyping(false);      
 
-        const set = selectedSet ? ` set:${selectedSet}` : '';
-        const endpoint =  showPrints 
+        cardName = cardName && showPrints
+            ? `!"${cardName}"`
+            : cardName;
+
+        const set = selectedSet 
+            ? ` set:${selectedSet},s${selectedSet},p${selectedSet}` 
+            : '';
+
+        const endpoint = showPrints 
             ? '/api/scryfall/cards/?order=released&unique=prints&query=' + encodeURIComponent(cardName + set)
             : '/api/scryfall/cards/?query=' + encodeURIComponent(cardName + set);
         
@@ -46,8 +53,10 @@ export default function AddPage(){
                     console.log('querying: ', endpoint, data);
 
                      //if the retrieved data is of only one card, query for the multiple prints that specific card
-                    if(data.total_cards == 1 && !showPrints){
-                        searchCards(cardName, true, false, true);                    
+                    if('total_cards' in data && data.total_cards == 1 && !showPrints){
+                        if('data'in data && data.data[0]){
+                            searchCards(data.data[0].name, true, false, true);          
+                        }
                         return;
                     }
 
@@ -57,10 +66,10 @@ export default function AddPage(){
                     setApiResults(data);  
 
                     //show suggestions
-                    setShowSuggestions(showSuggestions);                    
-
-                    setShowPrints(showPrints);  
+                    setShowSuggestions(showSuggestions);                   
                     
+                    setShowPrints(showPrints); 
+
                     //set the new fetched query value
                     setFetchedQuery(endpoint);
                     
@@ -103,7 +112,7 @@ export default function AddPage(){
     //click handler
     const clickHandler = (event: React.MouseEvent<Element, MouseEvent>) => {  
         const clickedElement = event.target as HTMLElement;
-        if('name' in clickedElement) {
+        if('name' in clickedElement.dataset) {
             //show the add cards module
             if(clickedElement.matches('img')){
             
@@ -114,7 +123,7 @@ export default function AddPage(){
                     }
                 }
             }
-            const cardName = clickedElement.dataset.name ? clickedElement.dataset.name : '';            
+            const cardName = clickedElement.dataset.name ? clickedElement.dataset.name : '';     
             setShowSuggestions(false);                    
             setSearchText(cardName);            
             searchCards(cardName, true, false, true);     
