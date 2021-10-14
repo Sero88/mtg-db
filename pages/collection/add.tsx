@@ -3,6 +3,7 @@ import React, {useState, useEffect } from "react";
 import SearchResults from "../../components/search-results";
 import {list} from "../../types/list";
 import {ApiSet} from "../../types/apiSet";
+import LoaderAnimation from "../../components/loader-animation";
 
 let searchTimeout: NodeJS.Timeout;
 
@@ -24,6 +25,7 @@ export default function AddPage(){
     const[showPrints, setShowPrints] = useState(false);
     const[cardSets, setCardSets] = useState<ApiSet[]>([]);
     const[selectedSet, setSelectedSet] = useState("");
+    const[showLoader, setShowLoader] = useState(false);
 
     //function to search cards
     const searchCards = (cardName:string, showResults:boolean, showSuggestions:boolean, showPrints:boolean = false) => {
@@ -45,6 +47,8 @@ export default function AddPage(){
         
         //fetch new data only if the new search query is different than what we already fetched
         if( endpoint != fetchedQuery ){
+
+            setShowLoader(true);
             
             fetch(endpoint)
             .then(response => response.json())
@@ -73,9 +77,9 @@ export default function AddPage(){
                     //set the new fetched query value
                     setFetchedQuery(endpoint);
                     
+                    setShowLoader(false);
                     setShowResults(showResults);    
-
-                                                                                      
+                                                                              
                 }
             );
         } else { 
@@ -173,6 +177,12 @@ export default function AddPage(){
                 isTyping={isTyping}
                 isFocused={isFocused}
             />
+
+
+
+            {showLoader &&
+                <LoaderAnimation/>
+            }
 
             {showResults && 
                 <SearchResults 

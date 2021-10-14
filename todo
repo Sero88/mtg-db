@@ -1,6 +1,5 @@
 Doing:
 
-Add a loading animation to give the user feedback when cards are being fetched.
 After that we can work on styles to make it presentable so we can start using it at least to populate new cards we get. We can use the search for later on.
 
 
@@ -67,6 +66,9 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+Add a loading animation to give the user feedback when cards are being fetched.
+
 Fix Bugs
 
 Set Bug
