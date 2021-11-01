@@ -1,0 +1,50 @@
+@import './variables.scss';
+.card{
+    font-size: 1.4rem;
+}
+
+.dualCard{
+   
+}
+
+
+.imageCollectionWrapper{
+    display: flex;
+    
+}
+
+.imagesWrapper{
+    display:flex;
+    flex-direction: column;
+}
+
+.imagePrint{
+    cursor: auto;
+}
+
+.cardDetails{
+    line-height: 1.7rem;
+    padding-right:1.5rem;
+}
+
+.cardNameLink {
+    cursor: pointer;
+    color: $blue;
+}
+
+.cardImage{
+    border-radius: 1.1rem;
+    cursor: pointer;
+}
+
+.imagePrint {
+    cursor: auto;
+}
+
+.collectorsData {
+    font-size: 1rem;
+}
+
+.setName {
+    font-size: 1.2rem;
+}

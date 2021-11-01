@@ -1,6 +1,6 @@
 import SearchSuggestions from './search-suggestions';
 import {ApiSet} from '../types/apiSet';
-import style from '../styles/search.module.scss';
+import styles from '../styles/search.module.scss';
 import React from 'react';
 import {allowedSets} from '../util/allowed-sets'
 
@@ -35,9 +35,9 @@ export default function SearchByName(
     }:searchByNameProps){
     
     return (
-        <div className={style.searchByName} onClick={clickHandler}>
+        <div className={styles.searchByName} onClick={clickHandler}>
             <form onSubmit={submitHandler}>
-                <label>Card Set: 
+                <label className={styles.setField}><span>Card Set: </span>
                     <select onChange={setChangeHandler}>
                         <option value="">All sets</option>
                         {(
@@ -49,7 +49,7 @@ export default function SearchByName(
                         )}
                     </select>
                 </label>            
-                <label>Card Name:
+                <label className={styles.nameField}><span>Card Name:</span>
                     <input 
                         type="text" 
                         name="cardName" 
@@ -64,7 +64,7 @@ export default function SearchByName(
             </form>
             {showSuggestions &&
                 (<div>
-                    <div className={style.searchSuggestions}>
+                    <div className={styles.searchSuggestions}>
                         <SearchSuggestions cards={cards} />
                     </div>
                 </div>)

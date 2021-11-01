@@ -1,0 +1,26 @@
+@import './variables.scss';
+
+.dailyFlavorText{
+    text-align: center;
+    color: $dark-green;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 10rem;
+
+    span{
+        padding: 0 1.8rem;
+    }
+}
+
+.collectionOptionsWrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    gap:0 4rem;
+
+}
+
+@media all and(min-width: 30.25em) { //420px
+    .collectionOptionsWrapper {
+        justify-items: center;
+    }
+}

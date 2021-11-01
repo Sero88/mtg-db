@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/client";
 import AccessDenied from "./access-denied";
 import Header from "./header";
+import Footer from "./footer";
 
 type PropsWithChildren = {
     children: JSX.Element
@@ -25,7 +26,13 @@ export default function LayoutSecureContent({children} : PropsWithChildren){
     return(
         <>
             <Header/>
-            {children}
+            <main>
+                <div className="wrapper">
+                    {children}
+                </div>
+            </main>
+            <Footer />
+            
         </>
     );
 }

@@ -1,0 +1,19 @@
+.resultsList{
+    margin: 0;
+    padding: 0;
+}
+
+.cardWrapper{
+    list-style: none;
+}
+
+.resultsWrapper{
+    min-height: 4rem;
+    margin-bottom: 5rem;
+}
+
+.resultsList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill ,minmax(20rem, 1fr));
+    gap: 2.5rem 2.5rem;
+}

@@ -1,7 +1,8 @@
 import { ApiCard } from '../types/apiCard';
 import { CollectionCardType } from '../types/collectionCard';
 import Card from '../components/card';
-import {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react'; 
+import styles from '../styles/results.module.scss';
 
 
 type SearchProps = {
@@ -107,7 +108,7 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
     if(cards) {        
         results = cards.map((card:ApiCard, index) => {
             return(
-                <li key={index}>
+                <li className={styles.cardWrapper} key={index}>
                     <Card 
                         data={card} 
                         key={index} 
@@ -124,9 +125,9 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
     //show the results if it is not prints (general search query), show print results only after we query the db
     if( !showPrints || (showPrints && showResults) ){
         return(    
-            <div className="results">
+            <div className={styles.resultsWrapper}>
                 <h2>Cards:</h2>
-                <ul onClick={clickHandler}>
+                <ul onClick={clickHandler} className={styles.resultsList}>
                     { results }
                 </ul>            
             </div>

@@ -1,13 +1,19 @@
 Doing:
 
+
 After that we can work on styles to make it presentable so we can start using it at least to populate new cards we get. We can use the search for later on.
+* Continue working on styles for the main page
+* Figure out navigation, show navigation on subpages, but not the homepage
 
 
 ================================
 Bugs: 
 
+Retain laoder bug
+When you hit enter twice on the add page for card name the loader will stick around. We need to remove the loader animation when query does not happen
 
-
+Order bug
+When loading results, sort by number ascending, not descending
 
 ===============================
 NOTES About project
@@ -66,6 +72,9 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+* add a favicon to header
+* Continue working on styling the search form of the add page
 
 Add a loading animation to give the user feedback when cards are being fetched.
 

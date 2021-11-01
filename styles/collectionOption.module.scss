@@ -1,0 +1,42 @@
+.collectionOption{
+    margin-bottom: 6rem;
+    max-width: 42rem;
+    width: 100%;
+    
+    img {
+        transform: scale(.85);
+    }
+
+    .title, .mainImage, .bgImage{
+        transition: all .25s;
+    }
+
+    &:hover {
+        .mainImage {
+            transform: scale(.9);
+            filter: drop-shadow(0 5px 0 rgba(0, 0, 0, 0.402));
+        }
+
+        .bgImage{
+            transform:scale(.8);
+        }
+
+        .title{
+            transform: scale(1.25);
+        }
+    }
+}
+
+.imagesWrapper {
+    width: 100%;
+    height: 18.5rem;
+    position: relative;
+    overflow: visible;
+}
+
+
+.title {
+    text-align: center;
+    font-size: 3rem;
+    margin: 0;
+}

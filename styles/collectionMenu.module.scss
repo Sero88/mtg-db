@@ -1,0 +1,45 @@
+@import './variables.scss';
+
+.collectionMenu{
+    height: 100%;
+    background-color: #fff;
+    position: relative;
+    margin-top: 3rem;
+    padding: .75rem;
+    box-shadow: 0 0 6px -1px #ccc;
+    border-left: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+    li{
+        font-size: 1.4rem;
+        list-style: none;
+    }
+
+    .addMenu, 
+    .removeMenu {
+        cursor: pointer;
+        padding: .5rem;
+        color: $dark-blue;
+
+        &:hover{
+            color: $light-green;
+        }
+    }
+
+    .dividerLine{
+        height: 1px;
+        background-color: #E6E6E6;
+        width: 100%;
+        margin: 0 auto;
+        color: $dark-green;
+        background: linear-gradient(to left,rgba(0, 49, 51, 0) 0%,rgba(0, 49, 51,1) 50%,rgba(0, 49, 51,0) 100%); /* W3C */
+    }
+
+    .collectionQuantity{
+        border-top: 1px solid $dark-green;
+        margin-top: .8rem;
+        text-align: center;
+        padding-top: .5rem;
+    }
+} 
