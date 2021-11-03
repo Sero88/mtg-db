@@ -1,0 +1,63 @@
+@import './variables.scss';
+
+.mainHeader {
+    padding-top: 4rem;
+}
+
+.homeHeader nav {
+    display: none;
+}
+
+.homeHeader .siteLogoWrapper,
+.siteLogoWrapper{
+    text-align: center;
+}
+
+.headerWrapper {
+    display: grid;
+    grid-template-columns: 1;
+
+    nav{
+        ul {
+            list-style: none;
+            text-align: center;
+            margin: 2rem auto 0 auto;
+            padding-left: 0;
+
+            li{
+                font-size: 1.25rem;
+                margin-bottom: 1rem;
+
+                &:hover {
+                    color: $dark-green; 
+                }
+            }
+        }
+    }
+}
+
+@media all and(min-width: 32.5em) { //520px
+    .headerWrapper {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(20rem,1fr));
+
+        nav {
+            text-align: right;
+
+            ul {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+        
+                li {
+                    margin-right: 2rem;
+                }
+            }
+        }
+    }
+
+    .siteLogoWrapper{
+        text-align: left;
+    }
+
+}

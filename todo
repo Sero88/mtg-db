@@ -3,7 +3,10 @@ Doing:
 
 After that we can work on styles to make it presentable so we can start using it at least to populate new cards we get. We can use the search for later on.
 * Continue working on styles for the main page
-* Figure out navigation, show navigation on subpages, but not the homepage
+* Finish navigation styles for both mobile and desktop
+* Make sure to style the suggestion list and add cursor pointer
+* Before continuing make sure you commit and push changes. Keep commits small
+
 
 
 ================================
@@ -15,6 +18,13 @@ When you hit enter twice on the add page for card name the loader will stick aro
 Order bug
 When loading results, sort by number ascending, not descending
 
+
+
+===============================
+Features:
+
+Add a way to go back to previuos search
+When clicking on a card to view the print, there should be a way to return to the results list
 ===============================
 NOTES About project
 
