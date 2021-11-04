@@ -65,7 +65,8 @@ export default function SearchByName(
             {showSuggestions &&
                 (<div>
                     <div className={styles.searchSuggestions}>
-                        <SearchSuggestions cards={cards} />
+                        <span className={styles.suggestionsTitle}>Card Suggestions</span>
+                        <SearchSuggestions cards={cards} limit={5} />
                     </div>
                 </div>)
             }

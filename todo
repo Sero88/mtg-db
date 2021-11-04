@@ -2,10 +2,9 @@ Doing:
 
 
 After that we can work on styles to make it presentable so we can start using it at least to populate new cards we get. We can use the search for later on.
-* Continue working on styles for the main page
-* Finish navigation styles for both mobile and desktop
-* Make sure to style the suggestion list and add cursor pointer
-* Before continuing make sure you commit and push changes. Keep commits small
+* Fix Bugs
+* Work on the lastest set and daily flavor text functionality.
+
 
 
 
@@ -85,6 +84,10 @@ DONE
 
 * add a favicon to header
 * Continue working on styling the search form of the add page
+* Before continuing make sure you commit and push changes. Keep commits small
+* Make sure to style the suggestion list and add cursor pointer
+* Finish navigation styles for both mobile and desktop
+* Continue working on styles for the main page
 
 Add a loading animation to give the user feedback when cards are being fetched.
 
