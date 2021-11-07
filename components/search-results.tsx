@@ -30,11 +30,9 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
             return card.id;
         } );
 
-        console.log('search cards: ', searchCards);
-
-        fetch('/api/collection/search',{
-            method: 'POST',
-            body: JSON.stringify({cards:searchCards})
+        const endpoint = '/api/collection/search?cardIds='+JSON.stringify(searchCards)+'&action=searchIds';
+        fetch(endpoint,{
+            method: 'GET',
         })
         .then(response => response.json())
         .then(apiResponse => {

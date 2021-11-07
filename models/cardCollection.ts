@@ -2,6 +2,7 @@ import {connectToDatabase} from "../util/mongodb";
 import { CollectionCard } from "../util/collectionCard";
 import { ApiCard } from "../types/apiCard";
 
+
 export class CardCollection{
     private client: any; //no types exists for these from the library
     private db: any;
@@ -136,5 +137,33 @@ export class CardCollection{
 
         }
         return this.responseObject('error', 'Something went wrong. Unable to complete remove action. Check server logs.');;
+    }
+
+    async searchIds(cardIds:string[]){
+        const projection = {projection:{scryfallId:1, quantity: 1}};
+        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).find({scryfallId:{$in:cardIds}}, projection).toArray();
+
+        return this.responseObject('success', results);
+    }
+    
+    async dailyFlavorTextSearch(){
+        //const projection = {projection:{cardFaces:{flavorText:1}}}; projection is not an option for aggregate
+
+        //match cards that have a flavor text
+        const matchQuery = {
+            $match: {
+                cardFaces: { 
+                    $elemMatch: { 
+                        flavorText: { $exists: true } 
+                    }
+                }
+            }
+        }
+
+        //using sample we retrieve a random card from the match query results
+        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).aggregate([matchQuery, {$sample:{size:1}}]).toArray();
+
+        console.log('results of flavor: ', results);
+        return this.responseObject('success', results[0]);
     }
 }

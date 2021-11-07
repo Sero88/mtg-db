@@ -23,5 +23,5 @@ export type CollectionCardFace = {
     imageUri: string,
     power?: string,
     toughness?: string, 
-    flavor_text?: string
+    flavorText?: string
 }

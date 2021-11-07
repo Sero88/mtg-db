@@ -39,6 +39,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 ? res.status(200).json(helpers.collectionApiResponse('success', 'card was decreased/removed successfully from collection', removeResponse.data))
                 : res.status(400).json(helpers.collectionApiResponse('error', 'something went wrong, unable to remove card to collection check server logs'));
             break;
+
+        default:
+            res.status(400).json(helpers.collectionApiResponse('error','unable to perform action'));
     }
     
 }

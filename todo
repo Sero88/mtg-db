@@ -4,8 +4,9 @@ Doing:
 After that we can work on styles to make it presentable so we can start using it at least to populate new cards we get. We can use the search for later on.
 * Fix Bugs
 * Work on the lastest set and daily flavor text functionality.
-
-
+** Figure out how to do the daily text functionality. Do we make a call to collections/search and pass a param or use another api file, collection/search/flavor
+*** Continue working on passing GET string of arrays (we may need to think of another if we hit URL limit too)
+**** Change daily flavor text functionality so it passess the card name as well so we can display it, not only the text
 
 
 ================================

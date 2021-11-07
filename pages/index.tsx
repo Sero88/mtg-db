@@ -1,13 +1,13 @@
-import {Icon} from '../components/font-awesome-icon';
 import styles from '../styles/home.module.scss';
 import { CollectionOption } from '../components/collection-option';
+import {DailyFlavorText} from '../components/daily-flavor-text';
 
 export default function Home() {
   return (
     <>  
-      <div className={styles.dailyFlavorText}>
-        <Icon icon="quoteLeft" /><span>This is the daily flavor text of the day</span><Icon icon="quoteRight" />
-      </div>
+      
+      <DailyFlavorText />
+   
 
       <div className={styles.collectionOptionsWrapper}>
         

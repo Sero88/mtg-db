@@ -98,7 +98,7 @@ export const CollectionCard = {
         //these are optional since not all cards have these
         'power' in cardFace && cardFace.power ? faceObject.power = cardFace.power : false;
         'toughness' in cardFace && cardFace.toughness ? faceObject.toughness = cardFace.toughness : false;
-        'flavor_text' in cardFace && cardFace.flavor_text ? faceObject.flavor_text = cardFace.flavor_text : false;
+        'flavor_text' in cardFace && cardFace.flavor_text ? faceObject.flavorText = cardFace.flavor_text : false;
 
         return faceObject;
     },
