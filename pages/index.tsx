@@ -13,7 +13,7 @@ export default function Home() {
   
       <DailyFlavorText />
    
-   
+
       <div className={styles.collectionOptionsWrapper}>
         
           <CollectionOption 
@@ -32,10 +32,6 @@ export default function Home() {
             link="/collection/add"
           />
   
-      </div>
-
-      <div>
-        <h2>Latest Set Name</h2>
       </div>
     </>
   )

@@ -3,17 +3,12 @@ Doing:
 
 After that we can work on styles to make it presentable so we can start using it at least to populate new cards we get. We can use the search for later on.
 * Fix Bugs
-* Work on the lastest set and daily flavor text functionality.
-** Figure out how to do the daily text functionality. Do we make a call to collections/search and pass a param or use another api file, collection/search/flavor
-*** Continue working on passing GET string of arrays (we may need to think of another if we hit URL limit too)
-**** Change daily flavor text functionality so it passess the card name as well so we can display it, not only the text
+
+
 
 
 ================================
 Bugs: 
-
-Retain laoder bug
-When you hit enter twice on the add page for card name the loader will stick around. We need to remove the loader animation when query does not happen
 
 Order bug
 When loading results, sort by number ascending, not descending
@@ -83,6 +78,11 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 ======================================
 DONE
 
+* Work on the daily flavor text functionality.
+** Figure out how to do the daily text functionality. Do we make a call to collections/search and pass a param or use another api file, collection/search/flavor
+*** Continue working on passing GET string of arrays (we may need to think of another if we hit URL limit too)
+**** Change daily flavor text functionality so it passess the card name as well so we can display it, not only the text
+
 * add a favicon to header
 * Continue working on styling the search form of the add page
 * Before continuing make sure you commit and push changes. Keep commits small
@@ -93,6 +93,9 @@ DONE
 Add a loading animation to give the user feedback when cards are being fetched.
 
 Fix Bugs
+ 
+Retain laoder bug
+When you hit enter twice on the add page for card name the loader will stick around. We need to remove the loader animation when query does not happen. FIX: added a setShowLoader(false) when code returns due to query being the same.
 
 Set Bug
 Will also need to fix set issue. Not show sets or allow multiple sets to be chosen, or similar sets are checked, when user selects kaldheim, all the kaldheim sets available are checked. Probable_FIX: remove promo sets but add them in the search, they seem to be prefixed with a "p" for promos. Commander products are ones we usually don't buy, except for commander legends, but that is not a "commander" product per se, according to scryfall. FIX: In the collection data I'm just tracking the three-digit code for set. When I search scryfall I use the prefixes 's' and 'p' to get all type of cards under that set. 's' is for pre release and 'p' is for promo. These are technically sets created by scryfall. 

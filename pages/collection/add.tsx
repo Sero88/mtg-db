@@ -61,6 +61,8 @@ export default function AddPage(){
                         if('data'in data && data.data[0]){
                             searchCards(data.data[0].name, true, false, true);          
                         }
+
+                        setShowLoader(false);
                         return;
                     }
 

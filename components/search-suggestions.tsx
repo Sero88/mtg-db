@@ -10,14 +10,14 @@ export default function SearchSuggestions({cards, limit}:SuggestionsProps){
     const suggestions = [];
 
     if(!cards || cardsLength < 1){
-        return null
+        return <p><em>No matches</em></p>
     }
 
     for(let i=0; i<limit && i<cardsLength; i++){
         
         suggestions.push(<li key={i} data-name={cards[i]}>{cards[i]}</li>)
     }
-
+ 
     return(
         <ul>
             {suggestions}
