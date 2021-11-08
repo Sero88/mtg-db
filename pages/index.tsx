@@ -1,14 +1,19 @@
 import styles from '../styles/home.module.scss';
 import { CollectionOption } from '../components/collection-option';
-import {DailyFlavorText} from '../components/daily-flavor-text';
+import dynamic from 'next/dynamic';
+import Loader from '../components/loader-animation';
+
+
+
+const DailyFlavorText = dynamic(() => import('../components/daily-flavor-text'), { loading: () => <p>Loading <Loader /></p> });
 
 export default function Home() {
   return (
     <>  
-      
+  
       <DailyFlavorText />
    
-
+   
       <div className={styles.collectionOptionsWrapper}>
         
           <CollectionOption 

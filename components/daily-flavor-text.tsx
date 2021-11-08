@@ -53,7 +53,7 @@ function retrieveRandomFlavorText(apiResponse:ApiResponse):FlavorTextCard{
 
 
 
-export function DailyFlavorText(){
+export default function DailyFlavorText(){
     function getFlavorText(){
         const endpoint = '/api/collection/search?action=dailyFlavorText';
         fetch(endpoint,{
