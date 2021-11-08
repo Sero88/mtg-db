@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     //?order=released&q=elvish&unique=prints
     const apiQuery = query + ' game:paper';
     const uniquePrintsQuery = unique ? '&unique=prints': '';
-    const orderQuery = order ? `&order=${order}` : '&order=released';
+    const orderQuery = order ? `&order=${order}&dir=asc` : '&order=released&dir=asc'; //direction ascending 1 to XX
     console.log(`making call: ${apiUrl}/cards/search/?q=${apiQuery}${orderQuery}${uniquePrintsQuery}`);
     const results = await fetch(`${apiUrl}/cards/search/?q=${apiQuery}${orderQuery}${uniquePrintsQuery}`);
     

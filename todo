@@ -10,8 +10,6 @@ After that we can work on styles to make it presentable so we can start using it
 ================================
 Bugs: 
 
-Order bug
-When loading results, sort by number ascending, not descending
 
 
 
@@ -93,8 +91,11 @@ DONE
 Add a loading animation to give the user feedback when cards are being fetched.
 
 Fix Bugs
+
+Order bug
+When loading results, sort by number ascending, not descending. FIX: after setting the order you can set the direction parameter. Set it to "asc"
  
-Retain laoder bug
+Retain loader bug
 When you hit enter twice on the add page for card name the loader will stick around. We need to remove the loader animation when query does not happen. FIX: added a setShowLoader(false) when code returns due to query being the same.
 
 Set Bug
