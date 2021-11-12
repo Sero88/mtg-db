@@ -52,7 +52,6 @@ function retrieveRandomFlavorText(apiResponse:ApiResponse):FlavorTextCard{
 }
 
 
-
 export default function DailyFlavorText(){
     function getFlavorText(){
         const endpoint = '/api/collection/search?action=dailyFlavorText';
@@ -75,14 +74,18 @@ export default function DailyFlavorText(){
     const [flavorTextCard, setFlavorTextCard] = useState({name:'', flavorText:''});
 
     useEffect(getFlavorText,[false]); //can leave [] so it never updates, but setting false explicitely to remember it is not meant to update
+
     return(
-        <div className={styles.dailyFlavorText}>
-            <Icon icon="quoteLeft" />
-            <span>{'flavorText' in flavorTextCard && flavorTextCard.flavorText}</span>
-            <Icon icon="quoteRight" />
-            <br/>
-            <span className={styles.cardName}>{'name' in flavorTextCard && flavorTextCard.name}</span>
-            
-        </div>
+        'flavorText' in flavorTextCard && flavorTextCard.flavorText
+        ? 
+            <div className={styles.dailyFlavorText}>
+                <Icon icon="quoteLeft" />
+                <span>{flavorTextCard.flavorText}</span>
+                <Icon icon="quoteRight" />
+                <br/>
+                <span className={styles.cardName}>{'name' in flavorTextCard && flavorTextCard.name}</span>
+                
+            </div>
+        : null
     );
 }

@@ -5,7 +5,7 @@ import Loader from '../components/loader-animation';
 
 
 
-const DailyFlavorText = dynamic(() => import('../components/daily-flavor-text'), { loading: () => <p>Loading <Loader /></p> });
+const DailyFlavorText = dynamic(() => import('../components/daily-flavor-text'));
 
 export default function Home() {
   return (

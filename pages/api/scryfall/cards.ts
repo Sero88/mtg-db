@@ -7,10 +7,11 @@ import { getSession } from 'next-auth/client';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const session = await getSession({req});
 
-    //todo uncomment after you are done testing
-    /* if(!session){
+
+    if(!session){
         res.status(401).send('You must be logged in');
-    } */
+        return;
+    } 
 
     const apiUrl = 'https://api.scryfall.com';
     const {query, unique, order} = req.query;    
@@ -18,7 +19,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const apiQuery = query + ' game:paper';
     const uniquePrintsQuery = unique ? '&unique=prints': '';
     const orderQuery = order ? `&order=${order}&dir=asc` : '&order=released&dir=asc'; //direction ascending 1 to XX
-    console.log(`making call: ${apiUrl}/cards/search/?q=${apiQuery}${orderQuery}${uniquePrintsQuery}`);
     const results = await fetch(`${apiUrl}/cards/search/?q=${apiQuery}${orderQuery}${uniquePrintsQuery}`);
     
     

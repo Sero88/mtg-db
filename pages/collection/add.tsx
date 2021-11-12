@@ -54,7 +54,6 @@ export default function AddPage(){
             .then(response => response.json())
             .then(data => 
                 {          
-                    console.log('querying: ', endpoint, data);
 
                      //if the retrieved data is of only one card, query for the multiple prints that specific card
                     if('total_cards' in data && data.total_cards == 1 && !showPrints){
@@ -66,8 +65,7 @@ export default function AddPage(){
                         return;
                     }
 
-                    console.log('retrieved data from api: ', data);
-                    
+                
                     //set the api results
                     setApiResults(data);  
 
@@ -142,7 +140,6 @@ export default function AddPage(){
     }
 
     const getCardSets = () => {
-        console.log('getting card sets');
         //setCardSets([{name:'test', code:'afr', released_at:'2021-10-29'}]);
         const endpoint = '/api/scryfall/sets';
         fetch(endpoint)
@@ -156,7 +153,6 @@ export default function AddPage(){
     }
 
     const setChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log('set changed to: ', event.target.value);
         setSelectedSet(event.target.value);
     }
 

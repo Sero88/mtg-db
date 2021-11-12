@@ -2,7 +2,7 @@ import SearchSuggestions from './search-suggestions';
 import {ApiSet} from '../types/apiSet';
 import styles from '../styles/search.module.scss';
 import React from 'react';
-import {allowedSets} from '../util/allowed-sets'
+import {allowedSets} from '../util/allowedSets'
 
 
 type searchByNameProps = {

@@ -10,4 +10,17 @@ export default NextAuth({
     ],
     database: process.env.DATABASE_URL,
     secret: process.env.SECRET,
+    callbacks: {
+        async signIn(user, account, profile) { 
+  
+            const allowedEmails = JSON.parse(process.env.ALLOWED_EMAILS);
+
+            const canView = 
+                allowedEmails.includes(user.email)
+                ? true
+                : false;
+            
+            return canView; 
+        },
+    },
 })

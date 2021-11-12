@@ -10,9 +10,6 @@ type PropsWithChildren = {
 export default function LayoutSecureContent({children} : PropsWithChildren){
     const [session, loading]  = useSession();
 
-    //todo remove this after done development - before pushing to prod
-
-    /*
     //if still loading return null
     if(typeof window !== 'undefined' && loading) return null; 
 
@@ -20,8 +17,7 @@ export default function LayoutSecureContent({children} : PropsWithChildren){
     if(!session) {
         return <AccessDenied/>;
     }
-
-    */
+    
     //show the content
     return(
         <>

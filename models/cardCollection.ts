@@ -163,7 +163,6 @@ export class CardCollection{
         //using sample we retrieve a random card from the match query results
         const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).aggregate([matchQuery, {$sample:{size:1}}]).toArray();
 
-        console.log('results of flavor: ', results);
         return this.responseObject('success', results[0]);
     }
 }

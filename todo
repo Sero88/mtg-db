@@ -1,15 +1,13 @@
 Doing:
 
-
-After that we can work on styles to make it presentable so we can start using it at least to populate new cards we get. We can use the search for later on.
-* Fix Bugs
-
-
-
+Do quick final test and push latest changes. Deploy.
 
 ================================
 Bugs: 
 
+Pagination
+Set update doesn't update cards quantity on the results page when adding. -- Looks like this wasn't a bug, but rather how the api works. For the search request it limits it to 175 cards.
+I need to add pagination functionality.
 
 
 
@@ -75,6 +73,13 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+
+* Code cleanup
+* Work on access denied page and making sure only shared email can access site
+
+After that we can work on styles to make it presentable so we can start using it at least to populate new cards we get. We can use the search for later on.
+* Fix Bugs
 
 * Work on the daily flavor text functionality.
 ** Figure out how to do the daily text functionality. Do we make a call to collections/search and pass a param or use another api file, collection/search/flavor

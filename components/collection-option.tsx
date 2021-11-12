@@ -33,6 +33,7 @@ export function CollectionOption({imageBg, title, mainImage, mainImagePosition, 
                             objectPosition="center center"
                             objectFit="contain"
                             className={styles.bgImage}
+                            alt=""
                         />
 
                         <Image 
@@ -41,6 +42,7 @@ export function CollectionOption({imageBg, title, mainImage, mainImagePosition, 
                             objectPosition={imagePosition}
                             objectFit="contain"
                             className={styles.mainImage}
+                            alt=""
                         />
                     </div>
                     <p className={styles.title}>{title}</p>

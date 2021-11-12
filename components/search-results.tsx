@@ -46,7 +46,6 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
                 collectionData[collectionObj.scryfallId] = quantity;
             });
 
-            console.log('setting collection data: ', collectionData);
             setCollectionData({...collectionData}); 
             setShowResults(true);     
                     
@@ -74,14 +73,12 @@ export default function SearchResults({cards, showPrints, clickHandler, fetchedQ
         .then(response => {
             if('status' in response && response.status == 'success'){
                 collectionData[response.data.scryfallId] =  response.data.quantity;
-                console.log('setting new collection data', {...collectionData});
                 setCollectionData({...collectionData});
             }
         })
     }
 
     const updateCollectionHandler = (event: React.MouseEvent<Element, MouseEvent>, card:ApiCard, quantity:number) => {
-        console.log('updateCollectionHandler: ', card);
 
         if(!card){
             console.error('Missing card parameter, unable to modify collection.');

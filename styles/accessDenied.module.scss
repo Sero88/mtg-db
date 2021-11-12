@@ -1,0 +1,47 @@
+@import './variables.scss';
+
+.deniedWrapper{
+    margin-bottom: 24rem;
+    height: 100vw;
+    background-color: #fff;
+
+    .accessDeniedComponent{
+        margin: 0 auto;
+        max-width: 60rem;
+        text-align: center;
+        background-color: rgb(255, 255, 255);
+        border-radius: 10px;
+        box-shadow: 1px 1px 4px 0px #ccc;
+        padding: 4rem;
+        padding-top: 8rem;
+        margin-top: 24rem;
+        
+        p{
+            font-size: 1.8rem;
+           
+        }
+    
+        button {
+            cursor: pointer;
+            border-radius: 10px;
+            padding: 1rem;
+            border: 2px solid $dark-green;
+            color: $dark-green;
+            background-color: transparent;
+
+            &:hover{
+                background-color: $dark-blue;
+                color: #fff;
+            }
+        }
+        
+    }
+    
+    .deniedCard{
+        position: relative;
+        margin-top: -24rem;
+    }
+    
+}
+
+

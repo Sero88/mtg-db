@@ -9,10 +9,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const session = await getSession({req});
 
-    //todo uncomment after you are done testing
-    /* if(!session){
-        res.status(401).send('You must be logged in');
-    } */
+   
+    if(!session){
+       res.status(401).json('You must be logged in.');
+       return;
+    }
     
     const cardCollection = new CardCollection();
     const isConnected = await cardCollection.dbConnect();
