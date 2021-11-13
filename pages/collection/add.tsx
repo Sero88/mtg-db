@@ -4,10 +4,14 @@ import SearchResults from "../../components/search-results";
 import {list} from "../../types/list";
 import {ApiSet} from "../../types/apiSet";
 import LoaderAnimation from "../../components/loader-animation";
+import {helpers} from '../../util/helpers';
+import {useRouter} from 'next/router';
 
 let searchTimeout: NodeJS.Timeout;
 
 export default function AddPage(){
+    const router = useRouter();
+    
     const apiInitial:list = {
         data: [],
         has_more: false,
@@ -15,8 +19,23 @@ export default function AddPage(){
         total_cards: 0,
         warnings: [''],
     };
+
+    type previousStateType = {
+        query: string, 
+        results: list,
+        searchText: string,
+        cardId: string
+    }
+
+    const prevInitialState:previousStateType = {
+        query:  '',
+        results: apiInitial,
+        searchText: '', 
+        cardId: ''
+    }
     const[searchText, setSearchText] = useState("");   
     const[apiResults, setApiResults] = useState(apiInitial);
+    const[previousState, setPreviousState] = useState(prevInitialState);
     const[isTyping, setIsTyping] = useState(false);
     const[isFocused, setisFocused] = useState(false);
     const[showSuggestions, setShowSuggestions] = useState(false);
@@ -28,12 +47,24 @@ export default function AddPage(){
     const[showLoader, setShowLoader] = useState(false);
 
     //function to search cards
-    const searchCards = (cardName:string, showResults:boolean, showSuggestions:boolean, showPrints:boolean = false) => {
+    const searchCards = (cardName:string, _showResults:boolean, _showSuggestions:boolean, _showPrints:boolean = false) => {
         
         //user is no longer typing                 
-        setIsTyping(false);      
+        setIsTyping(false);     
+        
+        //we're switching from results to print results
+        if(!showPrints && _showPrints){
+            const previousStateData:previousStateType = {
+                query:  fetchedQuery,
+                results: apiResults,
+                searchText: searchText,
+                cardId: helpers.convertNameToId(cardName)
+            }
 
-        cardName = cardName && showPrints
+            setPreviousState(previousStateData);
+        }
+
+        cardName = cardName && _showPrints
             ? `!"${cardName}"`
             : cardName;
 
@@ -41,7 +72,7 @@ export default function AddPage(){
             ? ` set:${selectedSet},s${selectedSet},p${selectedSet}` 
             : '';
 
-        const endpoint = showPrints 
+        const endpoint = _showPrints 
             ? '/api/scryfall/cards/?order=released&unique=prints&query=' + encodeURIComponent(cardName + set)
             : '/api/scryfall/cards/?query=' + encodeURIComponent(cardName + set);
         
@@ -56,9 +87,9 @@ export default function AddPage(){
                 {          
 
                      //if the retrieved data is of only one card, query for the multiple prints that specific card
-                    if('total_cards' in data && data.total_cards == 1 && !showPrints){
+                    if('total_cards' in data && data.total_cards == 1 && !_showPrints){
                         if('data'in data && data.data[0]){
-                            searchCards(data.data[0].name, true, false, true);          
+                            searchCards(data.data[0].name, true, false, true);     
                         }
 
                         setShowLoader(false);
@@ -70,15 +101,17 @@ export default function AddPage(){
                     setApiResults(data);  
 
                     //show suggestions
-                    setShowSuggestions(showSuggestions);                   
+                    setShowSuggestions(_showSuggestions);                   
                     
-                    setShowPrints(showPrints); 
+                    setShowPrints(_showPrints); 
 
                     //set the new fetched query value
                     setFetchedQuery(endpoint);
                     
                     setShowLoader(false);
-                    setShowResults(showResults);    
+                    setShowResults(_showResults);    
+
+
                                                                               
                 }
             );
@@ -156,8 +189,21 @@ export default function AddPage(){
         setSelectedSet(event.target.value);
     }
 
+    const backButtonHandler = (event: React.MouseEvent<Element, MouseEvent>) => {  
+        setShowPrints(false);
+        setApiResults(previousState.results);
+        setSearchText(previousState.searchText);
+        setFetchedQuery(previousState.query);
+    }
+
+
     //get the sets on load
     useEffect(getCardSets,[false]); //can leave [] so it never updates, but setting false explicitely to remember it is not meant to update
+
+    useEffect(function(){
+        
+       previousState.cardId && !showPrints ? window.location.href = router.pathname+"#" + previousState.cardId : '';
+    },[apiResults])
     
     return (
         <>
@@ -187,6 +233,7 @@ export default function AddPage(){
                     cards={apiResults.data} 
                     showPrints={showPrints}
                     clickHandler={clickHandler}
+                    backButtonHandler={backButtonHandler}
                     fetchedQuery={fetchedQuery}/>
             }
         </>

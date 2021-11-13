@@ -6,4 +6,9 @@ export const helpers = {
             data
         }
     },
+
+    convertNameToId(name:string):string{
+        const convertedName = name.replace(" ", "-");
+        return convertedName;
+    }
 }
