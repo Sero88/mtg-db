@@ -3,27 +3,30 @@ import { CollectionCardType } from '../types/collectionCard';
 import Card from '../components/card';
 import {useState, useEffect} from 'react'; 
 import styles from '../styles/results.module.scss';
-import {useRouter} from 'next/router';
 import {helpers} from '../util/helpers';
+import { ApiResultsList } from '../types/apiResultsList';
+import { Pagination } from './pagination';
+import { apiCard } from '../tempuse';
 
 
 type SearchProps = {
-    cards: ApiCard[],  
+    apiResults: ApiResultsList,  
     backButtonHandler: (event:React.MouseEvent) => void,
     showPrints: boolean,
     fetchedQuery: string,
     clickHandler: (event:React.MouseEvent) => void,
+    updatePageResults: (page:number) => void,
+    generalResultsPage: number
 }
 
 type CollectionData = {
     [key:string]: number
 };
 
-export default function SearchResults({cards, backButtonHandler, showPrints, clickHandler, fetchedQuery}:SearchProps){    
-    const router = useRouter();
-    console.log(router);
+export default function SearchResults({apiResults, backButtonHandler, showPrints, clickHandler, fetchedQuery, updatePageResults, generalResultsPage}:SearchProps){    
     const [collectionData, setCollectionData] = useState<CollectionData>({}); 
     const [showResults, setShowResults] = useState(false);
+    const cards:ApiCard[] = apiResults.data;
 
     function getCollectionData(cards:ApiCard[]){
 
@@ -129,16 +132,22 @@ export default function SearchResults({cards, backButtonHandler, showPrints, cli
         </button>)
     : '';
 
+    const pagination = (cards && apiResults.total_cards > cards.length)
+    ? <Pagination apiResults={apiResults} updatePageResults={updatePageResults} currentPage={generalResultsPage} />
+    : '';
+
     //show the results if it is not prints (general search query), show print results only after we query the db
     if( !showPrints || (showPrints && showResults) ){
         return(    
             
             <div className={styles.resultsWrapper}>
                 {backButton}
-                <h2>{showCount && `Cards (${results.length}):`}</h2>
+                <h2>{showCount && `Cards (${apiResults.total_cards}):`}</h2>
+                {pagination}
                 <ul onClick={clickHandler} className={styles.resultsList}>
                     { results }
-                </ul>            
+                </ul>   
+                {pagination}         
             </div>
         );
     } else {

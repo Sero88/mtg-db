@@ -1,7 +1,7 @@
 import SearchByName from "../../components/search-by-name";
 import React, {useState, useEffect } from "react";
 import SearchResults from "../../components/search-results";
-import {list} from "../../types/list";
+import {ApiResultsList} from "../../types/apiResultsList";
 import {ApiSet} from "../../types/apiSet";
 import LoaderAnimation from "../../components/loader-animation";
 import {helpers} from '../../util/helpers';
@@ -12,7 +12,7 @@ let searchTimeout: NodeJS.Timeout;
 export default function AddPage(){
     const router = useRouter();
     
-    const apiInitial:list = {
+    const apiInitial:ApiResultsList = {
         data: [],
         has_more: false,
         next_page: '',
@@ -22,7 +22,7 @@ export default function AddPage(){
 
     type previousStateType = {
         query: string, 
-        results: list,
+        results: ApiResultsList,
         searchText: string,
         cardId: string
     }
@@ -45,6 +45,7 @@ export default function AddPage(){
     const[cardSets, setCardSets] = useState<ApiSet[]>([]);
     const[selectedSet, setSelectedSet] = useState("");
     const[showLoader, setShowLoader] = useState(false);
+    const[generalResultsPage, setGeneralResultsPage] = useState(0);
 
     //function to search cards
     const searchCards = (cardName:string, _showResults:boolean, _showSuggestions:boolean, _showPrints:boolean = false) => {
@@ -53,7 +54,7 @@ export default function AddPage(){
         setIsTyping(false);     
         
         //we're switching from results to print results
-        if(!showPrints && _showPrints){
+        if((!showPrints && _showPrints)){
             const previousStateData:previousStateType = {
                 query:  fetchedQuery,
                 results: apiResults,
@@ -72,7 +73,13 @@ export default function AddPage(){
             ? ` set:${selectedSet},s${selectedSet},p${selectedSet}` 
             : '';
 
-        const endpoint = _showPrints 
+            console.log('generalREsultspage: ', generalResultsPage);
+
+        const page = generalResultsPage
+            ? generalResultsPage
+            : 1;
+
+        let endpoint = _showPrints 
             ? '/api/scryfall/cards/?order=released&unique=prints&query=' + encodeURIComponent(cardName + set)
             : '/api/scryfall/cards/?query=' + encodeURIComponent(cardName + set);
         
@@ -80,6 +87,7 @@ export default function AddPage(){
         if( endpoint != fetchedQuery ){
 
             setShowLoader(true);
+
             
             fetch(endpoint)
             .then(response => response.json())
@@ -122,6 +130,12 @@ export default function AddPage(){
         
     }
 
+    const changeSearchText = (newText: string)=>{
+        setSearchText(newText);
+        //clear the pagination
+        setGeneralResultsPage(0);
+    }
+
     //search handler
     const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {  
 
@@ -131,7 +145,7 @@ export default function AddPage(){
                 ()=>searchCards(event.target.value, false, true), 1200 
             );        
         }
-        setSearchText(event.target.value);
+        changeSearchText(event.target.value);
         setShowResults(false);
         setIsTyping(true); 
        // setApiResults(apiInitial)
@@ -141,9 +155,9 @@ export default function AddPage(){
     //submit handler 
     const submitHandler = (event: React.FormEvent<Element>) => {
         event.preventDefault();        
-        setShowSuggestions(false); // user has submitted an entry, do not show any suggestions 
+        setShowSuggestions(false); // user has submitted an entry, do not show any suggestions
         clearInterval(searchTimeout);
-        searchCards(searchText, true, false);
+        searchCards(searchText, true, false,);
     }
 
     //click handler
@@ -162,7 +176,7 @@ export default function AddPage(){
             }
             const cardName = clickedElement.dataset.name ? clickedElement.dataset.name : '';     
             setShowSuggestions(false);                    
-            setSearchText(cardName);            
+            changeSearchText(cardName);            
             searchCards(cardName, true, false, true);     
         }
     }
@@ -187,13 +201,23 @@ export default function AddPage(){
 
     const setChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedSet(event.target.value);
+        //setGeneralResultsPage(0);
     }
 
     const backButtonHandler = (event: React.MouseEvent<Element, MouseEvent>) => {  
         setShowPrints(false);
         setApiResults(previousState.results);
-        setSearchText(previousState.searchText);
+        changeSearchText(previousState.searchText);
         setFetchedQuery(previousState.query);
+    }
+
+    const updatePageResults = ( page: number) => {
+        console.log('updating to page: ', page);
+        setGeneralResultsPage(page);
+    }
+
+    const updateResultsForPage = () => {
+        generalResultsPage !== 0 && searchCards(searchText, true, false);
     }
 
 
@@ -201,9 +225,10 @@ export default function AddPage(){
     useEffect(getCardSets,[false]); //can leave [] so it never updates, but setting false explicitely to remember it is not meant to update
 
     useEffect(function(){
-        
        previousState.cardId && !showPrints ? window.location.href = router.pathname+"#" + previousState.cardId : '';
     },[apiResults])
+
+    useEffect(updateResultsForPage, [generalResultsPage] );
     
     return (
         <>
@@ -230,11 +255,13 @@ export default function AddPage(){
 
             {showResults && 
                 <SearchResults 
-                    cards={apiResults.data} 
+                    apiResults={apiResults} 
                     showPrints={showPrints}
                     clickHandler={clickHandler}
                     backButtonHandler={backButtonHandler}
-                    fetchedQuery={fetchedQuery}/>
+                    fetchedQuery={fetchedQuery}
+                    updatePageResults={updatePageResults}
+                    generalResultsPage={generalResultsPage}/>
             }
         </>
     )

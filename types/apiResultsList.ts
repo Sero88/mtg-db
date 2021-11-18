@@ -1,5 +1,5 @@
 import { ApiCard } from "./apiCard"
-export type list = {
+export type ApiResultsList = {
     data: ApiCard[],
     has_more: boolean,
     next_page: string,

@@ -14,14 +14,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } 
 
     const apiUrl = 'https://api.scryfall.com';
-    const {query, unique, order} = req.query;    
+    const {query, unique, order, page} = req.query;    
     //?order=released&q=elvish&unique=prints
     const apiQuery = query + ' game:paper';
     const uniquePrintsQuery = unique ? '&unique=prints': '';
     const orderQuery = order ? `&order=${order}&dir=asc` : '&order=released&dir=asc'; //direction ascending 1 to XX
-    const results = await fetch(`${apiUrl}/cards/search/?q=${apiQuery}${orderQuery}${uniquePrintsQuery}`);
+    const pageQuery = page ? `&page=${page}` : '&page=1';
+    console.log('fetching new data');
+    const results = await fetch(`${apiUrl}/cards/search/?q=${apiQuery}${orderQuery}${uniquePrintsQuery}${pageQuery}`);
     
-    
+
     const jsonResults = await results.json();
     res.status(200).json(jsonResults);    
 }
