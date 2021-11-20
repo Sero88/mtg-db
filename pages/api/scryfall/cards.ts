@@ -20,7 +20,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const uniquePrintsQuery = unique ? '&unique=prints': '';
     const orderQuery = order ? `&order=${order}&dir=asc` : '&order=released&dir=asc'; //direction ascending 1 to XX
     const pageQuery = page ? `&page=${page}` : '&page=1';
-    console.log('fetching new data');
     const results = await fetch(`${apiUrl}/cards/search/?q=${apiQuery}${orderQuery}${uniquePrintsQuery}${pageQuery}`);
     
 

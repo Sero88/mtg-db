@@ -24,14 +24,16 @@ export default function AddPage(){
         query: string, 
         results: ApiResultsList,
         searchText: string,
-        cardId: string
+        cardId: string,
+        page: number
     }
 
     const prevInitialState:previousStateType = {
         query:  '',
         results: apiInitial,
         searchText: '', 
-        cardId: ''
+        cardId: '', 
+        page: 0
     }
     const[searchText, setSearchText] = useState("");   
     const[apiResults, setApiResults] = useState(apiInitial);
@@ -48,7 +50,7 @@ export default function AddPage(){
     const[generalResultsPage, setGeneralResultsPage] = useState(0);
 
     //function to search cards
-    const searchCards = (cardName:string, _showResults:boolean, _showSuggestions:boolean, _showPrints:boolean = false) => {
+    const searchCards = (cardName:string, _showResults:boolean, _showSuggestions:boolean, _showPrints:boolean = false, _generalResultsPage = generalResultsPage) => {
         
         //user is no longer typing                 
         setIsTyping(false);     
@@ -59,7 +61,8 @@ export default function AddPage(){
                 query:  fetchedQuery,
                 results: apiResults,
                 searchText: searchText,
-                cardId: helpers.convertNameToId(cardName)
+                cardId: helpers.convertNameToId(cardName),
+                page: generalResultsPage
             }
 
             setPreviousState(previousStateData);
@@ -73,15 +76,17 @@ export default function AddPage(){
             ? ` set:${selectedSet},s${selectedSet},p${selectedSet}` 
             : '';
 
-            console.log('generalREsultspage: ', generalResultsPage);
 
-        const page = generalResultsPage
-            ? generalResultsPage
+        console.log('_generalResultsPage: ', _generalResultsPage);
+
+        const page = _generalResultsPage
+            ? _generalResultsPage
             : 1;
 
+            console.log('page: ', page);
         let endpoint = _showPrints 
             ? '/api/scryfall/cards/?order=released&unique=prints&query=' + encodeURIComponent(cardName + set)
-            : '/api/scryfall/cards/?query=' + encodeURIComponent(cardName + set);
+            : '/api/scryfall/cards/?query=' + encodeURIComponent(cardName + set) + "&page=" + page;
         
         //fetch new data only if the new search query is different than what we already fetched
         if( endpoint != fetchedQuery ){
@@ -97,7 +102,7 @@ export default function AddPage(){
                      //if the retrieved data is of only one card, query for the multiple prints that specific card
                     if('total_cards' in data && data.total_cards == 1 && !_showPrints){
                         if('data'in data && data.data[0]){
-                            searchCards(data.data[0].name, true, false, true);     
+                            searchCards(data.data[0].name, true, false, true, 1);     
                         }
 
                         setShowLoader(false);
@@ -117,9 +122,8 @@ export default function AddPage(){
                     setFetchedQuery(endpoint);
                     
                     setShowLoader(false);
-                    setShowResults(_showResults);    
-
-
+                    setGeneralResultsPage(page);
+                    setShowResults(_showResults);
                                                                               
                 }
             );
@@ -157,7 +161,7 @@ export default function AddPage(){
         event.preventDefault();        
         setShowSuggestions(false); // user has submitted an entry, do not show any suggestions
         clearInterval(searchTimeout);
-        searchCards(searchText, true, false,);
+        searchCards(searchText, true, false, false, 0);
     }
 
     //click handler
@@ -177,7 +181,7 @@ export default function AddPage(){
             const cardName = clickedElement.dataset.name ? clickedElement.dataset.name : '';     
             setShowSuggestions(false);                    
             changeSearchText(cardName);            
-            searchCards(cardName, true, false, true);     
+            searchCards(cardName, true, false, true,1);     
         }
     }
 
@@ -207,19 +211,14 @@ export default function AddPage(){
     const backButtonHandler = (event: React.MouseEvent<Element, MouseEvent>) => {  
         setShowPrints(false);
         setApiResults(previousState.results);
-        changeSearchText(previousState.searchText);
+        setSearchText(previousState.searchText);
         setFetchedQuery(previousState.query);
+        setGeneralResultsPage(previousState.page);
     }
 
     const updatePageResults = ( page: number) => {
-        console.log('updating to page: ', page);
-        setGeneralResultsPage(page);
+        page !== 0 && searchCards(searchText, true, false, false, page);
     }
-
-    const updateResultsForPage = () => {
-        generalResultsPage !== 0 && searchCards(searchText, true, false);
-    }
-
 
     //get the sets on load
     useEffect(getCardSets,[false]); //can leave [] so it never updates, but setting false explicitely to remember it is not meant to update
@@ -228,7 +227,6 @@ export default function AddPage(){
        previousState.cardId && !showPrints ? window.location.href = router.pathname+"#" + previousState.cardId : '';
     },[apiResults])
 
-    useEffect(updateResultsForPage, [generalResultsPage] );
     
     return (
         <>
@@ -246,8 +244,6 @@ export default function AddPage(){
                 isTyping={isTyping}
                 isFocused={isFocused}
             />
-
-
 
             {showLoader &&
                 <LoaderAnimation/>

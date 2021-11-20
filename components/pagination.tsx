@@ -11,8 +11,6 @@ export function Pagination({apiResults, updatePageResults, currentPage}:Paginati
     const amountPerPage = apiResults.data.length;
     let pageQuantity = apiResults.has_more ? Math.ceil( apiResults.total_cards / amountPerPage) : currentPage;
 
-    console.log('length of request: ', apiResults.data.length);
-
     const listItems = [];
     for(let i = 1; i <= pageQuantity; i++){
         listItems.push(<li key={i} onClick={(e) => updatePageResults(i)} className={styles.pageItem}>{i} </li>);
