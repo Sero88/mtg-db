@@ -1,4 +1,25 @@
-.pageItem{
-    padding: 5px;
-    cursor: pointer;
+@import './variables.scss';
+.paginationList{
+
+    display: flex;
+    list-style-type: none;
+    flex-wrap: wrap;
+
+    .pageItem{
+        padding: .5rem;
+        padding-bottom: .25rem;
+        cursor: pointer;
+        margin-right: .5rem;
+
+        &:hover{
+            border-bottom: 2px solid $dark-green;
+        }
+        
+    }
+
+    .currentPage{
+        border-bottom: 2px solid $dark-green;
+        font-weight: bold;
+    }
+
 }

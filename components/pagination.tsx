@@ -13,11 +13,12 @@ export function Pagination({apiResults, updatePageResults, currentPage}:Paginati
 
     const listItems = [];
     for(let i = 1; i <= pageQuantity; i++){
-        listItems.push(<li key={i} onClick={(e) => updatePageResults(i)} className={styles.pageItem}>{i} </li>);
+        const currentPageClass = currentPage == i ? ' ' + styles.currentPage : ''
+        listItems.push(<li key={i} onClick={(e) => updatePageResults(i)} className={styles.pageItem+currentPageClass}>{i} </li>);
     }
 
     return (
-        <ul>
+        <ul className={styles.paginationList}>
             {listItems}
         </ul>
     )

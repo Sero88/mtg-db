@@ -77,13 +77,10 @@ export default function AddPage(){
             : '';
 
 
-        console.log('_generalResultsPage: ', _generalResultsPage);
-
         const page = _generalResultsPage
             ? _generalResultsPage
             : 1;
 
-            console.log('page: ', page);
         let endpoint = _showPrints 
             ? '/api/scryfall/cards/?order=released&unique=prints&query=' + encodeURIComponent(cardName + set)
             : '/api/scryfall/cards/?query=' + encodeURIComponent(cardName + set) + "&page=" + page;
