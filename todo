@@ -1,7 +1,5 @@
 Doing:
-Continue working on pagination
-* There is an issue with resetting the pagination. Looks like when I use the state in the search card function for add.tsx, it gives me the previous value. I wonder if I can useEffect to update searchCards instead of calling it directly.
-* Looks like the pagination is now working correctly. Need to do more testing, clean code and push.
+
 
 
 
@@ -84,7 +82,8 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 DONE
 
 Continue working on pagination
-* Figure out how to deduce the limit of each page api request dynamically - idea: !has_more then use the passed page as the total. We need to pass current page to pagination
+* There is an issue with resetting the pagination. Looks like when I use the state in the search card function for add.tsx, it gives me the previous value. I wonder if I can useEffect to update searchCards instead of calling it directly.
+* Looks like the pagination is now working correctly. Need to do more testing, clean code and push.
 
 Do quick final test and push latest changes. Deploy.
 
