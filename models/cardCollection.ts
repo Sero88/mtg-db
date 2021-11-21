@@ -53,6 +53,26 @@ export class CardCollection{
         }
 
         return true;
+    }  
+
+    private async setQuantityQuery(card:ApiCard, quantity: number){
+        const filter = {
+            scryfallId: card.id
+        };
+    
+        const update = {
+            $set: {
+                quantity
+            }
+        }
+    
+        const options = {
+            upsert: true,
+            returnDocument: 'after', 
+            projection: this.updateProjection
+        }
+    
+        return await this.db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndUpdate(filter, update, options);
     }
 
     async dbConnect(){
@@ -136,7 +156,28 @@ export class CardCollection{
             break;
 
         }
-        return this.responseObject('error', 'Something went wrong. Unable to complete remove action. Check server logs.');;
+        return this.responseObject('error', 'Something went wrong. Unable to complete remove action. Check server logs.');
+    }
+
+    async setQuantity(card:ApiCard, quantity: number){
+         //there are no cards to remove ignore 
+         if( quantity < 0 ){
+            return this.responseObject('error', 'Quantity can\'t be less than 0');
+        }
+
+        //verify connection
+        if(!this.verifyConnection()){
+            return this.responseObject('error', 'No db set. No connection to db');
+        }
+
+        const results =  await this.setQuantityQuery(card, quantity);
+
+        if('value' in results && results.value){
+            return this.responseObject('success',  results.value);
+        }
+
+        return this.responseObject('error', 'Something went wrong. Unable to complete set action. Check server logs.');
+
     }
 
     async searchIds(cardIds:string[]){

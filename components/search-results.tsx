@@ -6,7 +6,6 @@ import styles from '../styles/results.module.scss';
 import {helpers} from '../util/helpers';
 import { ApiResultsList } from '../types/apiResultsList';
 import { Pagination } from './pagination';
-import { apiCard } from '../tempuse';
 
 
 type SearchProps = {
@@ -86,7 +85,7 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
         })
     }
 
-    const updateCollectionHandler = (event: React.MouseEvent<Element, MouseEvent>, card:ApiCard, quantity:number) => {
+    const updateCollectionHandler = (event: React.MouseEvent<Element, MouseEvent> | React.ChangeEvent<HTMLInputElement>, card:ApiCard, quantity:number) => {
 
         if(!card){
             console.error('Missing card parameter, unable to modify collection.');
@@ -102,8 +101,10 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
         //add functionality
         if(action == 'add'){
             updateCollection(card, 'add', quantity);
-        } else {
+        } else if(action == 'remove') {
            quantity ? updateCollection(card, 'remove', quantity) : false;
+        } else {
+            updateCollection(card, 'set', quantity);
         }
     }
    

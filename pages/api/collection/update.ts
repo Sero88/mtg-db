@@ -40,6 +40,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 : res.status(400).json(helpers.collectionApiResponse('error', 'something went wrong, unable to remove card to collection check server logs'));
             break;
 
+        case 'set': 
+            const setResponse = await cardCollection.setQuantity(card, quantity);
+            'status' in setResponse && setResponse.status == 'success' && 'data' in setResponse
+                ? res.status(200).json(helpers.collectionApiResponse('success', 'card quantity was successfully set in collection', setResponse.data))
+                : res.status(400).json(helpers.collectionApiResponse('error', 'something went wrong, unable to set card quantity in collection'));
+            break;
+
         default:
             res.status(400).json(helpers.collectionApiResponse('error','unable to perform action'));
     }
