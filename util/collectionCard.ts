@@ -119,7 +119,7 @@ export const CollectionCard = {
         return set;
     },
 
-    buildObject: function (apiData: ApiCard){
+    buildObject: function (apiData: ApiCard, quantity:boolean|number = false){
         //prepare values
         const collectorsData = this.getCollectorsData(apiData);
         const types = this.getTypes(apiData);
@@ -143,6 +143,7 @@ export const CollectionCard = {
         'keywords' in apiData && apiData.keywords.length > 0 ? cardCollectionObject.keywords = apiData.keywords : false;
         'promo_types' in apiData ? cardCollectionObject.promoTypes = apiData.promo_types: false;
         'artist' in apiData ? cardCollectionObject.artist = apiData.artist : false;
+        quantity !== false && quantity ? cardCollectionObject.quantity = quantity as number : false;
 
         return cardCollectionObject;
     }

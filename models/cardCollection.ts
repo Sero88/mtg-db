@@ -56,16 +56,17 @@ export class CardCollection{
     }  
 
     private async setQuantityQuery(card:ApiCard, quantity: number){
+
+        const cardCollectionObject = CollectionCard.buildObject(card, quantity);
+
         const filter = {
             scryfallId: card.id
         };
-    
+
         const update = {
-            $set: {
-                quantity
-            }
+            $set: cardCollectionObject, 
         }
-    
+
         const options = {
             upsert: true,
             returnDocument: 'after', 
@@ -125,7 +126,7 @@ export class CardCollection{
 
     async removeCard(card:ApiCard, quantity: number){
         //there are no cards to remove ignore 
-        if(!quantity){
+        if(!quantity && quantity !== 0){
             return this.responseObject('error', 'Remove action missing quantity');
         }
 
@@ -163,6 +164,10 @@ export class CardCollection{
          //there are no cards to remove ignore 
          if( quantity < 0 ){
             return this.responseObject('error', 'Quantity can\'t be less than 0');
+        }
+
+        if(quantity == 0 ){
+            return this.removeCard(card, quantity);
         }
 
         //verify connection
