@@ -125,6 +125,19 @@ export const CollectionCard = {
         const types = this.getTypes(apiData);
         const cardFaces = this.getCardFacesValues(apiData);
         const set = this.getCardSet(apiData.set);
+        const regularPrice = apiData 
+            && 'prices' in apiData
+            && 'usd' in apiData.prices
+            && apiData.prices.usd !== null
+            ? parseFloat(apiData.prices.usd)
+            : null;
+
+        const foilPrice: number|null  = apiData 
+            && 'prices' in apiData
+            && 'usd_foil' in apiData.prices
+            && apiData.prices.usd_foil !== null
+            ? parseFloat(apiData.prices.usd_foil)
+            : null;
     
         const cardCollectionObject:CollectionCardType =  {
             scryfallId: apiData.id,
@@ -137,7 +150,8 @@ export const CollectionCard = {
             types,
             cardFaces,
             quantity: quantity.regular,
-            quantityFoil: quantity.foil
+            quantityFoil: quantity.foil, 
+            prices: {regular: regularPrice, foil: foilPrice }
         }
 
         //optional values

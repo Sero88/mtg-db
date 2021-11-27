@@ -44,9 +44,12 @@ export function CollectionCardMenu({quantity, updateCollectionHandler, cardData}
             <li className={styles.collectionQuantity}>
                 <input name="collection-quantity" type="number" value={regularQty ?? 0} onClick={(e)=>{selectText(e)}} onChange={updateQuantity} data-collection_menu_action="set" />
             </li>
-            <li className={styles.collectionquantityFoil}>
-                <input name="collection-foil-quantity" type="number" value={foilQty?? 0} onClick={(e)=>{selectText(e)}} onChange={updateQuantity} data-collection_menu_action="set" />
-            </li>
+
+            {cardData.prices.usd_foil &&
+                <li className={styles.collectionquantityFoil}>
+                    <input name="collection-foil-quantity" type="number" value={foilQty?? 0} onClick={(e)=>{selectText(e)}} onChange={updateQuantity} data-collection_menu_action="set" />
+                </li>
+            }
 
         </ul>
     );

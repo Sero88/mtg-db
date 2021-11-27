@@ -13,6 +13,7 @@ export type ApiCard = {
     set_name: string,
     set_type: string,
     promo: boolean,
+    prices: {usd: string|null, usd_foil:string|null}
     
     //can be missing or nullable
     mana_cost?: string,

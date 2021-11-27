@@ -3,6 +3,7 @@ Need to adjust set, if card is set to 0, have a temp solution in place.
 
 We will now have foil quantity and regular quantity. Continue adding foil quantity
 * continue testing quantity and quantityFoil, something is tripping the foil quantity
+* Prices has been added. For Quantity, do we need to use only one field: quantity: regular, foil, or keep them separated as two? Think about it in terms of searching. Check your current queries for ideas.
 
 Pricing 
 * Since foils are priced differently will add another input for foils, will save array of prices: regular, foil(optional). Will have to update foils as well.
@@ -22,7 +23,8 @@ When searching if you type something new, the results will clear. If you type ba
 Different Languages
 Seeing cards with different languages. Need to verify I'm querying just for english language cards
 
-
+"Back to results" link issue 
+Back to results when searching for an exact card name, there shouldn't be a back to results link.
 
 ===============================
 Features:

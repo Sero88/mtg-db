@@ -10,6 +10,7 @@ export type CollectionCardType = {
     collectionNumber: string,
     types: string[],
     cardFaces: CollectionCardFace [],
+    prices: {regular:number|null, foil:number|null}
 
     //optional,
     loyalty?: number,
