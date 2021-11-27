@@ -6,6 +6,7 @@ import styles from '../styles/results.module.scss';
 import {helpers} from '../util/helpers';
 import { ApiResultsList } from '../types/apiResultsList';
 import { Pagination } from './pagination';
+import {CardQuantity} from '../types/cardQuantity';
 
 
 type SearchProps = {
@@ -19,7 +20,7 @@ type SearchProps = {
 }
 
 type CollectionData = {
-    [key:string]: number
+    [key:string]: {regular: number, foil: number}
 };
 
 export default function SearchResults({apiResults, backButtonHandler, showPrints, clickHandler, fetchedQuery, updatePageResults, generalResultsPage}:SearchProps){    
@@ -50,7 +51,8 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
             //construct collection data
             apiResponse.data.forEach( (collectionObj:CollectionCardType) => {
                 const quantity = collectionObj.quantity ?? 0;
-                collectionData[collectionObj.scryfallId] = quantity;
+                const quantityFoil = collectionObj.quantityFoil ?? 0;
+                collectionData[collectionObj.scryfallId] = {regular: quantity, foil: quantityFoil};
             });
 
             setCollectionData({...collectionData}); 
@@ -66,46 +68,31 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
         }
     },[fetchedQuery]);                    
     
-    const updateCollection = (card:ApiCard, action:string, quantity:number) => {
+
+    const updateCollectionHandler = (event: React.MouseEvent<Element, MouseEvent> | React.ChangeEvent<HTMLInputElement>, card:ApiCard, quantity:CardQuantity) => {
+
+        if(!card){
+            console.error('Missing card parameter, unable to modify collection.');
+            return;
+        }
+
         const endpoint = `/api/collection/update`;
         fetch(endpoint, {
             method: 'PUT', 
             body: JSON.stringify({
                 card, 
-                action: action,
+                action: 'set',
                 quantity
             })
         })
         .then(response => response.json())
         .then(response => {
             if('status' in response && response.status == 'success'){
-                collectionData[response.data.scryfallId] =  response.data.quantity;
+                collectionData[response.data.scryfallId] =  {regular: response.data.quantity, foil: response.data.quantityFoil};       
                 setCollectionData({...collectionData});
             }
-        })
-    }
+        });
 
-    const updateCollectionHandler = (event: React.MouseEvent<Element, MouseEvent> | React.ChangeEvent<HTMLInputElement>, card:ApiCard, quantity:number) => {
-
-        if(!card){
-            console.error('Missing card parameter, unable to modify collection.');
-            return;
-        }
-        
-        const target = event.currentTarget as HTMLElement;
-        if(!('collection_menu_action' in target.dataset) ){
-            return;
-        }
-
-        const action = target.dataset['collection_menu_action']
-        //add functionality
-        if(action == 'add'){
-            updateCollection(card, 'add', quantity);
-        } else if(action == 'remove') {
-           quantity ? updateCollection(card, 'remove', quantity) : false;
-        } else {
-            updateCollection(card, 'set', quantity);
-        }
     }
    
     let results = [<li key={1}>No results found.</li>];
@@ -113,6 +100,9 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
     if(cards) {    
         showCount = true;    
         results = cards.map((card:ApiCard, index) => {
+            //todo remove after testing 👇
+            console.log('in the card loop: ', collectionData[card.id] );
+            //todo remove after testing 👆
             return(
                 <li id={helpers.convertNameToId(card.name)} className={styles.cardWrapper} key={index}>
                     <Card 

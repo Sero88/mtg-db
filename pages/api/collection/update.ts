@@ -25,21 +25,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const {card, action, quantity} = JSON.parse(req.body);
     
     switch (action){
-        case 'add':
-            const addResponse = await cardCollection.addCard(card);
-
-            'status' in addResponse && addResponse.status == 'success' && 'data' in addResponse
-                ? res.status(200).json(helpers.collectionApiResponse('success', 'card was added successfully to collection', addResponse.data))
-                : res.status(400).json(helpers.collectionApiResponse('error', 'Something went wrong, unable to add card to collection check server logs'));
-            break;
-
-        case 'remove':
-            const removeResponse = await cardCollection.removeCard(card, quantity);
-            'status' in removeResponse && removeResponse.status == 'success' && 'data' in removeResponse
-                ? res.status(200).json(helpers.collectionApiResponse('success', 'card was decreased/removed successfully from collection', removeResponse.data))
-                : res.status(400).json(helpers.collectionApiResponse('error', 'something went wrong, unable to remove card to collection check server logs'));
-            break;
-
         case 'set': 
             const setResponse = await cardCollection.setQuantity(card, quantity);
             'status' in setResponse && setResponse.status == 'success' && 'data' in setResponse

@@ -1,4 +1,5 @@
 import { ApiCard, CardFace} from "../types/apiCard";
+import { CardQuantity } from "../types/cardQuantity";
 import { CollectionCardFace, CollectionCardType } from "../types/collectionCard";
 
 export const CollectionCard = {
@@ -65,7 +66,6 @@ export const CollectionCard = {
         const cardFaces = [];
         const cardFaceType = ('card_faces' in apiCardData) ? 'multiface' : 'normal';
 
-
         //multiface values
         if(cardFaceType == 'multiface' && 'card_faces' in apiCardData && apiCardData.card_faces){
             apiCardData.card_faces.forEach( (cardFace:CardFace, faceIndex) => {
@@ -119,7 +119,7 @@ export const CollectionCard = {
         return set;
     },
 
-    buildObject: function (apiData: ApiCard, quantity:boolean|number = false){
+    buildObject: function (apiData: ApiCard, quantity:CardQuantity){
         //prepare values
         const collectorsData = this.getCollectorsData(apiData);
         const types = this.getTypes(apiData);
@@ -135,7 +135,9 @@ export const CollectionCard = {
             rarity: apiData.rarity,
             collectionNumber: collectorsData.number,
             types,
-            cardFaces
+            cardFaces,
+            quantity: quantity.regular,
+            quantityFoil: quantity.foil
         }
 
         //optional values
@@ -143,8 +145,7 @@ export const CollectionCard = {
         'keywords' in apiData && apiData.keywords.length > 0 ? cardCollectionObject.keywords = apiData.keywords : false;
         'promo_types' in apiData ? cardCollectionObject.promoTypes = apiData.promo_types: false;
         'artist' in apiData ? cardCollectionObject.artist = apiData.artist : false;
-        quantity !== false && quantity ? cardCollectionObject.quantity = quantity as number : false;
-
+       
         return cardCollectionObject;
     }
 }

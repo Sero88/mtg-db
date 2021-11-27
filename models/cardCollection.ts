@@ -1,6 +1,7 @@
 import {connectToDatabase} from "../util/mongodb";
 import { CollectionCard } from "../util/collectionCard";
 import { ApiCard } from "../types/apiCard";
+import { CardQuantity } from "../types/cardQuantity";
 
 
 export class CardCollection{
@@ -10,6 +11,7 @@ export class CardCollection{
     private updateProjection =  {
         scryfallId: 1, 
         quantity: 1,
+        quantityFoil: 1,
         _id: 0
     }
 
@@ -18,25 +20,6 @@ export class CardCollection{
             status, 
             data
         }
-    }
-    
-    private async decreaseCard(card:ApiCard){
-        const filter = {
-            scryfallId: card.id
-        };
-    
-        const update = {
-            $inc: {
-                quantity: -1,
-            }
-        }
-    
-        const options = {
-            returnDocument: 'after', 
-            projection: this.updateProjection
-        }
-    
-        return await this.db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndUpdate(filter, update, options);
     }
 
     private async deleteCard(card:ApiCard){
@@ -55,7 +38,7 @@ export class CardCollection{
         return true;
     }  
 
-    private async setQuantityQuery(card:ApiCard, quantity: number){
+    private async setQuantityQuery(card:ApiCard, quantity:CardQuantity){
 
         const cardCollectionObject = CollectionCard.buildObject(card, quantity);
 
@@ -89,85 +72,33 @@ export class CardCollection{
         return true;
     }
 
-    async addCard(card: ApiCard){
-
-        if(!this.verifyConnection()){
-            return this.responseObject('error', 'No db set. No connection to db');
-        }
-       
-        const cardCollectionObject = CollectionCard.buildObject(card);
-
-        const filter = {
-            scryfallId: card.id
-        };
-
-        const update = {
-            $set: cardCollectionObject, 
-            $inc: {
-                quantity: 1,
-            }
-        }
-
-        const options = {
-            upsert: true,
-            returnDocument: 'after', 
-            projection: this.updateProjection
-        }
+    async removeCard(card:ApiCard){
         
-        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndUpdate(filter, update, options);
-        
-        //verify card was added if not, return false 
-        if('value' in results && results.value){
-            return this.responseObject('success', results.value);
-        }
-        
-        return this.responseObject('error', 'Unable to add card to collection');
-    }
-
-    async removeCard(card:ApiCard, quantity: number){
-        //there are no cards to remove ignore 
-        if(!quantity && quantity !== 0){
-            return this.responseObject('error', 'Remove action missing quantity');
-        }
-
         //verify connection
         if(!this.verifyConnection()){
             return this.responseObject('error', 'No db set. No connection to db');
         }
 
-        //updating the quantity depends how many we already have
-        const updateAction = quantity > 1 ? 'decrease' : 'delete';
-
-        switch (updateAction){
-            case 'decrease':
-                const decreaseResults = await this.decreaseCard(card);    
-
-                if('value' in decreaseResults && decreaseResults.value){
-                    return this.responseObject('success',  decreaseResults.value);
-                }
-            break;
-
-            case 'delete': 
-                const deleteResults = await this.deleteCard(card);
+        const deleteResults = await this.deleteCard(card);
                 
-                if('value' in deleteResults && deleteResults.value){
-                    deleteResults.value.quantity = 0;
-                    return this.responseObject('success', deleteResults.value);
-                }
-            break;
-
+        if('value' in deleteResults && deleteResults.value){
+            deleteResults.value.quantity = 0;
+            deleteResults.value.quantityFoil = 0;
+            return this.responseObject('success', deleteResults.value);
         }
+
         return this.responseObject('error', 'Something went wrong. Unable to complete remove action. Check server logs.');
     }
 
-    async setQuantity(card:ApiCard, quantity: number){
+    async setQuantity(card:ApiCard, quantity:CardQuantity){
          //there are no cards to remove ignore 
-         if( quantity < 0 ){
+         if( !(quantity.regular >= 0) || !(quantity.foil >= 0) ){
             return this.responseObject('error', 'Quantity can\'t be less than 0');
         }
 
-        if(quantity == 0 ){
-            return this.removeCard(card, quantity);
+        //if both quantities are now 0, remove card
+        if(quantity.regular == 0 && quantity.foil == 0 ){
+            return this.removeCard(card);
         }
 
         //verify connection

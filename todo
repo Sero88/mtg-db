@@ -1,6 +1,12 @@
 Doing:
 Need to adjust set, if card is set to 0, have a temp solution in place.
 
+We will now have foil quantity and regular quantity. Continue adding foil quantity
+* continue testing quantity and quantityFoil, something is tripping the foil quantity
+
+Pricing 
+* Since foils are priced differently will add another input for foils, will save array of prices: regular, foil(optional). Will have to update foils as well.
+
 
 
 ================================

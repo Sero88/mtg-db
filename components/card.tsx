@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { CollectionCardMenu } from "./collection-card-menu";
 import { CollectionCard } from "../util/collectionCard";
 import styles from "../styles/card.module.scss";
+import { CardQuantity } from "../types/cardQuantity";
 
 function showCardImage(imageUri:string, name:string, type:string, key: number = 1) {
     const imageClass = type=='print' ? " " + styles.imagePrint : '';
@@ -38,8 +39,8 @@ function showCardDetails(data:ApiCard, showPrints:boolean){
 type CardApiProps = {
     data: ApiCard,
     showPrints: boolean,
-    quantity: number,
-    updateCollectionHandler: (event:React.MouseEvent|React.ChangeEvent<HTMLInputElement>, card:ApiCard, quantity:number) => void,
+    quantity: {regular:number, foil: number},
+    updateCollectionHandler: (event:React.MouseEvent|React.ChangeEvent<HTMLInputElement>, card:ApiCard, quantity:CardQuantity) => void,
 
 }
 

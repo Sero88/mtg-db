@@ -1,36 +1,53 @@
 import { ApiCard } from '../types/apiCard';
-import {Icon} from './font-awesome-icon'; 
+import Image from 'next/image';
 import styles from '../styles/collectionMenu.module.scss';
+import { CardQuantity } from '../types/cardQuantity';
 
 
 
 type CollectionCardMenuProp  = {
     cardData: ApiCard,
-    quantity: number,
-    updateCollectionHandler: (event:React.MouseEvent|React.ChangeEvent<HTMLInputElement>, card: ApiCard, quantity:number) => void,
+    quantity: CardQuantity,
+    updateCollectionHandler: (event:React.MouseEvent|React.ChangeEvent<HTMLInputElement>, card: ApiCard, quantity:CardQuantity) => void,
 
 }
 export function CollectionCardMenu({quantity, updateCollectionHandler, cardData}:CollectionCardMenuProp){
+
+    const regularQty = quantity && 'regular' in quantity ? quantity.regular: 0;
+    const foilQty = quantity && 'foil' in quantity ? quantity.foil: 0;
 
     function selectText(e:React.MouseEvent<Element, MouseEvent>){
         const element = e.target as HTMLInputElement;
         element.select();
     }
-    const updateHandler = (e: React.MouseEvent<Element, MouseEvent>) => {
-        
-        updateCollectionHandler(e, cardData, quantity);
-    }
      
     function updateQuantity(e: React.ChangeEvent<HTMLInputElement>){
-        const newQuantity = parseInt(e.target.value);
-        updateCollectionHandler(e, cardData, newQuantity);
+        const newQuantity = e.target.value == '' ? 0 : parseInt(e.target.value);
+       
+        e.target.name == 'collection-quantity' 
+            ? updateCollectionHandler(e, cardData, {regular: newQuantity, foil: foilQty}) 
+            : updateCollectionHandler(e, cardData, {regular: regularQty, foil: newQuantity});
     }
 
     return (
         <ul className={styles.collectionMenu}>
-            <li onClick={updateHandler} data-collection_menu_action="add" className={styles.addMenu}><Icon icon="plus"/></li>
-            <li onClick={updateHandler} data-collection_menu_action="remove" className={styles.removeMenu}><Icon icon="minus"/></li>
-            <li className={styles.collectionQuantity}><input name="collection-quantity" type="number" value={quantity ?? 0}  min="0" onClick={(e)=>{selectText(e)}} onChange={updateQuantity} data-collection_menu_action="set" /></li>
+            {/*<li onClick={updateHandler} data-collection_menu_action="add" className={styles.addMenu}><Icon icon="plus"/></li>
+            <li onClick={updateHandler} data-collection_menu_action="remove" className={styles.removeMenu}><Icon icon="minus"/></li> */}
+            <li className={styles.collectionLogo}>
+                <Image
+                    src="/images/favicon.png"
+                    width={25}
+                    height={25}
+                    alt="collection logo"
+                />
+            </li>
+            <li className={styles.collectionQuantity}>
+                <input name="collection-quantity" type="number" value={regularQty ?? 0} onClick={(e)=>{selectText(e)}} onChange={updateQuantity} data-collection_menu_action="set" />
+            </li>
+            <li className={styles.collectionquantityFoil}>
+                <input name="collection-foil-quantity" type="number" value={foilQty?? 0} onClick={(e)=>{selectText(e)}} onChange={updateQuantity} data-collection_menu_action="set" />
+            </li>
+
         </ul>
     );
 }
