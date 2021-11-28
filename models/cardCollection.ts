@@ -10,8 +10,7 @@ export class CardCollection{
 
     private updateProjection =  {
         scryfallId: 1, 
-        quantity: 1,
-        quantityFoil: 1,
+        quantity: {regular: 1, foil: 1},
         _id: 0
     }
 
@@ -82,8 +81,8 @@ export class CardCollection{
         const deleteResults = await this.deleteCard(card);
                 
         if('value' in deleteResults && deleteResults.value){
-            deleteResults.value.quantity = 0;
-            deleteResults.value.quantityFoil = 0;
+            deleteResults.value.quantity.regular = 0;
+            deleteResults.value.quantity.foil = 0;
             return this.responseObject('success', deleteResults.value);
         }
 

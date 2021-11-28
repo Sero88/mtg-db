@@ -149,8 +149,7 @@ export const CollectionCard = {
             collectionNumber: collectorsData.number,
             types,
             cardFaces,
-            quantity: quantity.regular,
-            quantityFoil: quantity.foil, 
+            quantity: {regular: quantity.regular, foil: quantity.foil},
             prices: {regular: regularPrice, foil: foilPrice }
         }
 

@@ -4,8 +4,7 @@ export type CollectionCardType = {
     colorIdentity: string[],
     set: string,
     isPromo: boolean,
-    quantity: number,
-    quantityFoil: number,
+    quantity: {regular: number, foil: number}
     rarity: string
     collectionNumber: string,
     types: string[],

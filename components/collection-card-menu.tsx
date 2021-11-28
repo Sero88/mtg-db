@@ -46,7 +46,7 @@ export function CollectionCardMenu({quantity, updateCollectionHandler, cardData}
             </li>
 
             {cardData.prices.usd_foil &&
-                <li className={styles.collectionquantityFoil}>
+                <li className={styles.collectionQuantityFoil}>
                     <input name="collection-foil-quantity" type="number" value={foilQty?? 0} onClick={(e)=>{selectText(e)}} onChange={updateQuantity} data-collection_menu_action="set" />
                 </li>
             }

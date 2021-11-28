@@ -50,8 +50,8 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
 
             //construct collection data
             apiResponse.data.forEach( (collectionObj:CollectionCardType) => {
-                const quantity = collectionObj.quantity ?? 0;
-                const quantityFoil = collectionObj.quantityFoil ?? 0;
+                const quantity = collectionObj.quantity.regular ?? 0;
+                const quantityFoil = collectionObj.quantity.foil ?? 0;
                 collectionData[collectionObj.scryfallId] = {regular: quantity, foil: quantityFoil};
             });
 
@@ -88,7 +88,7 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
         .then(response => response.json())
         .then(response => {
             if('status' in response && response.status == 'success'){
-                collectionData[response.data.scryfallId] =  {regular: response.data.quantity, foil: response.data.quantityFoil};       
+                collectionData[response.data.scryfallId] =  {regular: response.data.quantity.regular, foil: response.data.quantity.foil};       
                 setCollectionData({...collectionData});
             }
         });
