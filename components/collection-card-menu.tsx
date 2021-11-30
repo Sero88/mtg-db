@@ -2,6 +2,7 @@ import { ApiCard } from '../types/apiCard';
 import Image from 'next/image';
 import styles from '../styles/collectionMenu.module.scss';
 import { CardQuantity } from '../types/cardQuantity';
+import { ApiCardHelper } from '../util/apiCardHelpers';
 
 
 
@@ -41,11 +42,14 @@ export function CollectionCardMenu({quantity, updateCollectionHandler, cardData}
                     alt="collection logo"
                 />
             </li>
-            <li className={styles.collectionQuantity}>
-                <input name="collection-quantity" type="number" value={regularQty ?? 0} onClick={(e)=>{selectText(e)}} onChange={updateQuantity} data-collection_menu_action="set" />
-            </li>
 
-            {cardData.prices.usd_foil &&
+            { cardData.finishes.includes('nonfoil') &&
+                <li className={styles.collectionQuantity}>
+                    <input name="collection-quantity" type="number" value={regularQty ?? 0} onClick={(e)=>{selectText(e)}} onChange={updateQuantity} data-collection_menu_action="set" />
+                </li> 
+            }
+
+            { ApiCardHelper.hasFoil(cardData) &&
                 <li className={styles.collectionQuantityFoil}>
                     <input name="collection-foil-quantity" type="number" value={foilQty?? 0} onClick={(e)=>{selectText(e)}} onChange={updateQuantity} data-collection_menu_action="set" />
                 </li>

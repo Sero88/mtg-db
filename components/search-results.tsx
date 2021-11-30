@@ -100,9 +100,6 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
     if(cards) {    
         showCount = true;    
         results = cards.map((card:ApiCard, index) => {
-            //todo remove after testing 👇
-            console.log('in the card loop: ', collectionData[card.id] );
-            //todo remove after testing 👆
             return(
                 <li id={helpers.convertNameToId(card.name)} className={styles.cardWrapper} key={index}>
                     <Card 
