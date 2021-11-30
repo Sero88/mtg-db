@@ -27,9 +27,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (action){
         case 'set': 
             const setResponse = await cardCollection.setQuantity(card, quantity);
-            'status' in setResponse && setResponse.status == 'success' && 'data' in setResponse
-                ? res.status(200).json(helpers.collectionApiResponse('success', 'card quantity was successfully set in collection', setResponse.data))
-                : res.status(400).json(helpers.collectionApiResponse('error', 'something went wrong, unable to set card quantity in collection'));
+            ('status' in setResponse && setResponse.status == 'error') || !('data' in setResponse)
+                ? res.status(400).json(helpers.collectionApiResponse('error', 'something went wrong, unable to set card quantity in collection'))
+                : res.status(200).json(helpers.collectionApiResponse('success', setResponse.status, setResponse.data));
+
             break;
 
         default:

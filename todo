@@ -1,12 +1,10 @@
 Doing:
-Need to adjust set, if card is set to 0, have a temp solution in place.
 
-We will now have foil quantity and regular quantity. Continue adding foil quantity
-* continue testing quantity and quantityFoil, something is tripping the foil quantity
-* Prices has been added. For Quantity, do we need to use only one field: quantity: regular, foil, or keep them separated as two? Think about it in terms of searching. Check your current queries for ideas.
 
-Pricing 
-* Since foils are priced differently will add another input for foils, will save array of prices: regular, foil(optional). Will have to update foils as well.
+Some promo cards are not regular
+For some promo cards such as pre-release, some don't have a non-foil version. Add if statement to check this either with price, or finishes field
+
+
 
 
 
@@ -26,6 +24,14 @@ Seeing cards with different languages. Need to verify I'm querying just for engl
 "Back to results" link issue 
 Back to results when searching for an exact card name, there shouldn't be a back to results link.
 
+Missing Feedback
+When adding cards, sometimes if you go too fast between foil and regular, if regular wasn't set before you added foil, it will set it to the previous state since it hasn't changed before you made the change. My suggestion is, update each field separately or add feedback, or both. Thinking of separately may be better.
+
+Add a max of 4
+Add a maximum of 4 cards to each? that way we avoid mistakes of entering more
+
+
+
 ===============================
 Features:
 
@@ -33,6 +39,7 @@ Add a way to go back to previuos search
 When clicking on a card to view the print, there should be a way to return to the results list
 ===============================
 NOTES About project
+
 
 About: 
 The site will basically be a user API to access the database. Without logging in, the user won't have access. 
@@ -88,6 +95,17 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+
+Need to adjust set quantity, if card is set to 0, have a temp solution in place.
+
+
+We will now have foil quantity and regular quantity. Continue adding foil quantity
+* continue testing quantity and quantityFoil, something is tripping the foil quantity
+* Prices has been added. For Quantity, do we need to use only one field: quantity: regular, foil, or keep them separated as two? Think about it in terms of searching. Check your current queries for ideas.
+
+Pricing 
+* Since foils are priced differently will add another input for foils, will save array of prices: regular, foil(optional). Will have to update foils as well.
 
 Continue working on pagination
 * There is an issue with resetting the pagination. Looks like when I use the state in the search card function for add.tsx, it gives me the previous value. I wonder if I can useEffect to update searchCards instead of calling it directly.

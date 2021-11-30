@@ -83,7 +83,7 @@ export class CardCollection{
         if('value' in deleteResults && deleteResults.value){
             deleteResults.value.quantity.regular = 0;
             deleteResults.value.quantity.foil = 0;
-            return this.responseObject('success', deleteResults.value);
+            return this.responseObject('Success removing card from collection.', deleteResults.value);
         }
 
         return this.responseObject('error', 'Something went wrong. Unable to complete remove action. Check server logs.');
@@ -108,7 +108,7 @@ export class CardCollection{
         const results =  await this.setQuantityQuery(card, quantity);
 
         if('value' in results && results.value){
-            return this.responseObject('success',  results.value);
+            return this.responseObject('Success setting card quantity in collection.',  results.value);
         }
 
         return this.responseObject('error', 'Something went wrong. Unable to complete set action. Check server logs.');
