@@ -1,6 +1,6 @@
 import { ApiCard, CardFace} from "../types/apiCard";
 import { CardQuantity } from "../types/cardQuantity";
-import { CollectionCardFace, CollectionCardType } from "../types/collectionCard";
+import { CollectionCardFace, CollectionCardTypeQuery } from "../types/collectionCard";
 
 export const CollectionCard = {
     getCollectorsData: function(apiCardData: ApiCard){
@@ -119,7 +119,7 @@ export const CollectionCard = {
         return set;
     },
 
-    buildObject: function (apiData: ApiCard, quantity:CardQuantity){
+    buildQueryObject: function (apiData: ApiCard){
         //prepare values
         const collectorsData = this.getCollectorsData(apiData);
         const types = this.getTypes(apiData);
@@ -138,8 +138,9 @@ export const CollectionCard = {
             && apiData.prices.usd_foil !== null
             ? parseFloat(apiData.prices.usd_foil)
             : null;
+
     
-        const cardCollectionObject:CollectionCardType =  {
+        const cardCollectionObject:CollectionCardTypeQuery =  {
             scryfallId: apiData.id,
             name: apiData.name,
             colorIdentity: apiData.color_identity && apiData.color_identity.length > 0 ? apiData.color_identity : [],
@@ -149,7 +150,6 @@ export const CollectionCard = {
             collectionNumber: collectorsData.number,
             types,
             cardFaces,
-            quantity: {regular: quantity.regular, foil: quantity.foil},
             prices: {regular: regularPrice, foil: foilPrice }
         }
 

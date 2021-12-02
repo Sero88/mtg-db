@@ -40,7 +40,7 @@ type CardApiProps = {
     data: ApiCard,
     showPrints: boolean,
     quantity: {regular:number, foil: number},
-    updateCollectionHandler: (event:React.MouseEvent|React.ChangeEvent<HTMLInputElement>, card:ApiCard, quantity:CardQuantity) => void,
+    updateCollectionHandler: (event:React.MouseEvent|React.ChangeEvent<HTMLInputElement>, card:ApiCard, quantity:CardQuantity, type: string) => void,
 
 }
 

@@ -69,7 +69,7 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
     },[fetchedQuery]);                    
     
 
-    const updateCollectionHandler = (event: React.MouseEvent<Element, MouseEvent> | React.ChangeEvent<HTMLInputElement>, card:ApiCard, quantity:CardQuantity) => {
+    const updateCollectionHandler = (event: React.MouseEvent<Element, MouseEvent> | React.ChangeEvent<HTMLInputElement>, card:ApiCard, quantity:CardQuantity, type:string) => {
 
         if(!card){
             console.error('Missing card parameter, unable to modify collection.');
@@ -82,13 +82,16 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
             body: JSON.stringify({
                 card, 
                 action: 'set',
-                quantity
+                quantity, 
+                type
             })
         })
         .then(response => response.json())
         .then(response => {
             if('status' in response && response.status == 'success'){
-                collectionData[response.data.scryfallId] =  {regular: response.data.quantity.regular, foil: response.data.quantity.foil};       
+                const regular =  response.data.quantity.regular ?? 0;
+                const foil = response.data.quantity.foil ?? 0;
+                collectionData[response.data.scryfallId] = {regular, foil};       
                 setCollectionData({...collectionData});
             }
         });

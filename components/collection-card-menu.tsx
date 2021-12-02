@@ -5,11 +5,10 @@ import { CardQuantity } from '../types/cardQuantity';
 import { ApiCardHelper } from '../util/apiCardHelpers';
 
 
-
 type CollectionCardMenuProp  = {
     cardData: ApiCard,
     quantity: CardQuantity,
-    updateCollectionHandler: (event:React.MouseEvent|React.ChangeEvent<HTMLInputElement>, card: ApiCard, quantity:CardQuantity) => void,
+    updateCollectionHandler: (event:React.MouseEvent|React.ChangeEvent<HTMLInputElement>, card: ApiCard, quantity:CardQuantity, type:string) => void,
 
 }
 export function CollectionCardMenu({quantity, updateCollectionHandler, cardData}:CollectionCardMenuProp){
@@ -26,8 +25,8 @@ export function CollectionCardMenu({quantity, updateCollectionHandler, cardData}
         const newQuantity = e.target.value == '' ? 0 : parseInt(e.target.value);
        
         e.target.name == 'collection-quantity' 
-            ? updateCollectionHandler(e, cardData, {regular: newQuantity, foil: foilQty}) 
-            : updateCollectionHandler(e, cardData, {regular: regularQty, foil: newQuantity});
+            ? updateCollectionHandler(e, cardData, {regular: newQuantity, foil: foilQty}, 'regular') 
+            : updateCollectionHandler(e, cardData, {regular: regularQty, foil: newQuantity}, 'foil');
     }
 
     return (

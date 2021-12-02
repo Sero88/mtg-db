@@ -37,13 +37,17 @@ export class CardCollection{
         return true;
     }  
 
-    private async setQuantityQuery(card:ApiCard, quantity:CardQuantity){
+    private async setQuantityQuery(card:ApiCard, quantity:CardQuantity, type: string){
 
-        const cardCollectionObject = CollectionCard.buildObject(card, quantity);
+        const cardCollectionObject = CollectionCard.buildQueryObject(card);
 
         const filter = {
             scryfallId: card.id
         };
+
+        type == 'regular' 
+        ? cardCollectionObject['quantity.regular'] = quantity.regular 
+        : cardCollectionObject['quantity.foil'] = quantity.foil;
 
         const update = {
             $set: cardCollectionObject, 
@@ -89,7 +93,7 @@ export class CardCollection{
         return this.responseObject('error', 'Something went wrong. Unable to complete remove action. Check server logs.');
     }
 
-    async setQuantity(card:ApiCard, quantity:CardQuantity){
+    async setQuantity(card:ApiCard, quantity:CardQuantity, type: string){
          //there are no cards to remove ignore 
          if( !(quantity.regular >= 0) || !(quantity.foil >= 0) ){
             return this.responseObject('error', 'Quantity can\'t be less than 0');
@@ -105,7 +109,7 @@ export class CardCollection{
             return this.responseObject('error', 'No db set. No connection to db');
         }
 
-        const results =  await this.setQuantityQuery(card, quantity);
+        const results = await this.setQuantityQuery(card, quantity, type);
 
         if('value' in results && results.value){
             return this.responseObject('Success setting card quantity in collection.',  results.value);
