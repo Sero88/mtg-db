@@ -5,8 +5,7 @@ Doing:
 Bugs: 
 
 
-Search by name, changed my mind
-When searching if you type something new, the results will clear. If you type back to what you previously had, it doesn't search nor show the results you had. (idea to fix: when doing check if endpoint == query if is the same, turn show results back on.)
+
 
 Different Languages
 Seeing cards with different languages. Need to verify I'm querying just for english language cards
@@ -82,6 +81,9 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+Search by name, changed my mind
+When searching if you type something new, the results will clear. If you type back to what you previously had, it doesn't search nor show the results you had. (idea to fix: when doing check if endpoint == query if is the same, turn show results back on.)
 
 
 PVOW is not a regular set

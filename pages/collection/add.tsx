@@ -84,7 +84,7 @@ export default function AddPage(){
         let endpoint = _showPrints 
             ? '/api/scryfall/cards/?order=released&unique=prints&query=' + encodeURIComponent(cardName + set)
             : '/api/scryfall/cards/?query=' + encodeURIComponent(cardName + set) + "&page=" + page;
-        
+  
         //fetch new data only if the new search query is different than what we already fetched
         if( endpoint != fetchedQuery ){
 
@@ -125,10 +125,9 @@ export default function AddPage(){
                 }
             );
         } else { 
-            showResults ? setShowResults(true) : setShowResults(false);
-            showSuggestions ? setShowSuggestions(true): setShowSuggestions(false);            
+            setShowSuggestions(false);          
+            setShowResults(true);
         }
-        
     }
 
     const changeSearchText = (newText: string)=>{
