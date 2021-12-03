@@ -1,18 +1,9 @@
 Doing:
 
-Set Quantities Linked
-When adding cards, sometimes if you go too fast between foil and regular, if regular wasn't set before you added foil, it will set it to the previous state since it hasn't changed before you made the change. My suggestion is, update each field separately or add feedback, or both. Thinking of separately may be better.
-FIX: We don't want to separate the quantities when updating because when removing we need to know whether both are 0. What if I add a type, and in the update I only update the respective property in the object leaving the other alone. Will that respect it or overwrite it and leave it with only one property?
---Found a way to only update a property of a nested object.  However this breaks the type collectionCard object a little. Need to find a way to fix this. Other option is to separate again two values being optional, but I already have various entries I don't want to modify. Will keep moving forward with object containing two.
----Extend type with interface and then use both. Interface vs Type
-
 
 ================================
 Bugs: 
 
-Pagination
-Set update doesn't update cards quantity on the results page when adding. -- Looks like this wasn't a bug, but rather how the api works. For the search request it limits it to 175 cards.
-I need to add pagination functionality.
 
 Search by name, changed my mind
 When searching if you type something new, the results will clear. If you type back to what you previously had, it doesn't search nor show the results you had. (idea to fix: when doing check if endpoint == query if is the same, turn show results back on.)
@@ -93,6 +84,9 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 DONE
 
 
+PVOW is not a regular set
+PVOW is showing as a set that can be selected. Scryfall had this as "expansion" instead of "promo". FIX:  Since regular sets only have 3 chars. Added check to only show sets with 3 chars.
+
 
 Set Quantities Linked
 When adding cards, sometimes if you go too fast between foil and regular, if regular wasn't set before you added foil, it will set it to the previous state since it hasn't changed before you made the change. My suggestion is, update each field separately or add feedback, or both. Thinking of separately may be better.
@@ -114,6 +108,10 @@ We will now have foil quantity and regular quantity. Continue adding foil quanti
 
 Pricing 
 * Since foils are priced differently will add another input for foils, will save array of prices: regular, foil(optional). Will have to update foils as well.
+
+Pagination
+Set update doesn't update cards quantity on the results page when adding. -- Looks like this wasn't a bug, but rather how the api works. For the search request it limits it to 175 cards.
+I need to add pagination functionality.
 
 Continue working on pagination
 * There is an issue with resetting the pagination. Looks like when I use the state in the search card function for add.tsx, it gives me the previous value. I wonder if I can useEffect to update searchCards instead of calling it directly.

@@ -1,8 +1,9 @@
 import { ApiCard, CardFace} from "../types/apiCard";
-import { CardQuantity } from "../types/cardQuantity";
+import { helpers } from "./helpers";
 import { CollectionCardFace, CollectionCardTypeQuery } from "../types/collectionCard";
 
 export const CollectionCard = {
+
     getCollectorsData: function(apiCardData: ApiCard){
 
         type CollectionType = {
@@ -104,9 +105,8 @@ export const CollectionCard = {
     },
 
     getCardSet: function(apiSet: string){
-        const officialSetCharLimit = 3; //sets have a limit of 3 chars
 
-        const set = apiSet.length > officialSetCharLimit ? apiSet.substring(1) : apiSet;
+        const set = apiSet.length > helpers.getOfficialCardLimit() ? apiSet.substring(1) : apiSet;
 
          //remove the prefix "p" for promos, we're treating it as part of the regular ses
         // const promoPrefixRegex = /[p]+/;

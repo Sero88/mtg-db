@@ -2,7 +2,8 @@ import SearchSuggestions from './search-suggestions';
 import {ApiSet} from '../types/apiSet';
 import styles from '../styles/search.module.scss';
 import React from 'react';
-import {allowedSets} from '../util/allowedSets'
+import {allowedSets} from '../util/allowedSets';
+import { ApiCardHelper } from '../util/apiCardHelpers';
 
 
 type searchByNameProps = {
@@ -42,7 +43,8 @@ export default function SearchByName(
                         <option value="">All sets</option>
                         {(
                             sets.map( (set:ApiSet, index:number) => {
-                                if(!set.digital && allowedSets.includes(set.set_type) ){
+                           
+                                if(!set.digital && allowedSets.includes(set.set_type) && ApiCardHelper.isRegularSet(set.code) ){
                                     return  (<option value={set.code} key={index}>{set.name}</option>);
                                 }                              
                             })
