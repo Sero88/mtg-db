@@ -7,6 +7,8 @@ import {helpers} from '../util/helpers';
 import { ApiResultsList } from '../types/apiResultsList';
 import { Pagination } from './pagination';
 import {CardQuantity} from '../types/cardQuantity';
+import { PreviousStateType } from '../types/previousState';
+import {ApiCardHelper} from '../util/apiCardHelpers';
 
 
 type SearchProps = {
@@ -16,14 +18,16 @@ type SearchProps = {
     fetchedQuery: string,
     clickHandler: (event:React.MouseEvent) => void,
     updatePageResults: (page:number) => void,
-    generalResultsPage: number
+    generalResultsPage: number,
+    previousState: PreviousStateType
+    
 }
 
 type CollectionData = {
     [key:string]: {regular: number, foil: number}
 };
 
-export default function SearchResults({apiResults, backButtonHandler, showPrints, clickHandler, fetchedQuery, updatePageResults, generalResultsPage}:SearchProps){    
+export default function SearchResults({apiResults, backButtonHandler, showPrints, clickHandler, fetchedQuery, updatePageResults, generalResultsPage, previousState}:SearchProps){    
     const [collectionData, setCollectionData] = useState<CollectionData>({}); 
     const [showResults, setShowResults] = useState(false);
     const cards:ApiCard[] = apiResults.data;
@@ -117,7 +121,7 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
         })
     }
 
-    const backButton = showCount && showPrints
+    const backButton = showCount && showPrints && ApiCardHelper.hasData(previousState.results)
     ? (<button className={styles.backButton} type="button" onClick={backButtonHandler}>
         &larr; Back to results list
         </button>)

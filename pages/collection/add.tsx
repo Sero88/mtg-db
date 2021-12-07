@@ -6,6 +6,7 @@ import {ApiSet} from "../../types/apiSet";
 import LoaderAnimation from "../../components/loader-animation";
 import {helpers} from '../../util/helpers';
 import {useRouter} from 'next/router';
+import { PreviousStateType } from '../../types/previousState';
 
 let searchTimeout: NodeJS.Timeout;
 
@@ -20,21 +21,15 @@ export default function AddPage(){
         warnings: [''],
     };
 
-    type previousStateType = {
-        query: string, 
-        results: ApiResultsList,
-        searchText: string,
-        cardId: string,
-        page: number
-    }
 
-    const prevInitialState:previousStateType = {
+    const prevInitialState:PreviousStateType = {
         query:  '',
         results: apiInitial,
         searchText: '', 
         cardId: '', 
         page: 0
     }
+    
     const[searchText, setSearchText] = useState("");   
     const[apiResults, setApiResults] = useState(apiInitial);
     const[previousState, setPreviousState] = useState(prevInitialState);
@@ -57,7 +52,7 @@ export default function AddPage(){
         
         //we're switching from results to print results
         if((!showPrints && _showPrints)){
-            const previousStateData:previousStateType = {
+            const previousStateData:PreviousStateType = {
                 query:  fetchedQuery,
                 results: apiResults,
                 searchText: searchText,
@@ -253,7 +248,8 @@ export default function AddPage(){
                     backButtonHandler={backButtonHandler}
                     fetchedQuery={fetchedQuery}
                     updatePageResults={updatePageResults}
-                    generalResultsPage={generalResultsPage}/>
+                    generalResultsPage={generalResultsPage}
+                    previousState={previousState}/>
             }
         </>
     )

@@ -1,17 +1,21 @@
 Doing:
 
 
+
+
 ================================
 Bugs: 
 
 
 
-"Back to results" link issue 
-Back to results when searching for an exact card name, there shouldn't be a back to results link.
+
 
 Add a max of 4
 Add a maximum of 4 cards to each? that way we avoid mistakes of entering more
 
+
+Reset the Card Text
+We need to reset the card text whenever we use the back button on prints.
 
 
 ===============================
@@ -77,6 +81,10 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+"Back to results" link issue 
+Back to results when searching for an exact card name, there shouldn't be a back to results link.
+Fix: made a check to verify there is a previous state with results list. There is still a small issue that, let's say I search set cards M21 then set the set to all and search for Elvish Mystic (which is not in M21) Elvish Mystic will show the Go back to results list link and it will take you back to the previous list. Not a breaking bug, but we may need to reset the previous state if it causes issues (not likely since it is a back button after all).
 
 
 Different Languages
