@@ -6,10 +6,6 @@ Bugs:
 
 
 
-
-Different Languages
-Seeing cards with different languages. Need to verify I'm querying just for english language cards
-
 "Back to results" link issue 
 Back to results when searching for an exact card name, there shouldn't be a back to results link.
 
@@ -81,6 +77,10 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+
+Different Languages
+Seeing cards with different languages. Need to verify I'm querying just for english language cards
 
 Search by name, changed my mind
 When searching if you type something new, the results will clear. If you type back to what you previously had, it doesn't search nor show the results you had. (idea to fix: when doing check if endpoint == query if is the same, turn show results back on.)
