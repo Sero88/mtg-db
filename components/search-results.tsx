@@ -80,6 +80,11 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
             return;
         }
 
+        if(!helpers.isValidQuantity(quantity)){
+            console.error('Not a valid quantity.');
+            return;
+        }
+
         const endpoint = `/api/collection/update`;
         fetch(endpoint, {
             method: 'PUT', 
