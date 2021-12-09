@@ -7,15 +7,8 @@ Doing:
 Bugs: 
 
 
-
-
-
-Add a max of 4
-Add a maximum of 4 cards to each? that way we avoid mistakes of entering more
-
-
 Reset the Card Text
-We need to reset the card text whenever we use the back button on prints.
+We need to reset the card text whenever we use the back button on prints. Only happens when the user types a new name since the the search text is replaced whenever the user types a new name (being replaced as the user types not when submit- part of change handler for the input).
 
 
 ===============================
@@ -81,6 +74,11 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+
+
+Add a max of 4
+Add a maximum of 4 cards to each? that way we avoid mistakes of entering more
 
 "Back to results" link issue 
 Back to results when searching for an exact card name, there shouldn't be a back to results link.

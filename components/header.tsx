@@ -18,7 +18,7 @@ export default function Header(){
                             <Image
                                 src="/images/logo.png"
                                 alt="Lovers&#39; Standard"
-                                width={156}
+                                width={140}
                                 height={68}
                             />
                         </a>
