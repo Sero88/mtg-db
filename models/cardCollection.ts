@@ -2,6 +2,7 @@ import {connectToDatabase} from "../util/mongodb";
 import { CollectionCard } from "../util/collectionCard";
 import { ApiCard } from "../types/apiCard";
 import { CardQuantity } from "../types/cardQuantity";
+import { SearchObject } from "../types/searchObject";
 
 
 export class CardCollection{
@@ -11,6 +12,10 @@ export class CardCollection{
     private updateProjection =  {
         scryfallId: 1, 
         quantity: {regular: 1, foil: 1},
+        _id: 0
+    }
+
+    private findProjection = {
         _id: 0
     }
 
@@ -60,6 +65,21 @@ export class CardCollection{
         }
     
         return await this.db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndUpdate(filter, update, options);
+    }
+
+    private constructNameQuery(cardName: string){
+ 
+        //remove any extra space and split by space
+        cardName = cardName.trim();
+        const words = cardName.split(' ');
+
+        //prepare the regular expression text for each word
+        words.forEach((word) => {
+           cardName = cardName.replace(word,`(${word})+`);
+        });
+
+        cardName = cardName.replace(' ', '|');
+        return new RegExp(cardName,'i');
     }
 
     async dbConnect(){
@@ -144,5 +164,22 @@ export class CardCollection{
         const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).aggregate([matchQuery, {$sample:{size:1}}]).toArray();
 
         return this.responseObject('success', results[0]);
+    }
+
+    async getCards(searchObject: SearchObject){
+        const queryObject = {};
+
+        if(searchObject.cardName){
+            queryObject.name = this.constructNameQuery(searchObject.cardName);
+        }
+
+        //todo remove after testing 👇
+        console.log('searching for:', queryObject );
+        //todo remove after testing 👆
+
+        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).find(queryObject, {projection: this.findProjection}).toArray();
+
+        return this.responseObject('success', results);
+
     }
 }

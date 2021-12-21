@@ -1,6 +1,17 @@
 Doing:
 
+Building foundation for search functionality along with search by name
+* Before building queries, set the code then continue with name query (Done)
+* Create a Results page - how much can we reuse - refactor to take both types api and collection card? - Continue working on Card parent object
 
+Search Functionality:
+Card Name
+Text
+Type
+Colors
+Stats(cmc, power, toughness, loyalty)
+Sets
+Rarity
 
 
 ================================
@@ -19,6 +30,9 @@ When clicking on a card to view the print, there should be a way to return to th
 ===============================
 NOTES About project
 
+
+DB: 
+Currently using MongoDB, free version, but has a cap of 500MB. Will keep an eye on it after adding more cards. May need to move to AWS. Also backups are not enabled by default. Maybe manually create one every week or so.
 
 About: 
 The site will basically be a user API to access the database. Without logging in, the user won't have access. 
