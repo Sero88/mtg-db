@@ -4,6 +4,7 @@ import { SearchObject } from '../../../types/searchObject';
 import { CollectionCardType } from '../../../types/collectionCard';
 import styles from '../../../styles/results.module.scss'
 import { helpers } from '../../../util/helpers';
+import Card from '../../../components/collectionCard';
 
 type queryObject = {
     [key:string]: any
@@ -51,7 +52,9 @@ export default function SearchResults({results}:{results:CollectionCardType[]}){
     const cards = results.map((card:CollectionCardType, index) => {
         return(
             <li id={helpers.convertNameToId(card.name)} className={styles.cardWrapper} key={index}>
-                <p>{card.name}</p>
+                <Card
+                    data={card}
+                />
             </li>
         );
     })

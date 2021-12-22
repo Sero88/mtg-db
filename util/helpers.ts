@@ -27,5 +27,20 @@ export const helpers = {
         const foilIsValid = $quantity.foil > this.collectionLimit ? false : true;
 
         return regularIsValid && foilIsValid;
-    }
+    },
+
+    getCardSet: function(apiSet: string){
+
+        const set = apiSet.length > helpers.getOfficialCardLimit() ? apiSet.substring(1) : apiSet;
+
+         //remove the prefix "p" for promos, we're treating it as part of the regular ses
+        // const promoPrefixRegex = /[p]+/;
+        // set = 'kah';
+        // console.log(set.match(promoPrefixRegex));
+
+       // set.replace(promoPrefixRegex, '');
+
+
+        return set;
+    },
 }

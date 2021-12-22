@@ -1,6 +1,6 @@
 import { ApiCard } from '../types/apiCard';
 import { CollectionCardType } from '../types/collectionCard';
-import Card from '../components/card';
+import Card from '../components/apiCard';
 import {useState, useEffect} from 'react'; 
 import styles from '../styles/results.module.scss';
 import {helpers} from '../util/helpers';

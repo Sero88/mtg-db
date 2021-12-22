@@ -32,5 +32,33 @@ export const ApiCardHelper = {
         : false;
 
         return hasData;
-    }
+    }, 
+
+    getCollectorsData: function(apiCardData: ApiCard){
+
+        type CollectionType = {
+            [key:string]: string
+        }
+        
+        //get the collector number
+        const findLetterRegex = /[a-z]+/gi;
+        const regex = new RegExp(findLetterRegex);
+        const regexResult = regex.exec(apiCardData.collector_number);
+        
+        const collectionPromoType = regexResult && '0' in regexResult ?  regexResult[0] : '';
+        const collectorNumber = collectionPromoType ? apiCardData.collector_number.replace(collectionPromoType,'') : apiCardData.collector_number;
+        
+        const collectionType: CollectionType =  {
+            s: 'pre-release',
+            p: 'promo'
+        };
+
+        const collectionText = collectionPromoType && collectionPromoType in collectionType ? collectionType[collectionPromoType] : '';
+
+        return {
+            number: collectorNumber,
+            type: collectionText
+        }
+    },
+
 }

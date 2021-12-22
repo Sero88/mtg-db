@@ -1,9 +1,11 @@
 import { ApiCard } from "../types/apiCard";
 import Image from 'next/image';
 import { CollectionCardMenu } from "./collection-card-menu";
-import { CollectionCard } from "../util/collectionCard";
 import styles from "../styles/card.module.scss";
 import { CardQuantity } from "../types/cardQuantity";
+import { ApiCardHelper } from "../util/apiCardHelpers";
+import { helpers } from "../util/helpers";
+import { CardDetails } from "./cardDetails";
 
 function showCardImage(imageUri:string, name:string, type:string, key: number = 1) {
     const imageClass = type=='print' ? " " + styles.imagePrint : '';
@@ -23,16 +25,20 @@ function showCardImage(imageUri:string, name:string, type:string, key: number = 
 }
 
 function showCardDetails(data:ApiCard, showPrints:boolean){
-    const collectorsData = CollectionCard.getCollectorsData(data);
-    const setCode = CollectionCard.getCardSet(data.set);
-    const nameClass = !showPrints ? styles.cardNameLink : styles.cardName;
-    const generalDetails =  <strong className={nameClass} data-name={data.name}>{data.name}</strong> ;
-    const printDetails = <> <br /> <span className={styles.collectorsData}>{`${setCode.toUpperCase()} ${collectorsData.number}`}{ collectorsData.type && ` (${collectorsData.type})`}</span> | <span className={styles.setName}>{data.set_name}</span> </>;
-        
-    return (
-        <div>
-            <p className={styles.cardDetails}>{generalDetails}{showPrints && printDetails} </p>
-        </div>
+    const collectorsData = ApiCardHelper.getCollectorsData(data);
+    const setCode = helpers.getCardSet(data.set);
+    const className = !showPrints ? styles.cardNameLink : styles.cardName;
+
+    return(
+        <CardDetails
+            className={className}
+            setCode={setCode}
+            collectorNumber={collectorsData.number}
+            promoType={collectorsData.type}
+            name={data.name}
+            showAll={showPrints}
+            setName={data.set_name}
+        />
     );
 }
 

@@ -1,35 +1,11 @@
 import { ApiCard, CardFace} from "../types/apiCard";
 import { helpers } from "./helpers";
 import { CollectionCardFace, CollectionCardTypeQuery } from "../types/collectionCard";
+import { ApiCardHelper } from "./apiCardHelpers";
 
 export const CollectionCard = {
 
-    getCollectorsData: function(apiCardData: ApiCard){
-
-        type CollectionType = {
-            [key:string]: string
-        }
-        
-        //get the collector number
-        const findLetterRegex = /[a-z]+/gi;
-        const regex = new RegExp(findLetterRegex);
-        const regexResult = regex.exec(apiCardData.collector_number);
-        
-        const collectionPromoType = regexResult && '0' in regexResult ?  regexResult[0] : '';
-        const collectorNumber = collectionPromoType ? apiCardData.collector_number.replace(collectionPromoType,'') : apiCardData.collector_number;
-        
-        const collectionType: CollectionType =  {
-            s: 'pre-release',
-            p: 'promo'
-        };
-
-        const collectionText = collectionPromoType && collectionPromoType in collectionType ? collectionType[collectionPromoType] : '';
-
-        return {
-            number: collectorNumber,
-            type: collectionText
-        }
-    },
+    
 
     convertManaCost: function (manaCost: string){
         const numberRegex =/[0-9]/g;
@@ -104,27 +80,13 @@ export const CollectionCard = {
         return faceObject;
     },
 
-    getCardSet: function(apiSet: string){
-
-        const set = apiSet.length > helpers.getOfficialCardLimit() ? apiSet.substring(1) : apiSet;
-
-         //remove the prefix "p" for promos, we're treating it as part of the regular ses
-        // const promoPrefixRegex = /[p]+/;
-        // set = 'kah';
-        // console.log(set.match(promoPrefixRegex));
-
-       // set.replace(promoPrefixRegex, '');
-
-
-        return set;
-    },
 
     buildQueryObject: function (apiData: ApiCard){
         //prepare values
-        const collectorsData = this.getCollectorsData(apiData);
+        const collectorsData = ApiCardHelper.getCollectorsData(apiData);
         const types = this.getTypes(apiData);
         const cardFaces = this.getCardFacesValues(apiData);
-        const set = this.getCardSet(apiData.set);
+        const set = helpers.getCardSet(apiData.set);
         const regularPrice = apiData 
             && 'prices' in apiData
             && 'usd' in apiData.prices
