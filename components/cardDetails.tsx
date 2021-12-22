@@ -15,7 +15,7 @@ export function CardDetails({className, setCode, setName, name, collectorNumber,
     const extraDetails = 
         <> 
             <br />
-            <span className={styles.collectorsData}>{`${setCode.toUpperCase()} ${collectorNumber}`}{ promoType && ` (${promoType})`}</span> | <span className={styles.setName}>{setName}</span>
+            <span className={styles.collectorsData}>{`${setCode.toUpperCase()} ${collectorNumber}`}{ promoType && ` (${promoType})`}</span> {setName && (<>| <span className={styles.setName}>{setName}</span></>) }
         </>;
         
     return (

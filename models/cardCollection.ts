@@ -177,7 +177,7 @@ export class CardCollection{
         console.log('searching for:', queryObject );
         //todo remove after testing 👆
 
-        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).find(queryObject, {projection: this.findProjection}).toArray();
+        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).find(queryObject, {sort:{name: 1},projection: this.findProjection}).toArray();
 
         return this.responseObject('success', results);
 
