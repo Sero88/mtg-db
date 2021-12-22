@@ -4,6 +4,7 @@ Building foundation for search functionality along with search by name
 * Before building queries, set the code then continue with name query (Done)
 * Create a Results page - how much can we reuse - refactor to take both types api and collection card? - Continue working on Card parent object
 * CardDetails is a shared component. Continue testing for apiCard. Then commit before you continue to implement it for CollectionCards.
+* For results, we need to display only unique, this can be done by using the Oracle_id, since that is unique among all different versions of cards, but will need to do two separate queries. Also, if we get disntict oracle id, then query for those, we would still get multiples of the same card. Think about a solution
 
 Search Functionality:
 Card Name

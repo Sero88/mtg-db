@@ -36,7 +36,7 @@ function showCardDetails(data:CollectionCardType){
             collectorNumber={data.collectionNumber}
             promoType={promo}
             name={data.name}
-            showAll={true}
+            showAll={false}
             setName={''}
         />
     );
