@@ -10,6 +10,7 @@ Building foundation for search functionality along with search by name
 **** Solve issue with missing manaValue - do we need to do something with the data already entered on production.
 **** Adding mana cost to saved data per card face
 **** Test changes. Verify everything is working correctly. Fix any errors when adding or removing cards (make sure functionality is back to normal). Commit push then move on to planning database update cards_v2 table.
+***** Map the versions on search results. Once we receive those we need to go through the card object and assign quantities. 
 
 
 

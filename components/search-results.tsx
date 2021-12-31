@@ -1,5 +1,5 @@
 import { ApiCard } from '../types/apiCard';
-import { CollectionCardType } from '../types/collectionCard';
+import { CollectionCardType, Version } from '../types/collectionCard';
 import Card from '../components/apiCard';
 import {useState, useEffect} from 'react'; 
 import styles from '../styles/results.module.scss';
@@ -32,6 +32,17 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
     const [showResults, setShowResults] = useState(false);
     const cards:ApiCard[] = apiResults.data;
 
+    function updateCollectionDataStatus(card:CollectionCardType){
+        
+        Object.entries(card.versions).forEach( (versionObj) => {
+            const version = versionObj[1];
+            const quantity = version.quantity.regular ?? 0;
+            const quantityFoil = version.quantity.foil ?? 0;
+            collectionData[version.scryfallId] = {regular: quantity, foil: quantityFoil};
+        });
+        setCollectionData({...collectionData}); 
+    }
+    
     function getCollectionData(cards:ApiCard[]){
 
         if(!cards || cards.length == 0){
@@ -52,14 +63,15 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
                 return false;
             }
 
-            //construct collection data
-            apiResponse.data.forEach( (collectionObj:CollectionCardType) => {
-                const quantity = collectionObj.quantity.regular ?? 0;
-                const quantityFoil = collectionObj.quantity.foil ?? 0;
-                collectionData[collectionObj.scryfallId] = {regular: quantity, foil: quantityFoil};
-            });
+            //verify we have a card object in the data array
+            if(!apiResponse.data.length){
+                return false;
+            }
 
-            setCollectionData({...collectionData}); 
+            const card:CollectionCardType = apiResponse.data[0];
+
+             
+            updateCollectionDataStatus(card);
             setShowResults(true);     
                     
         })
@@ -98,10 +110,13 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
         .then(response => response.json())
         .then(response => {
             if('status' in response && response.status == 'success'){
-                const regular =  response.data.quantity.regular ?? 0;
-                const foil = response.data.quantity.foil ?? 0;
-                collectionData[response.data.scryfallId] = {regular, foil};       
-                setCollectionData({...collectionData});
+
+                //verify we have a card object in the data array
+                if(!('versions' in response.data)){
+                    return false;
+                }
+
+                updateCollectionDataStatus(response.data);
             }
         });
 

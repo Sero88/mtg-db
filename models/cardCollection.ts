@@ -26,11 +26,29 @@ export class CardCollection{
         }
     }
 
-    private async deleteCard(card:ApiCard){
+    private async deleteCardVersion(card:ApiCard){
         const filter = {
-            scryfallId: card.id
+            oracleId: card.oracle_id
         };
-        return await this.db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndDelete(filter);
+
+        const update = { 
+            $unset: { [`versions.${card.id}`]:''}
+        };
+
+        const options = {
+            upsert: true,
+            returnDocument: 'after', 
+        }
+
+        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndUpdate(filter, update, options);
+
+        //if there are no versions in the card object remove it from the db
+        if('value' in results && 'versions' in results.value && Object.keys(results.value.versions).length == 0){
+            await this.db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndDelete(filter);
+        }
+        
+         //return await this.db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndDelete(filter);
+        return results;
     }
 
 
@@ -59,7 +77,6 @@ export class CardCollection{
         const options = {
             upsert: true,
             returnDocument: 'after', 
-            projection: this.updateProjection
         }
     
         return await this.db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndUpdate(filter, update, options);
@@ -93,18 +110,18 @@ export class CardCollection{
         return true;
     }
 
-    async removeCard(card:ApiCard){
+    async removeCardVersion(card:ApiCard){
         
         //verify connection
         if(!this.verifyConnection()){
             return this.responseObject('error', 'No db set. No connection to db');
         }
 
-        const deleteResults = await this.deleteCard(card);
+        const deleteResults = await this.deleteCardVersion(card);
                 
         if('value' in deleteResults && deleteResults.value){
-            deleteResults.value.quantity.regular = 0;
-            deleteResults.value.quantity.foil = 0;
+            deleteResults.value.versions[card.id] = {quantity:{regular: 0 , foil: 0}}; //set the values to zero to front end status gets updated
+            deleteResults.value.versions[card.id].scryfallId = card.id;
             return this.responseObject('Success removing card from collection.', deleteResults.value);
         }
 
@@ -119,7 +136,7 @@ export class CardCollection{
 
         //if both quantities are now 0, remove card
         if(quantity.regular == 0 && quantity.foil == 0 ){
-            return this.removeCard(card);
+            return this.removeCardVersion(card);
         }
 
         //verify connection
@@ -138,8 +155,17 @@ export class CardCollection{
     }
 
     async searchIds(cardIds:string[]){
-        const projection = {projection:{scryfallId:1, quantity: 1}};
-        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).find({scryfallId:{$in:cardIds}}, projection).toArray();
+       // const projection = {projection:{scryfallId:1, quantity: 1}};
+      
+        const cardIdQuery = cardIds.map( (cardId) => {
+            return(
+             {['versions.'+cardId]:{$exists:true}}
+            )
+        });
+
+        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).find({$or:cardIdQuery}).toArray();
+         //const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).find({scryfallId:{$in:cardIds}}, projection).toArray();
+
 
         return this.responseObject('success', results);
     }
