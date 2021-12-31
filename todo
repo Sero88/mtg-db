@@ -5,15 +5,26 @@ Building foundation for search functionality along with search by name
 * Create a Results page - how much can we reuse - refactor to take both types api and collection card? - Continue working on Card parent object
 * CardDetails is a shared component. Continue testing for apiCard. Then commit before you continue to implement it for CollectionCards.
 * For results, we need to display only unique, this can be done by using the Oracle_id, since that is unique among all different versions of cards, but will need to do two separate queries. Also, if we get disntict oracle id, then query for those, we would still get multiples of the same card. Think about a solution
+*** We're now grouping card by oracle ID and each card has different versions.
+**** For some reason Scryfall has more than the regular set of rarity - special and bonus. WTF - Continue working on this, move rarity to version? Special are common, but will it stay this way forever, need to either set all special to be common, or add these rarities to my search form. Some cards such as Eternal Witness is an uncommon, but Time Spiral has it marked as Special, so I will include special rarity cards as a separate rarity.
+**** Solve issue with missing manaValue - do we need to do something with the data already entered on production.
+**** Adding mana cost to saved data per card face
+**** Test changes. Verify everything is working correctly. Fix any errors when adding or removing cards (make sure functionality is back to normal). Commit push then move on to planning database update cards_v2 table.
+
+
+
+Update cards table to cards_v2
+* update the manaValue of cards there was an issue with the value when it is only one color
+* will need to import each card to new format, can add missing data such as mana_cost
 
 Search Functionality:
-Card Name
-Text
-Type
-Colors
-Stats(cmc, power, toughness, loyalty)
-Sets
-Rarity
+Card Name (unique)
+Text (differ)
+Type (unique)
+Colors (unique)
+Stats(cmc, power, toughness, loyalty) (unique)
+Sets (unique)
+Rarity (unique)
 
 
 ================================

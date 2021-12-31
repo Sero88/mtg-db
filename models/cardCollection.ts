@@ -44,15 +44,13 @@ export class CardCollection{
 
     private async setQuantityQuery(card:ApiCard, quantity:CardQuantity, type: string){
 
-        const cardCollectionObject = CollectionCard.buildQueryObject(card);
+        const cardCollectionObject = CollectionCard.buildQueryObject(card, quantity, type);
 
         const filter = {
-            scryfallId: card.id
+            oracleId: card.oracle_id
         };
 
-        type == 'regular' 
-        ? cardCollectionObject['quantity.regular'] = quantity.regular 
-        : cardCollectionObject['quantity.foil'] = quantity.foil;
+        console.log('update object: ', cardCollectionObject);
 
         const update = {
             $set: cardCollectionObject, 
