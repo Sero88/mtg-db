@@ -34,15 +34,19 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
 
     function updateCollectionDataStatus(card:CollectionCardType){
         
-        Object.entries(card.versions).forEach( (versionObj) => {
-            const version = versionObj[1];
-            const quantity = version.quantity.regular ?? 0;
-            const quantityFoil = version.quantity.foil ?? 0;
-            collectionData[version.scryfallId] = {regular: quantity, foil: quantityFoil};
-        });
-        setCollectionData({...collectionData}); 
+        if('versions' in card){
+            Object.entries(card.versions).forEach( (versionObj) => {
+                const version = versionObj[1];
+                const quantity = version.quantity.regular ?? 0;
+                const quantityFoil = version.quantity.foil ?? 0;
+                collectionData[version.scryfallId] = {regular: quantity, foil: quantityFoil};
+            });
+            
+            setCollectionData({...collectionData});   
+        }
+         
     }
-    
+
     function getCollectionData(cards:ApiCard[]){
 
         if(!cards || cards.length == 0){
@@ -63,14 +67,8 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
                 return false;
             }
 
-            //verify we have a card object in the data array
-            if(!apiResponse.data.length){
-                return false;
-            }
+            const card:CollectionCardType = apiResponse.data[0] ?? {};
 
-            const card:CollectionCardType = apiResponse.data[0];
-
-             
             updateCollectionDataStatus(card);
             setShowResults(true);     
                     
@@ -110,12 +108,6 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
         .then(response => response.json())
         .then(response => {
             if('status' in response && response.status == 'success'){
-
-                //verify we have a card object in the data array
-                if(!('versions' in response.data)){
-                    return false;
-                }
-
                 updateCollectionDataStatus(response.data);
             }
         });

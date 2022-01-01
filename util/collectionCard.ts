@@ -59,21 +59,6 @@ export const CollectionCard = {
             : false;
     },
 
-    getCardFacesValues: function(apiCardData: ApiCard){
-        const cardFaces = [];
-        //multiface values
-        if(this.isMultiface(apiCardData)){
-            // @ts-ignore
-            apiCardData.card_faces.forEach( (cardFace:CardFace, faceIndex) => {
-                cardFaces.push(this.assignCardFaceValues(faceIndex, apiCardData, cardFace));
-            });
-        } else {
-            cardFaces.push(this.assignCardFaceValues(0, apiCardData, null));
-        }
-
-        return cardFaces;
-    },
-
     assignCardFaceValues: function( faceIndex:number, apiCardData:ApiCard, cardFace:CardFace|null|ApiCard){
         cardFace = cardFace ?? apiCardData;
       
@@ -96,50 +81,33 @@ export const CollectionCard = {
         cardFace = cardFace ?? apiCardData;
       
         //not all multiface images have an image on each face. Kitsune Ascendad is a multiface card with only one image, the image is in the main card info not on either face
-        let imageUri = 'image_uris' in cardFace && cardFace.image_uris && cardFace.image_uris.normal ? cardFace.image_uris.normal : '';
+        let imageUri = 'image_uris' in cardFace && cardFace.image_uris && cardFace.image_uris.normal ? cardFace.image_uris.normal : null;
         let artist = 'artist' in cardFace && cardFace.artist ? cardFace.artist: '';
-        
+
         imageUri = 
-            imageUri 
+            !imageUri 
             && faceIndex == 0 
             && 'image_uris' in apiCardData 
             && apiCardData.image_uris
             && 'normal' in  apiCardData.image_uris
-            ? apiCardData.image_uris.normal : imageUri ;
+            ? apiCardData.image_uris.normal 
+            : imageUri ;
 
         artist = 
-            artist
+            !artist
             && faceIndex == 0 
             && 'artist' in apiCardData 
             && apiCardData.artist
-            ? apiCardData.artist : artist ;
- 
+            ? apiCardData.artist 
+            : artist ;
+
         return {artist, imageUri};
     },
-
-    getCardImages: function(apiCardData: ApiCard){
-        const images = [];
-       
-        //multiface values
-        if(this.isMultiface(apiCardData)){ 
-            // @ts-ignore
-            apiCardData.card_faces.forEach( (cardFace:CardFace, faceIndex) => { //@ts-ignore
-                images.push(this.assignImageValues(faceIndex, apiCardData, cardFace));
-            });
-        } else {
-            images.push(this.assignImageValues(0, apiCardData, null));
-        }
-
-        return images;
-    },
-
 
     buildQueryObject: function (apiData: ApiCard, quantity:CardQuantity, type: string){
         //prepare values
         const collectorsData = ApiCardHelper.getCollectorsData(apiData);
         const types = this.getTypes(apiData);
-        const cardFaces = this.getCardFacesValues(apiData);
-        const images = this.getCardImages(apiData);
         const set = helpers.getCardSet(apiData.set);
         const regularPrice = apiData 
             && 'prices' in apiData
@@ -154,6 +122,21 @@ export const CollectionCard = {
             && apiData.prices.usd_foil !== null
             ? parseFloat(apiData.prices.usd_foil)
             : null;
+
+        const cardFaces = [];
+        const images = [];
+
+        //multiface values
+        if(this.isMultiface(apiData)){
+            // @ts-ignore
+            apiData.card_faces.forEach( (cardFace:CardFace, faceIndex) => {
+                cardFaces.push(this.assignCardFaceValues(faceIndex, apiData, cardFace));
+                images.push(this.assignImageValues(faceIndex, apiData, cardFace));
+            });
+        } else {
+            cardFaces.push(this.assignCardFaceValues(0, apiData, null));
+            images.push(this.assignImageValues(0, apiData, null));
+        }
 
         //build query object
         const cardCollectionObject:CollectionCardTypeQuery =  {

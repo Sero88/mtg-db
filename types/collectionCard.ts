@@ -22,7 +22,7 @@ interface VersionInterface {
 
 type ImageObject = {
     artist: string, 
-    uri: string
+    uri: string | null
 }
 
 export interface Version extends VersionInterface {
@@ -44,7 +44,7 @@ export interface CollectionCardTypeQuery extends CollectionCard{
 
 export type CollectionCardFace = {
     manaValue: number | null, // not on scryfall, my own field:  mana value(aka cmc) field
-    manaCost: string|null, // not to be confused with manaValue. ManaValue is the converted mana cost (mana value), while manaCost is the representation of how it can be casted: {2}{G}
+    manaCost: string | null, // not to be confused with manaValue. ManaValue is the converted mana cost (mana value), while manaCost is the representation of how it can be casted: {2}{G}
     oracleText: string,
     
     

@@ -4,19 +4,16 @@ Building foundation for search functionality along with search by name
 * Before building queries, set the code then continue with name query (Done)
 * Create a Results page - how much can we reuse - refactor to take both types api and collection card? - Continue working on Card parent object
 * CardDetails is a shared component. Continue testing for apiCard. Then commit before you continue to implement it for CollectionCards.
-* For results, we need to display only unique, this can be done by using the Oracle_id, since that is unique among all different versions of cards, but will need to do two separate queries. Also, if we get disntict oracle id, then query for those, we would still get multiples of the same card. Think about a solution
-*** We're now grouping card by oracle ID and each card has different versions.
-**** For some reason Scryfall has more than the regular set of rarity - special and bonus. WTF - Continue working on this, move rarity to version? Special are common, but will it stay this way forever, need to either set all special to be common, or add these rarities to my search form. Some cards such as Eternal Witness is an uncommon, but Time Spiral has it marked as Special, so I will include special rarity cards as a separate rarity.
-**** Solve issue with missing manaValue - do we need to do something with the data already entered on production.
-**** Adding mana cost to saved data per card face
-**** Test changes. Verify everything is working correctly. Fix any errors when adding or removing cards (make sure functionality is back to normal). Commit push then move on to planning database update cards_v2 table.
-***** Map the versions on search results. Once we receive those we need to go through the card object and assign quantities. 
+* For results, we need to display only unique, this can be done by using the Oracle_id, since that is unique among all different versions of cards, but will need to do two separate queries. Also, if 
 
+
+Refactoring Db v2
+Do one little test before you move on, then begin planning code to take current records to new db.
 
 
 Update cards table to cards_v2
 * update the manaValue of cards there was an issue with the value when it is only one color
-* will need to import each card to new format, can add missing data such as mana_cost
+* will need to import each card to new format, sssssscan add missing data such as mana_cost
 
 Search Functionality:
 Card Name (unique)
@@ -30,6 +27,8 @@ Rarity (unique)
 
 ================================
 Bugs: 
+
+
 
 
 Reset the Card Text
@@ -103,7 +102,17 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 ======================================
 DONE
 
+Refactoring DB v2
+we get disntict oracle id, then query for those, we would still get multiples of the same card. Think about a solution
+*** We're now grouping card by oracle ID and each card has different versions.
+**** For some reason Scryfall has more than the regular set of rarity - special and bonus. WTF - Continue working on this, move rarity to version? Special are common, but will it stay this way forever, need to either set all special to be common, or add these rarities to my search form. Some cards such as Eternal Witness is an uncommon, but Time Spiral has it marked as Special, so I will include special rarity cards as a separate rarity.
+**** Solve issue with missing manaValue - do we need to do something with the data already entered on production.
+**** Adding mana cost to saved data per card face
+**** Test changes. Verify everything is working correctly. Fix any errors when adding or removing cards (make sure functionality is back to normal). Commit push then move on to planning database update cards_v2 table.
+***** Map the versions on search results. Once we receive those we need to go through the card object and assign quantities. 
 
+One Sided card with Dual Cards
+Kitsune is currently missing its imageUri. I think this is because it has two faces, so the image uri is in the main card not the face, need to modify check. Fixed. Had if check set to to true instead of false, causing empty images. Have refactored code as well to reduce repeated code.
 
 Add a max of 4
 Add a maximum of 4 cards to each? that way we avoid mistakes of entering more
