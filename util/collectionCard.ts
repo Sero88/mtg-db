@@ -6,8 +6,6 @@ import { CardQuantity } from "../types/cardQuantity";
 
 export const CollectionCard = {
 
-    
-
     convertManaCost: function (manaCost: string){
         const numberRegex =/[0-9]/g;
         const numberLetterComboRegex = /[0-9]\/[A-Z]/g;
@@ -65,15 +63,13 @@ export const CollectionCard = {
         const faceObject = {} as CollectionCardFace;
         faceObject.manaValue =  cardFace.mana_cost ?  this.convertManaCost(cardFace.mana_cost) : null;
         faceObject.manaCost = 'mana_cost' in cardFace && cardFace.mana_cost ? cardFace.mana_cost : null;
-        faceObject.oracleText = 'oracle_text' in cardFace && cardFace.oracle_text ? cardFace.oracle_text : '';
         
- 
         //these are optional since not all cards have these
         'loyalty' in cardFace ? faceObject.loyalty = cardFace.loyalty : false;
         'power' in cardFace && cardFace.power ? faceObject.power = cardFace.power : false;
         'toughness' in cardFace && cardFace.toughness ? faceObject.toughness = cardFace.toughness : false;
         'flavor_text' in cardFace && cardFace.flavor_text ? faceObject.flavorText = cardFace.flavor_text : false;
-
+        'oracle_text' in cardFace && cardFace.oracle_text ? faceObject.oracleText = cardFace.oracle_text : false;
         return faceObject;
     },
 
@@ -82,7 +78,7 @@ export const CollectionCard = {
       
         //not all multiface images have an image on each face. Kitsune Ascendad is a multiface card with only one image, the image is in the main card info not on either face
         let imageUri = 'image_uris' in cardFace && cardFace.image_uris && cardFace.image_uris.normal ? cardFace.image_uris.normal : null;
-        let artist = 'artist' in cardFace && cardFace.artist ? cardFace.artist: '';
+        let artist = 'artist' in cardFace && cardFace.artist ? cardFace.artist: null;
 
         imageUri = 
             !imageUri 
@@ -142,7 +138,7 @@ export const CollectionCard = {
         const cardCollectionObject:CollectionCardTypeQuery =  {
             name: apiData.name,
             oracleId: apiData.oracle_id,
-            colorIdentity: apiData.color_identity && apiData.color_identity.length > 0 ? apiData.color_identity : [],
+            colorIdentity: apiData.color_identity && apiData.color_identity.length > 0 ? apiData.color_identity : null,
             types,
             cardFaces
         }

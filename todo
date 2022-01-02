@@ -7,8 +7,9 @@ Building foundation for search functionality along with search by name
 * For results, we need to display only unique, this can be done by using the Oracle_id, since that is unique among all different versions of cards, but will need to do two separate queries. Also, if 
 
 
-Refactoring Db v2
-Do one little test before you move on, then begin planning code to take current records to new db.
+Refactoring Db v2 - phase 2
+* Do one little test before you move on, then begin planning code to take current records to new db.
+** Found inconsistencies with null and empty values. I fixed these and added comments. Collection db is not the same as scryfall. Scryfall also contains inconsistencies, such as: keywords is always passed and is not null, but it can be empty, why is this not a nullable field since it does not apply to all cards.
 
 
 Update cards table to cards_v2
@@ -102,7 +103,7 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 ======================================
 DONE
 
-Refactoring DB v2
+Refactoring DB v2 - phase 1
 we get disntict oracle id, then query for those, we would still get multiples of the same card. Think about a solution
 *** We're now grouping card by oracle ID and each card has different versions.
 **** For some reason Scryfall has more than the regular set of rarity - special and bonus. WTF - Continue working on this, move rarity to version? Special are common, but will it stay this way forever, need to either set all special to be common, or add these rarities to my search form. Some cards such as Eternal Witness is an uncommon, but Time Spiral has it marked as Special, so I will include special rarity cards as a separate rarity.
