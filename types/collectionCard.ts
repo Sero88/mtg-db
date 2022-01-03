@@ -36,7 +36,7 @@ type ImageObject = {
 }
 
 export interface Version extends VersionInterface {
-    quantity: {regular?: number, foil?: number}
+    quantity: {regular?: number, foil?: number} //optional since we may or may not have of either type
 }
 
 export interface VersionQuery extends VersionInterface {
