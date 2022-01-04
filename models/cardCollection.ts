@@ -206,4 +206,38 @@ export class CardCollection{
         return this.responseObject('success', results);
 
     }
+
+    async updateDb(){
+
+       
+        const v1Cards = await this.db.collection("cards_v2").distinct('name');
+        
+        //todo remove after testing 👇
+        console.log('v1Cards: ', v1Cards );
+        //todo remove after testing 👆
+
+       let count = 0;
+        const updatedCards = v1Cards.map( async (card:any,) => {
+            
+            const scryfallResult = await fetch('https://api.scryfall.com/cards/'+card.scryfallId);
+            const apiCard = await scryfallResult.json();
+
+            //verify there is a card
+            if(!('id' in apiCard)){
+                return;
+            }
+
+            const result = await this.setQuantityQuery(apiCard, card.quantity,'');
+
+            count++;
+            return result.value;
+            
+        });
+
+        //todo remove after testing 👇
+        console.log('updated count: ', count );
+        //todo remove after testing 👆 */
+
+        return this.responseObject('success', v1Cards);
+    }
 }

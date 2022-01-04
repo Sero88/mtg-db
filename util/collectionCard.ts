@@ -100,7 +100,7 @@ export const CollectionCard = {
         return {artist, imageUri};
     },
 
-    buildQueryObject: function (apiData: ApiCard, quantity:CardQuantity, type: string){
+    buildQueryObject: function (apiData: ApiCard, quantity:CardQuantity, type:string = ''){
         //prepare values
         const collectorsData = ApiCardHelper.getCollectorsData(apiData);
         const types = this.getTypes(apiData);
@@ -160,9 +160,13 @@ export const CollectionCard = {
         'promo_types' in apiData ? cardCollectionObject['versions.'+versionId+'.promoTypes'] = apiData.promo_types: false;
 
         //quantity value for either regular or foil
-        type == 'regular' 
-        ? cardCollectionObject['versions.'+versionId+'.quantity.regular'] = quantity.regular 
-        : cardCollectionObject['versions.'+versionId+'.quantity.foil'] = quantity.foil;
+        if(type !== ''){
+            type == 'regular' 
+            ? cardCollectionObject['versions.'+versionId+'.quantity.regular'] = quantity.regular 
+            : cardCollectionObject['versions.'+versionId+'.quantity.foil'] = quantity.foil;
+        } else {
+            cardCollectionObject['versions.'+versionId+'.quantity'] = quantity;
+        }
 
         return cardCollectionObject;
     }

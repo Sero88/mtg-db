@@ -15,6 +15,7 @@ Refactoring Db v2 - phase 2
 Update cards table to cards_v2
 * update the manaValue of cards there was an issue with the value when it is only one color
 * will need to import each card to new format, can add missing data such as mana_cost
+** Queried items from the DB, now is time to start querying each from scryfall then saving to cards_v2 version. May need to update buildQueryObject to accept quantity field as is?
 
 Search Functionality:
 Card Name (unique)
