@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CollectionCardType } from "../types/collectionCard";
 import Image from 'next/image';
 import styles from "../styles/card.module.scss";
@@ -6,6 +7,7 @@ import { CardDetails } from "./cardDetails";
 function showCardImage(data:CollectionCardType) {
     const name = data.name;
     const imageUri = data.cardFaces[0].imageUri;
+    
 
     return (
         <Image

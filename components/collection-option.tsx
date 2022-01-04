@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import styles from '../styles/collectionOption.module.scss';
-import AddCards from './add-cards';
 import Link from 'next/link';
 
 type CollectionOptionProps = {
