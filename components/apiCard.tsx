@@ -36,7 +36,7 @@ function showCardDetails(data:ApiCard, showPrints:boolean){
             collectorNumber={collectorsData.number}
             promoType={collectorsData.type}
             name={data.name}
-            showAll={showPrints}
+            showExtra={showPrints}
             setName={data.set_name}
         />
     );

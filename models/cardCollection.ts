@@ -194,7 +194,6 @@ export class CardCollection{
         const queryObject = {};
 
         if(searchObject.cardName){
-            //@ts-ignore
             queryObject.name = this.constructNameQuery(searchObject.cardName);
         }
 

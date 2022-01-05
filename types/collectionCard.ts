@@ -32,7 +32,7 @@ interface VersionInterface {
 
 type ImageObject = {
     artist: string | null 
-    uri: string | null
+    imageUri: string | null
 }
 
 export interface Version extends VersionInterface {

@@ -1,10 +1,41 @@
 import { ApiCard, CardFace} from "../types/apiCard";
 import { helpers } from "./helpers";
-import { CollectionCardFace, CollectionCardTypeQuery, VersionQuery } from "../types/collectionCard";
+import { CollectionCardFace, CollectionCardType, CollectionCardTypeQuery, Version } from "../types/collectionCard";
 import { ApiCardHelper } from "./apiCardHelpers";
 import { CardQuantity } from "../types/cardQuantity";
 
-export const CollectionCard = {
+
+export const CollectionCard= {
+
+    getCardImage(card:CollectionCardType, type = 'no_promo'){
+        let image = '';
+        const versions = Object.entries(card.versions);
+
+        if(type == 'no_promo'){
+           
+            for(const versionObj of versions){
+                const version:Version = versionObj[1];
+                if(!version.isPromo && version.images[0].imageUri){
+                    image = version.images[0].imageUri;
+                    break;
+                }
+            }
+        }
+
+        //get default image
+        if(!image){
+            for(const versionObj of versions){
+                const version:Version = versionObj[1];
+
+                if(version.images[0].imageUri){
+                    image = version.images[0].imageUri;
+                    break;
+                }
+            }
+        }
+  
+        return image;
+    },
 
     convertManaCost: function (manaCost: string){
         const numberRegex =/[0-9]/g;
@@ -124,7 +155,7 @@ export const CollectionCard = {
 
         //multiface values
         if(this.isMultiface(apiData)){
-            // @ts-ignore
+            //@ts-ignore
             apiData.card_faces.forEach( (cardFace:CardFace, faceIndex) => {
                 cardFaces.push(this.assignCardFaceValues(faceIndex, apiData, cardFace));
                 images.push(this.assignImageValues(faceIndex, apiData, cardFace));

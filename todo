@@ -7,14 +7,6 @@ Building foundation for search functionality along with search by name
 * For results, we need to display only unique, this can be done by using the Oracle_id, since that is unique among all different versions of cards, but will need to do two separate queries. Also, if 
 
 
-Refactoring Db v2 - phase 2
-* Do one little test before you move on, then begin planning code to take current records to new db.
-** Found inconsistencies with null and empty values. I fixed these and added comments. Collection db is not the same as scryfall. Scryfall also contains inconsistencies, such as: keywords is always passed and is not null, but it can be empty, why is this not a nullable field since it does not apply to all cards.
-
-
-Update cards table to cards_v2
-* update the manaValue of cards there was an issue with the value when it is only one color
-* will need to import each card to new format, can add missing data such as mana_cost
 
 Search Functionality:
 Card Name (unique)
@@ -102,6 +94,16 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+
+Update cards table to cards_v2
+* update the manaValue of cards there was an issue with the value when it is only one color
+* will need to import each card to new format, can add missing data such as mana_cost
+
+Refactoring Db v2 - phase 2
+* Do one little test before you move on, then begin planning code to take current records to new db.
+** Found inconsistencies with null and empty values. I fixed these and added comments. Collection db is not the same as scryfall. Scryfall also contains inconsistencies, such as: keywords is always passed and is not null, but it can be empty, why is this not a nullable field since it does not apply to all cards.
+
 
 Refactoring DB v2 - phase 1
 we get disntict oracle id, then query for those, we would still get multiples of the same card. Think about a solution
