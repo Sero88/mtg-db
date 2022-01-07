@@ -1,11 +1,8 @@
 Doing:
 
-Building foundation for search functionality along with search by name
-* Before building queries, set the code then continue with name query (Done)
-* Create a Results page - how much can we reuse - refactor to take both types api and collection card? - Continue working on Card parent object
-* CardDetails is a shared component. Continue testing for apiCard. Then commit before you continue to implement it for CollectionCards.
-* For results, we need to display only unique, this can be done by using the Oracle_id, since that is unique among all different versions of cards, but will need to do two separate queries. Also, if 
-
+Currently, the search form and results are in a different page. I want to combine these. Have the search and the results be on one page, but only update results when user clicks the submit button for the form. It will update results on demand. When clicking on a card, it will either open a modal or a separate window. Modal can have a link to open a separate window. This is to avoid saving and populating data when user goes from one page to another. It makes more sense for this type of functionality to be on demand. Might use a class instead of state function hooks this time around to update state all at once, not one by one. The tedious part of last time was hitting the back button, I had to keep track of previuos state, with search, that is not the case. There is no 'back' button, the search changes only when you modify the form.
+* I have the name field ready using react state. Query for results when user submits form.
+* Search results are now loading correctly using states. Add loading Animation. 
 
 
 Search Functionality:
@@ -94,6 +91,13 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+
+Building foundation for search functionality along with search by name
+* Before building queries, set the code then continue with name query (Done)
+* Create a Results page - how much can we reuse - refactor to take both types api and collection card? - Continue working on Card parent object
+* CardDetails is a shared component. Continue testing for apiCard. Then commit before you continue to implement it for CollectionCards.
+* For results, we need to display only unique, this can be done by using the Oracle_id, since that is unique among all different versions of cards, but will need to do two separate queries. Also, if 
 
 
 Update cards table to cards_v2

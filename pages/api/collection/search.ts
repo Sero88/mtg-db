@@ -59,6 +59,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
         break;
 
+        case 'searchQuery':
+
+            const {searchQuery} = JSON.parse(req.body);
+
+            //get the cards from db
+            const searchQueryResults = await cardCollection.getCards(searchQuery);
+
+            if(searchQueryResults.status == "success"){
+                res.status(200).json(helpers.collectionApiResponse('success', 'Flavor text retrieved successfully', searchQueryResults.data));
+            } else {
+                res.status(400).json(helpers.collectionApiResponse('error', 'Unable to get search data.'));
+            }
+        break;
+
         default:
             res.status(400).json(helpers.collectionApiResponse('error', 'Unable to perform action'));
     }
