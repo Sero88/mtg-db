@@ -194,6 +194,8 @@ export class CardCollection{
         const queryObject = {};
 
         if(searchObject.cardName){
+            //todo: remove after completing searchObject functionality
+            //@ts-ignore
             queryObject.name = this.constructNameQuery(searchObject.cardName);
         }
 
