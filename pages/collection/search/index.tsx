@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { SearchResults } from "../../../components/collection-search/results";
 import { ResultsState } from "../../../types/resultsState";
 import LoadingAnimation from '../../../components/loader-animation';
+import styles from "../../../styles/collectionSearchResults.module.scss";
 
 
 export default function Search(){
@@ -82,8 +83,11 @@ export default function Search(){
     <>
         <div className="searchForm">
             <h1>Search Collection</h1>
-            <form action="search/results/" onSubmit={submitHandler}>
-                <SearchName changeHandler={onChangeHandler} name={searchQueryState.cardName}/>
+            <form action="search/results/" onSubmit={submitHandler} className={styles.searchForm}>
+                <div className="form-section">
+                    <SearchName changeHandler={onChangeHandler} name={searchQueryState.cardName}/>
+                </div>
+               
                 <input type="submit" value="Search"/>
             </form>  
         </div>
