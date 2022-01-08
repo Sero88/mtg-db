@@ -2,13 +2,14 @@ import { SearchName } from "../../../components/collection-search/name";
 import React, { useState } from "react";
 import { SearchResults } from "../../../components/collection-search/results";
 import { ResultsState } from "../../../types/resultsState";
+import LoadingAnimation from '../../../components/loader-animation';
 
 
 export default function Search(){
     const searchEndpoint = '/api/collection/search/?action=searchQuery';
     const [searchQueryState, setSearchQueryState] = useState({
         cardName: '',
-        before: 'update',
+        isSearching: false,
     });
 
     const initialResultsState:ResultsState = {
@@ -18,6 +19,20 @@ export default function Search(){
     
     const [resultsState, setResultsState] = useState(initialResultsState);
 
+    const updateSearchQueryState = () => {
+       
+         //update the state, using prev state so it merges prev values and it doesn't overwrite it
+        setSearchQueryState( prevState => {
+            return {...prevState, ...searchQueryState}
+        });
+    }
+
+
+    const updateResultsState = () => {
+        setResultsState(prevState => {
+            return {...prevState, ...resultsState}
+        });
+    }
 
     const searchForCards = async() => {
         const searchResults = await fetch(searchEndpoint, {
@@ -31,24 +46,25 @@ export default function Search(){
 
         if('status' in results && results.status == 'success'){
 
-            //todo remove after testing 👇
-            console.log('results: ', results.data );
-            //todo remove after testing 👆
-
             resultsState.results = results.data;
             resultsState.canShowResults = true;
-
-            setResultsState(prevState => {
-                return {...prevState, ...resultsState}
-            });
+            updateResultsState();
+            
+            searchQueryState.isSearching = false;
+            updateSearchQueryState();
         }
         
     };
 
-    const submitHandler = async (event:React.FormEvent) => {
+    const submitHandler = (event:React.FormEvent) => {
 
         event.preventDefault();
-        const searchResult = searchForCards();
+
+        //update the isSearching flag
+        searchQueryState.isSearching = true;
+        updateSearchQueryState();
+        
+        searchForCards();
         
     };
 
@@ -58,18 +74,9 @@ export default function Search(){
             searchQueryState.cardName = event.target.value;
         }
         
-       
-        //update the state, using prev state so it merges prev values and it doesn't overwrite it
-        setSearchQueryState( prevState => {
-            return {...prevState, ...searchQueryState}
-        });
+       updateSearchQueryState();
     
-       
     };
-
-    //todo remove after testing 👇
-    console.log('results after update: ', resultsState);
-    //todo remove after testing 👆
 
     return (
     <>
@@ -81,10 +88,18 @@ export default function Search(){
             </form>  
         </div>
         
-        <div className="results">
-            <SearchResults resultsState={resultsState} />
-        </div>
-    
+        {searchQueryState.isSearching 
+
+            ? <LoadingAnimation />
+            : (
+                <div className="results">
+                    <SearchResults 
+                        resultsState={resultsState} 
+                    />
+                </div>
+            )
+        
+        }
     </>
     );
 }
