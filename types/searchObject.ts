@@ -1,3 +1,4 @@
 export type SearchObject = {
-    cardName?: string
+    cardName?: string,
+    cardText?: string
 }

@@ -4,12 +4,14 @@ import { SearchResults } from "../../../components/collection-search/results";
 import { ResultsState } from "../../../types/resultsState";
 import LoadingAnimation from '../../../components/loader-animation';
 import styles from "../../../styles/collectionSearchResults.module.scss";
+import { SearchText } from "../../../components/collection-search/text";
 
 
 export default function Search(){
     const searchEndpoint = '/api/collection/search/?action=searchQuery';
     const [searchQueryState, setSearchQueryState] = useState({
         cardName: '',
+        cardText: '',
         isSearching: false,
     });
 
@@ -71,12 +73,26 @@ export default function Search(){
 
     const onChangeHandler =  (event: React.ChangeEvent<HTMLInputElement>) => {  
 
-        if(event.target.name == 'cardName'){
-            searchQueryState.cardName = event.target.value;
+        switch (event.target.name){
+            case 'cardName':
+                searchQueryState.cardName = event.target.value;
+            break;
+
+            case 'cardText':
+                searchQueryState.cardText = event.target.value;
+            break;
         }
-        
+       
        updateSearchQueryState();
     
+    };
+
+    const clickHandler = (event: React.MouseEvent<Element, MouseEvent>) =>{
+        const clickedElement = event.target as HTMLElement;
+
+        //todo remove after testing 👇
+        console.log('event target class', clickedElement.className );
+        //todo remove after testing 👆
     };
 
     return (
@@ -86,6 +102,12 @@ export default function Search(){
             <form action="search/results/" onSubmit={submitHandler} className={styles.searchForm}>
                 <div className="form-section">
                     <SearchName changeHandler={onChangeHandler} name={searchQueryState.cardName}/>
+                </div>
+
+                <hr />
+
+                <div className={styles.searchTextSection + " form-section"}>
+                    <SearchText changeHandler={onChangeHandler} clickHandler={clickHandler} text={searchQueryState.cardText}/>
                 </div>
                
                 <input type="submit" value="Search"/>

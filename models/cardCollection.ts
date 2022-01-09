@@ -82,19 +82,19 @@ export class CardCollection{
         return await this.db.collection(process.env.DATABASE_TABLE_CARDS).findOneAndUpdate(filter, update, options);
     }
 
-    private constructNameQuery(cardName: string){
+    private constructTextQuery(textToSearch: string){
  
         //remove any extra space and split by space
-        cardName = cardName.trim();
-        const words = cardName.split(' ');
+        textToSearch = textToSearch.trim();
+        const words = textToSearch.split(' ');
 
         //prepare the regular expression text for each word
         words.forEach((word) => {
-           cardName = cardName.replace(word,`(${word})+`);
+           textToSearch = textToSearch.replace(word,`(${word})+`);
         });
 
-        cardName = cardName.replace(' ', '|');
-        return new RegExp(cardName,'i');
+        textToSearch = textToSearch.replace(' ', '|');
+        return new RegExp(textToSearch,'i');
     }
 
     async dbConnect(){
@@ -196,7 +196,13 @@ export class CardCollection{
         if(searchObject.cardName){
             //todo: remove after completing searchObject functionality
             //@ts-ignore
-            queryObject.name = this.constructNameQuery(searchObject.cardName);
+            queryObject.name = this.constructTextQuery(searchObject.cardName);
+        }
+
+        if(searchObject.cardText){
+             //todo: remove after completing searchObject functionality
+            //@ts-ignore
+            queryObject['cardFaces.oracleText'] = this.constructTextQuery(searchObject.cardText);
         }
 
         //todo remove after testing 👇

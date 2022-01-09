@@ -4,4 +4,27 @@
     input[type=submit]{
         margin-top: 2rem;
     }
+
+    div[class~=form-section]{
+        padding: 2rem 0;
+     
+    }
+
+    label{
+        font-size: 1.4rem;
+    }
+
+}
+
+.searchTextSection {
+    display: flex;
+    gap: 3rem;
+
+    div[class~=addSymbolsSection]{
+        p{
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        flex: 1 0 0;
+    }
 }

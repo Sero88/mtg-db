@@ -1,0 +1,13 @@
+.symbolsList{
+    height: 10rem;
+    overflow-y: scroll;
+
+    dt{
+        font-weight: bold;
+    }
+
+    dt,dd{
+        display: inline;
+        margin: 0;
+    }
+}

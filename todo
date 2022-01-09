@@ -1,7 +1,7 @@
 Doing:
 
 Text Search functionality
-* Done with card name search, time to start text search
+* The symbols are auto-populating now. Time to style a little and work on click functionality to add text to items
 
 
 Search Functionality:
@@ -90,6 +90,8 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+Done with card name search, time to start text search
 
 Currently, the search form and results are in a different page. I want to combine these. Have the search and the results be on one page, but only update results when user clicks the submit button for the form. It will update results on demand. When clicking on a card, it will either open a modal or a separate window. Modal can have a link to open a separate window. This is to avoid saving and populating data when user goes from one page to another. It makes more sense for this type of functionality to be on demand. Might use a class instead of state function hooks this time around to update state all at once, not one by one. The tedious part of last time was hitting the back button, I had to keep track of previuos state, with search, that is not the case. There is no 'back' button, the search changes only when you modify the form.
 * I have the name field ready using react state. Query for results when user submits form.
