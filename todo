@@ -2,6 +2,10 @@ Doing:
 
 Text Search functionality
 * The symbols are auto-populating now. Time to style a little and work on click functionality to add text to items
+** Finished adding symbol functionality. Next test text search as a whole and fix any new bugs
+
+Refactor structure a little
+* Move add components to a new Add Folder to differentiate between collection and add components
 
 
 Search Functionality:

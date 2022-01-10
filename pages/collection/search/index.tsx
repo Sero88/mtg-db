@@ -5,6 +5,7 @@ import { ResultsState } from "../../../types/resultsState";
 import LoadingAnimation from '../../../components/loader-animation';
 import styles from "../../../styles/collectionSearchResults.module.scss";
 import { SearchText } from "../../../components/collection-search/text";
+import { helpers } from "../../../util/helpers";
 
 
 export default function Search(){
@@ -87,12 +88,19 @@ export default function Search(){
     
     };
 
+
     const clickHandler = (event: React.MouseEvent<Element, MouseEvent>) =>{
         const clickedElement = event.target as HTMLElement;
 
-        //todo remove after testing 👇
-        console.log('event target class', clickedElement.className );
-        //todo remove after testing 👆
+        if(helpers.parentHasSymbol(clickedElement)){
+            //@ts-ignore
+            searchQueryState.cardText += clickedElement.parentElement.dataset.symbol;
+            updateSearchQueryState();
+            
+            //focus on the text input so user can easily modify it after adding the symbol
+            const inputText = document.querySelector('input[name="cardText"]') as HTMLInputElement;
+            inputText ? inputText.focus() : false;
+        }
     };
 
     return (

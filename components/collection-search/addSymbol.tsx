@@ -22,9 +22,9 @@ export function AddSymbol({currentText, clickHandler}:{currentText:string, click
                 {
                     symbols.map( (symbol:SymbolType, index) => {
                         return (
-                            <div key={"dk-"+index}>
-                             <dt>{symbol.symbol}: </dt>
-                             <dd>{symbol.english}</dd>
+                            <div key={"dk-"+index} data-symbol={symbol.symbol}>
+                                <dt>{symbol.symbol}: </dt>
+                                <dd><img src={symbol.svg_uri} width={15} height={15} /> {symbol.english}</dd>
                             </div>
                         );
                     })

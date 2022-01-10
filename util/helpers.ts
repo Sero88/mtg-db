@@ -43,4 +43,13 @@ export const helpers = {
 
         return set;
     },
+
+    parentHasSymbol: function(clickedElement: HTMLElement){
+        return clickedElement.parentElement
+            && 'dataset' in clickedElement.parentElement
+            && 'symbol' in clickedElement.parentElement.dataset
+            && clickedElement.parentElement.dataset.symbol
+            ? true
+            : false;
+    }
 }

@@ -1,13 +1,32 @@
 .symbolsList{
     height: 10rem;
     overflow-y: scroll;
+    
+    &>div{
+        margin-bottom: .5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+
+    dt,dd{
+        margin: 0;
+        display: inline;
+        align-self: center;
+    }
 
     dt{
         font-weight: bold;
     }
 
-    dt,dd{
-        display: inline;
-        margin: 0;
+    dd{
+        display: inline-flex;
+        align-items: center;
+
+        img {
+            display: inline-block;
+            margin: 0 .25rem;
+        }
     }
+
 }
