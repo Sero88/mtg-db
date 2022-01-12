@@ -6,11 +6,19 @@ import styles from '../../styles/addSymbols.module.scss';
 export function AddSymbol({currentText, clickHandler}:{currentText:string, clickHandler:(event: React.MouseEvent<Element, MouseEvent>) => void,}){
     const [symbols, setSymbols] = useState([]);
 
+    const customSymbols = [
+        {symbol: "−", svg_uri: '', english: "(en-dash) planeswalker minus ability"},
+        {symbol: "+", svg_uri: '', english: "(plus) planeswalker plus ability"}
+    ] as SymbolType[];
+
     const getSymbols = () => {
         const endpoint = '/api/scryfall/symbols';
         fetch(endpoint)
             .then(response => response.json())
-            .then(symbols => setSymbols(symbols.data));
+            .then(symbols => {
+                    setSymbols(symbols.data.concat(customSymbols))
+                }
+            );
     };
 
     useEffect(getSymbols,[]); // [] empty so it never updates after load
@@ -24,7 +32,7 @@ export function AddSymbol({currentText, clickHandler}:{currentText:string, click
                         return (
                             <div key={"dk-"+index} data-symbol={symbol.symbol}>
                                 <dt>{symbol.symbol}: </dt>
-                                <dd><img src={symbol.svg_uri} width={15} height={15} /> {symbol.english}</dd>
+                                <dd>{symbol.svg_uri && <img src={symbol.svg_uri} width={15} height={15} />} &nbsp;{symbol.english}</dd>
                             </div>
                         );
                     })

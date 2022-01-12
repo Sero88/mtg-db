@@ -3,6 +3,7 @@ import { CollectionCard } from "../util/collectionCard";
 import { ApiCard } from "../types/apiCard";
 import { CardQuantity } from "../types/cardQuantity";
 import { SearchObject } from "../types/searchObject";
+import { helpers } from "../util/helpers";
 
 
 export class CardCollection{
@@ -84,17 +85,29 @@ export class CardCollection{
 
     private constructTextQuery(textToSearch: string){
  
-        //remove any extra space and split by space
-        textToSearch = textToSearch.trim();
-        const words = textToSearch.split(' ');
+        const uniqueText = helpers.getUniqueWords(textToSearch);
 
-        //prepare the regular expression text for each word
-        words.forEach((word) => {
-           textToSearch = textToSearch.replace(word,`(${word})+`);
+        //escape non-alphanumeric characters
+        uniqueText.words.forEach((word) => {
+
+            //replace any special chars
+            const nonAlphaNumeric = /([^a-zA-Z0-9])/gim;
+            const subs ='\\$1';
+            const escapedWord = word.replace(nonAlphaNumeric, subs);
+
+            //prepare the text for search
+            uniqueText.text = uniqueText.text.replace(word,`${escapedWord}`);
+
         });
 
-        textToSearch = textToSearch.replace(' ', '|');
-        return new RegExp(textToSearch,'i');
+        // add OR pipelines - text search check if at least one word is in text
+        uniqueText.text = uniqueText.text.replace(/\s/g, '|');
+
+        //todo remove after testing 👇
+        console.log('searching for:', uniqueText.text );
+        //todo remove after testing 👆
+
+        return new RegExp(uniqueText.text,'i');
     }
 
     async dbConnect(){

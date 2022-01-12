@@ -51,5 +51,24 @@ export const helpers = {
             && clickedElement.parentElement.dataset.symbol
             ? true
             : false;
+    },
+
+    getUniqueWords: function(text:string):{words:string[], text:string}{
+        //remove any extra space and split by space
+        text = text.trim();
+        const words = text.split(' ');
+
+        //search for unique words
+        const uniqueWords:string[] = [];
+        words.forEach( word =>{
+            if(uniqueWords.includes(word)){
+                return;
+            }
+            uniqueWords.push(word);
+        });
+
+        const uniqueText = uniqueWords.join(' ');
+
+        return {words: uniqueWords, text: uniqueText};
     }
 }
