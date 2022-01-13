@@ -2,6 +2,7 @@
 import {useState, useEffect} from 'react';
 import { SymbolType } from '../../types/symbol';
 import styles from '../../styles/addSymbols.module.scss';
+import Image from 'next/image';
 
 export function AddSymbol({currentText, clickHandler}:{currentText:string, clickHandler:(event: React.MouseEvent<Element, MouseEvent>) => void,}){
     const [symbols, setSymbols] = useState([]);
@@ -32,7 +33,7 @@ export function AddSymbol({currentText, clickHandler}:{currentText:string, click
                         return (
                             <div key={"dk-"+index} data-symbol={symbol.symbol}>
                                 <dt>{symbol.symbol}: </dt>
-                                <dd>{symbol.svg_uri && <img src={symbol.svg_uri} width={15} height={15} />} &nbsp;{symbol.english}</dd>
+                                <dd>{symbol.svg_uri && <div className={styles.symbolImage}><Image src={symbol.svg_uri} width={15} height={15}/></div>} &nbsp;{symbol.english}</dd>
                             </div>
                         );
                     })

@@ -22,11 +22,12 @@
     dd{
         display: inline-flex;
         align-items: center;
+    }
 
-        img {
-            display: inline-block;
-            margin: 0 .25rem;
-        }
+    .symbolImage {
+        display: inline-block;
+        margin: 0 .10rem 0 .30rem;
+        
     }
 
 }
