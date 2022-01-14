@@ -73,6 +73,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
         break;
 
+        case 'getTypes':
+            //get the cards from db
+            const typeResults = await cardCollection.getTypes();
+
+            if(typeResults.status == "success"){
+                res.status(200).json(helpers.collectionApiResponse('success', 'Types retrieved successfully', typeResults.data));
+            } else {
+                res.status(400).json(helpers.collectionApiResponse('error', 'Unable to get search data.'));
+            }
+        break;
+
         default:
             res.status(400).json(helpers.collectionApiResponse('error', 'Unable to perform action'));
     }

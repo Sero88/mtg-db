@@ -6,6 +6,7 @@ import LoadingAnimation from '../../../components/loader-animation';
 import styles from "../../../styles/collectionSearchResults.module.scss";
 import { SearchText } from "../../../components/collection-search/text";
 import { helpers } from "../../../util/helpers";
+import { SearchTypes } from "../../../components/collection-search/types";
 
 
 export default function Search(){
@@ -116,6 +117,12 @@ export default function Search(){
 
                 <div className={styles.searchTextSection + " form-section"}>
                     <SearchText changeHandler={onChangeHandler} clickHandler={clickHandler} text={searchQueryState.cardText}/>
+                </div>
+
+                <hr />
+
+                <div className={styles.searchTypeSection + " form-section"}>
+                    <SearchTypes />
                 </div>
                
                 <input type="submit" value="Search"/>

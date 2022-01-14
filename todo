@@ -1,17 +1,31 @@
 Doing:
+Begin with the Type search
+* Plan out how user is going to use this field
+* Get all the types from the DB and show them sorted alphatically in a list
+** [] User can click on list and add them to list 
+** [ ] Any item added to list can be IS or is NOT
+** [ ] Either user can directly type on this list or not type and click to add from populated list. 
+*** [X] This list must be searchable though
+**** [ ] Refactor Text symbols so it uses list
 
-Refactor structure a little
-* Move add components to a new Add Folder to differentiate between collection and add components
+
 
 Search Functionality:
 Card Name (unique)
-Text (differ)
+Text (differ) (may need to add an "exact text" functionality later on - look into indexes too for faster searching if needed)
 Type (unique)
 Colors (unique)
 Stats(cmc, power, toughness, loyalty) (unique)
 Sets (unique)
 Rarity (unique)
 
+
+================================
+Future enhancements
+Refactor structure a little
+* Move add components to a new Add Folder to differentiate between collection and add components
+
+Learn more about indexes and to DB where needed
 
 ================================
 Bugs: 

@@ -227,4 +227,9 @@ export class CardCollection{
         return this.responseObject('success', results);
 
     }
+
+    async getTypes(){
+        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).distinct("types");
+        return this.responseObject('success', results);
+    }
 }

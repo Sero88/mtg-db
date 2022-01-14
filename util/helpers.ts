@@ -70,5 +70,25 @@ export const helpers = {
         const uniqueText = uniqueWords.join(' ');
 
         return {words: uniqueWords, text: uniqueText};
+    },
+
+    getTextMatchesFromList(searchText:string, list:string[]){
+        const matches:string[] = [];
+    
+        list.forEach( item => {
+            if(matches.includes(item)){
+                return;
+            }
+            const regex = new RegExp(`${searchText}`,'i');
+            const matchResults =  regex.exec(item);
+
+            if(matchResults){
+                matches.push(matchResults.input);
+            }
+
+        })
+
+        return matches;
+
     }
 }
