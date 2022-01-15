@@ -3,10 +3,11 @@ import React, {useState} from 'react';
 import { helpers } from '../../util/helpers';
 
 type SearchListProps = {
-    list:string[]
+    list:string[],
+    itemClass: string
 }
 
-export function SearchList({list}:SearchListProps){
+export function SearchList({list,itemClass}:SearchListProps){
     const [searchText, setSearchText] = useState('');
     
     const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +28,7 @@ export function SearchList({list}:SearchListProps){
             <ul>
                 {
                     showList.map( (item, index) => {
-                        return <li key={index}>{item}</li>
+                        return <li key={index} className={itemClass}>{item}</li>
                     })
                 }
             </ul>

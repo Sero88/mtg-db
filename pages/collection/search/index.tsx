@@ -7,13 +7,24 @@ import styles from "../../../styles/collectionSearchResults.module.scss";
 import { SearchText } from "../../../components/collection-search/text";
 import { helpers } from "../../../util/helpers";
 import { SearchTypes } from "../../../components/collection-search/types";
+import { CardTypeClasses } from "../../../types/jsClasses";
 
 
 export default function Search(){
     const searchEndpoint = '/api/collection/search/?action=searchQuery';
+    //class names used for interactivity
+    const jsClassNames = {
+        types: {
+            item:'js-item-type',
+            removeItem: 'js-remove-item-type',
+            changeIs: 'js-change-item-type-is',
+        } as CardTypeClasses
+    }
+
     const [searchQueryState, setSearchQueryState] = useState({
         cardName: '',
         cardText: '',
+        cardTypes: [] as {name:string, is:boolean}[],
         isSearching: false,
     });
 
@@ -93,6 +104,7 @@ export default function Search(){
     const clickHandler = (event: React.MouseEvent<Element, MouseEvent>) =>{
         const clickedElement = event.target as HTMLElement;
 
+        //symbols
         if(helpers.parentHasSymbol(clickedElement)){
             //@ts-ignore
             searchQueryState.cardText += clickedElement.parentElement.dataset.symbol;
@@ -102,7 +114,33 @@ export default function Search(){
             const inputText = document.querySelector('input[name="cardText"]') as HTMLInputElement;
             inputText ? inputText.focus() : false;
         }
+
     };
+
+    const typesClickHandler = (event: React.MouseEvent<Element, MouseEvent>) => {
+        const clickedElement = event.target as HTMLElement;
+
+        //add from avaialable types list to selected list
+        if(clickedElement.className.includes(jsClassNames.types.item)){
+            const type = {name:clickedElement.innerHTML, is:true}
+            searchQueryState.cardTypes.push(type);
+            updateSearchQueryState();
+        }
+
+        //remove item from selected list
+        else if(clickedElement.className.includes(jsClassNames.types.removeItem)){
+           const itemToRemove = clickedElement.dataset.index ? parseInt(clickedElement.dataset.index) : null;
+
+           //verify we have a number
+           if(itemToRemove == null){
+               return;
+           }
+
+           searchQueryState.cardTypes.splice(itemToRemove, 1);
+           updateSearchQueryState();
+        }
+
+    }
 
     return (
     <>
@@ -121,8 +159,8 @@ export default function Search(){
 
                 <hr />
 
-                <div className={styles.searchTypeSection + " form-section"}>
-                    <SearchTypes />
+                <div className={styles.searchTypeSection + " form-section"} onClick={typesClickHandler}>
+                    <SearchTypes selectedTypes={searchQueryState.cardTypes} classes={jsClassNames.types}/>
                 </div>
                
                 <input type="submit" value="Search"/>
