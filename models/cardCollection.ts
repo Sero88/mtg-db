@@ -2,7 +2,7 @@ import {connectToDatabase} from "../util/mongodb";
 import { CollectionCard } from "../util/collectionCard";
 import { ApiCard } from "../types/apiCard";
 import { CardQuantity } from "../types/cardQuantity";
-import { SearchObject } from "../types/searchObject";
+import { SearchObject, SearchCardType } from "../types/searchTypes";
 import { helpers } from "../util/helpers";
 
 
@@ -110,6 +110,21 @@ export class CardCollection{
         return new RegExp(uniqueText.text,'i');
     }
 
+    private constructTypesQuery(types: SearchCardType[] ){
+        const isTypes:string[] = [];
+        const notTypes:string[] = [];
+        const query:{$in?:string[], $nin?:string[]} = {};
+
+        types.forEach( type => {
+            type.is ? isTypes.push(type.name) : notTypes.push(type.name);
+        });
+
+        isTypes.length > 0 ? query.$in = isTypes : false;
+        notTypes.length > 0 ? query.$nin = notTypes : false;
+
+        return query;
+    }
+
     async dbConnect(){
         const {client, db} = await connectToDatabase();    
         this.client = client;
@@ -213,13 +228,24 @@ export class CardCollection{
         }
 
         if(searchObject.cardText){
-             //todo: remove after completing searchObject functionality
+            //todo: remove after completing searchObject functionality
             //@ts-ignore
             queryObject['cardFaces.oracleText'] = this.constructTextQuery(searchObject.cardText);
         }
 
+        if(searchObject.cardTypes && searchObject.cardTypes.length > 0){ 
+            //todo: remove after completing searchObject functionality
+            //@ts-ignore
+            queryObject['types'] = this.constructTypesQuery(searchObject.cardTypes);
+        }
+
+
         //todo remove after testing 👇
-        console.log('searching for:', queryObject );
+        console.log('search form data: ', searchObject );
+        //todo remove after testing 👆
+
+        //todo remove after testing 👇
+        console.log('searching query object:', queryObject );
         //todo remove after testing 👆
          
         const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).find(queryObject, {sort:{name: 1},projection: this.findProjection}).toArray();

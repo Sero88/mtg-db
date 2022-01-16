@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { CardCollection } from '../../../models/cardCollection';
-import { SearchObject } from '../../../types/searchObject';
+import { SearchObject } from '../../../types/searchTypes';
 import { CollectionCardType } from '../../../types/collectionCard';
 import styles from '../../../styles/results.module.scss'
 import { helpers } from '../../../util/helpers';

@@ -33,7 +33,7 @@ export function SearchTypes({selectedTypes, classes}:SearchTypeProps){
                         return (
                             <div className="typeObject" key={index}>
                                 <span className={classes.removeItem} data-index={index}>X</span>
-                                <span className={classes.changeIs}>{typeObj ? "IS" : "NOT"}</span>
+                                <span className={classes.changeIs} data-index={index}>{typeObj.is ? "IS" : "NOT"}</span>
                                 <span>{typeObj.name}</span>
                             </div>
                         );

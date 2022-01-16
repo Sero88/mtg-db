@@ -36,13 +36,11 @@ export default function Search(){
     const [resultsState, setResultsState] = useState(initialResultsState);
 
     const updateSearchQueryState = () => {
-       
          //update the state, using prev state so it merges prev values and it doesn't overwrite it
         setSearchQueryState( prevState => {
             return {...prevState, ...searchQueryState}
         });
     }
-
 
     const updateResultsState = () => {
         setResultsState(prevState => {
@@ -100,7 +98,6 @@ export default function Search(){
     
     };
 
-
     const clickHandler = (event: React.MouseEvent<Element, MouseEvent>) =>{
         const clickedElement = event.target as HTMLElement;
 
@@ -131,13 +128,26 @@ export default function Search(){
         else if(clickedElement.className.includes(jsClassNames.types.removeItem)){
            const itemToRemove = clickedElement.dataset.index ? parseInt(clickedElement.dataset.index) : null;
 
-           //verify we have a number
+           //verify we have item
            if(itemToRemove == null){
                return;
            }
 
            searchQueryState.cardTypes.splice(itemToRemove, 1);
            updateSearchQueryState();
+        }
+
+        //change is/not
+        else if(clickedElement.className.includes(jsClassNames.types.changeIs)){
+            const itemToChange = clickedElement.dataset.index ? parseInt(clickedElement.dataset.index) : null;
+             //verify we have item
+            
+             if(itemToChange == null){
+                return;
+            }
+
+            searchQueryState.cardTypes[itemToChange].is = !searchQueryState.cardTypes[itemToChange].is;
+            updateSearchQueryState();
         }
 
     }
