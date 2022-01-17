@@ -3,7 +3,8 @@ Doing:
 * [] Refactor Text symbols so it uses list
 
 Begin with the Type search
-* [] style it
+* [] add partials option
+* [x] style it
 * [x] Plan out how user is going to use this field
 * [x] Get all the types from the DB and show them sorted alphatically in a list
 ** [x] User can click on list and add them to list 

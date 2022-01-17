@@ -18,6 +18,7 @@ export default function Search(){
             item:'js-item-type',
             removeItem: 'js-remove-item-type',
             changeIs: 'js-change-item-type-is',
+            partialsToggle: 'js-partials-toggle',
         } as CardTypeClasses
     }
 
@@ -25,6 +26,7 @@ export default function Search(){
         cardName: '',
         cardText: '',
         cardTypes: [] as {name:string, is:boolean}[],
+        allowTypePartials: false,
         isSearching: false,
     });
 
@@ -91,6 +93,10 @@ export default function Search(){
 
             case 'cardText':
                 searchQueryState.cardText = event.target.value;
+            break;
+
+            case 'typePartials':
+                searchQueryState.allowTypePartials = !searchQueryState.allowTypePartials;
             break;
         }
        
@@ -171,7 +177,12 @@ export default function Search(){
 
                 <div className={styles.searchTypeSection + " form-section"} onClick={typesClickHandler}>
                 <label>Types</label>
-                    <SearchTypes selectedTypes={searchQueryState.cardTypes} classes={jsClassNames.types}/>
+                    <SearchTypes 
+                        selectedTypes={searchQueryState.cardTypes} 
+                        classes={jsClassNames.types}
+                        allowPartials={searchQueryState.allowTypePartials}
+                        partialsHandler={onChangeHandler}
+                    />
                 </div>
                
                 <input type="submit" value="Search"/>
