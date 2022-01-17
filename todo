@@ -1,10 +1,13 @@
 Doing:
-Begin with the Type search
-* Plan out how user is going to use this field
-* Get all the types from the DB and show them sorted alphatically in a list
+
 * [] Refactor Text symbols so it uses list
-** [] User can click on list and add them to list 
-** [] Any item added to list can be IS or is NOT
+
+Begin with the Type search
+* [] style it
+* [x] Plan out how user is going to use this field
+* [x] Get all the types from the DB and show them sorted alphatically in a list
+** [x] User can click on list and add them to list 
+** [x] Any item added to list can be IS or is NOT
 ** [x] Either user can directly type on this list or not type and click to add from populated list. 
 *** [X] This list must be searchable though
 

@@ -170,6 +170,7 @@ export default function Search(){
                 <hr />
 
                 <div className={styles.searchTypeSection + " form-section"} onClick={typesClickHandler}>
+                <label>Types</label>
                     <SearchTypes selectedTypes={searchQueryState.cardTypes} classes={jsClassNames.types}/>
                 </div>
                

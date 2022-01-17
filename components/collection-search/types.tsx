@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { CardTypeClasses } from "../../types/jsClasses";
 import { SearchList } from "./_searchList";
+import styles from "../../styles/searchTypes.module.scss";
 
 type SearchTypeProps = {
     selectedTypes: {name:string, is:boolean}[]
@@ -25,24 +26,25 @@ export function SearchTypes({selectedTypes, classes}:SearchTypeProps){
     useEffect(getTypes,[]);
 
     return (
-        <div className="TypesSection">
-            <label>Types</label>
-            <div className="selectedTypes">
+        <div className={styles.searchTypes}>
+            <div className={styles.selectedTypesList}>
                 {
                     selectedTypes.map( (typeObj, index) => {
                         return (
-                            <div className="typeObject" key={index}>
-                                <span className={classes.removeItem} data-index={index}>X</span>
-                                <span className={classes.changeIs} data-index={index}>{typeObj.is ? "IS" : "NOT"}</span>
-                                <span>{typeObj.name}</span>
+                            <div className={styles.typeObject} key={index}>
+                                <span className={styles.typeRemove + " " + classes.removeItem} data-index={index}>x</span>
+                                <span className={styles.typeIs + " " + classes.changeIs + ` ${typeObj.is ? styles.typeIsTrue : styles.typeIsFalse }`} data-index={index}>
+                                    {typeObj.is ? "IS" : "NOT"}
+                                </span>
+                                <span className={styles.typeName}>{typeObj.name}</span>
                             </div>
                         );
                     })
                 }
             </div>
 
-            <div className="availableTypes">
-                <p>Available types in collection:</p>
+            <div className={styles.availableTypes}>
+                <p>Search types in collection:</p>
                 <SearchList list={types} itemClass={classes.item}/>
             </div>
         </div>
