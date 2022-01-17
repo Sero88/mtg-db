@@ -7,4 +7,5 @@ export type SearchObject = {
     cardName?: string,
     cardText?: string,
     cardTypes?: SearchCardType[]
+    allowTypePartials?: boolean
 }

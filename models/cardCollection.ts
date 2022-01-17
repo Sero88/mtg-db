@@ -110,16 +110,18 @@ export class CardCollection{
         return new RegExp(uniqueText.text,'i');
     }
 
-    private constructTypesQuery(types: SearchCardType[] ){
+    private constructTypesQuery(types: SearchCardType[], allowTypePartials: boolean ){
         const isTypes:string[] = [];
         const notTypes:string[] = [];
-        const query:{$in?:string[], $nin?:string[]} = {};
+        const query:{$all?:string[], $in?:string[], $nin?:string[]} = {};
+
+        const inclusionType = allowTypePartials ? '$in' : '$all';
 
         types.forEach( type => {
             type.is ? isTypes.push(type.name) : notTypes.push(type.name);
         });
 
-        isTypes.length > 0 ? query.$in = isTypes : false;
+        isTypes.length > 0 ? query[inclusionType] = isTypes : false;
         notTypes.length > 0 ? query.$nin = notTypes : false;
 
         return query;
@@ -236,7 +238,7 @@ export class CardCollection{
         if(searchObject.cardTypes && searchObject.cardTypes.length > 0){ 
             //todo: remove after completing searchObject functionality
             //@ts-ignore
-            queryObject['types'] = this.constructTypesQuery(searchObject.cardTypes);
+            queryObject['types'] = this.constructTypesQuery(searchObject.cardTypes, searchObject.allowTypePartials);
         }
 
 
