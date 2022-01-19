@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { CardTypeClasses } from "../../types/jsClasses";
 import { SearchList } from "./_searchList";
 import styles from "../../styles/searchTypes.module.scss";
+import {SearchSelector} from "./searchSelector";
 
 type SearchTypeProps = {
     selectedTypes: {name:string, is:boolean}[],
     allowPartials: boolean,
     partialsHandler:  (event: React.ChangeEvent<HTMLInputElement>) => void,
     classes: CardTypeClasses,
-
 }
 
 export function SearchTypes({selectedTypes, classes, allowPartials, partialsHandler}:SearchTypeProps){
@@ -29,33 +29,17 @@ export function SearchTypes({selectedTypes, classes, allowPartials, partialsHand
     useEffect(getTypes,[]);
 
     return (
-        <div className={styles.searchTypes}>
-            <div className={styles.selectedTypesListWrapper}>
-                <div className={styles.selectedTypesList}>
-                    {
-                        selectedTypes.map( (typeObj, index) => {
-                            return (
-                                <div className={styles.typeObject} key={index}>
-                                    <span className={styles.typeRemove + " " + classes.removeItem} data-index={index}>x</span>
-                                    <span className={styles.typeIs + " " + classes.changeIs + ` ${typeObj.is ? styles.typeIsTrue : styles.typeIsFalse }`} data-index={index}>
-                                        {typeObj.is ? "IS" : "NOT"}
-                                    </span>
-                                    <span className={styles.typeName}>{typeObj.name}</span>
-                                </div>
-                            );
-                        })
-                    }
-                </div>
-                <label>
-                    <input type="checkbox" className={classes.partialsToggle} checked={allowPartials} onChange={partialsHandler} name="typePartials"/>
-                    Allow partials
-                </label>
-            </div>
-
-            <div className={styles.availableTypes}>
-                <p>Search types in collection:</p>
-                <SearchList list={types} itemClass={classes.item}/>
-            </div>
-        </div>
-    )
+        <SearchSelector 
+            styles= {styles}
+            canChangeIs={true}
+            selectedItems={selectedTypes}
+            classes={classes}
+            listItems={types}
+        >
+            <label>
+                <input type="checkbox" className={classes.partialsToggle} checked={allowPartials} onChange={partialsHandler} name="typePartials"/>
+                Allow partials
+            </label>
+        </SearchSelector>  
+    );
 }

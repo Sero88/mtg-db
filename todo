@@ -1,16 +1,11 @@
 Doing:
 
-* [] Refactor Text symbols so it uses list
-
-Begin with the Type search
-* [] add partials option
-* [x] style it
-* [x] Plan out how user is going to use this field
-* [x] Get all the types from the DB and show them sorted alphatically in a list
-** [x] User can click on list and add them to list 
-** [x] Any item added to list can be IS or is NOT
-** [x] Either user can directly type on this list or not type and click to add from populated list. 
-*** [X] This list must be searchable though
+Colors Search
+* [] Plan out how user is going to use this field
+** [] Similar to Types, going to abstract types component to be able to do different types of add/remove lists (set and color) total of three different components using this.
+*** Maybe not so, with colors there are three types we can search: exactly, including and any of the selected. With sets, we don't allow partials, sets include selected sets only. We can create this separately, or just have the condition of search be its own unique thing for each component (yeah!). 
+**** [x] Refactor Types component to use composition model (parent / child, specialization/generic)
+*** Regarding the exact match with colors, you can use the size array operator : {colorIdentity: {$all:['B','R','U'], $size: 3}}
 
 
 
@@ -29,6 +24,8 @@ Future enhancements
 Refactor structure a little
 * Move add components to a new Add Folder to differentiate between collection and add components
 
+* [] Refactor Text symbols so it uses list? -- AddSymbols and _searchList are different kinds of lists, they do share some similarities, but not the same. We could probably make the addsymbols list comply with _searchList
+ 
 Learn more about indexes and to DB where needed
 
 ================================
@@ -46,6 +43,7 @@ Features:
 
 Add a way to go back to previuos search
 When clicking on a card to view the print, there should be a way to return to the results list
+
 ===============================
 NOTES About project
 
@@ -107,6 +105,16 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+Begin with the Type search
+* [x] add partials option
+* [x] style it
+* [x] Plan out how user is going to use this field
+* [x] Get all the types from the DB and show them sorted alphatically in a list
+** [x] User can click on list and add them to list 
+** [x] Any item added to list can be IS or is NOT
+** [x] Either user can directly type on this list or not type and click to add from populated list. 
+*** [X] This list must be searchable though
 
 
 Text Search functionality
