@@ -8,10 +8,9 @@ type SearchTypeProps = {
     allowPartials: boolean,
     partialsHandler:  (event: React.ChangeEvent<HTMLInputElement>) => void,
     classes: SelectorClasses,
-    partialsName:string
 }
 
-export function SearchTypes({selectedItems, classes, allowPartials, queryKey, partialsHandler, partialsName}:SearchTypeProps){
+export function SearchColors({selectedItems, classes, allowPartials, queryKey, partialsHandler}:SearchTypeProps){
     const [types, setTypes] = useState([]);
     
     const getTypes = () => {
@@ -37,7 +36,7 @@ export function SearchTypes({selectedItems, classes, allowPartials, queryKey, pa
             queryKey={queryKey}
         >
             <label>
-                <input type="checkbox" className={classes.partialsToggle} checked={allowPartials} onChange={partialsHandler} name={partialsName}/>
+                <input type="checkbox" className={classes.partialsToggle} checked={allowPartials} onChange={partialsHandler} name="typePartials"/>
                 Allow partials
             </label>
         </SearchSelector>  

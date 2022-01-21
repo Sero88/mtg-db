@@ -6,9 +6,10 @@ import styles from '../../styles/_searchList.module.scss';
 type SearchListProps = {
     list:string[],
     itemClass: string
+    queryKey: string,
 }
 
-export function SearchList({list,itemClass}:SearchListProps){
+export function SearchList({list,itemClass, queryKey}:SearchListProps){
     const [searchText, setSearchText] = useState('');
     
     const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +24,7 @@ export function SearchList({list,itemClass}:SearchListProps){
     const showList = searchText ? helpers.getTextMatchesFromList(searchText,list) : list;
 
     const results =  showList.map( (item, index) => {
-        return <li key={index} className={itemClass}>{item}</li>
+        return <li key={index} className={itemClass} data-key={queryKey}>{item}</li>
     })
 
 

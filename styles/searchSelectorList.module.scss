@@ -1,7 +1,7 @@
 @import './variables.scss';
 
 
-.searchTypes {
+.searchSelectorList {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
@@ -9,12 +9,12 @@
 
 }
 
-.selectedTypesListWrapper{
+.selectedListWrapper{
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: 25rem;
 
-    .selectedTypesList{
+    .selectedList{
         border: 1px solid $gray;
         height: 15rem;
         overflow-y: auto;
@@ -23,15 +23,15 @@
 }
 
 
-.typeObject{
+.itemObject{
     margin-bottom: .75rem;
     user-select: none;
 
-    .typeName{
+    .itemName{
         font-size: 1.2rem;
     }
 
-    .typeRemove, .typeIs {
+    .itemRemove, .itemIs {
         padding: 0.75rem 0.25rem;
         line-height: 0;
         margin-right: 0.25rem;
@@ -42,25 +42,25 @@
         transition: background-color .25s ease-in-out;
     }
 
-    .typeIs {
+    .itemIs {
         color: #fff;
         width: 3rem;
         text-align: center;
         font-size: 1rem;
         padding-top: .85rem;
     }
-    .typeIsFalse {
+    .itemIsFalse {
         background-color: #e45f5f;
     }
 
-    .typeIsTrue {
+    .itemIsTrue {
         background-color: #0d8480;
     }
 
 
 }
 
-.availableTypes{
+.availableitems{
     p{
         margin: 0;
     }

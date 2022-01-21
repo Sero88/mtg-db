@@ -7,26 +7,34 @@ import styles from "../../../styles/collectionSearchResults.module.scss";
 import { SearchText } from "../../../components/collection-search/text";
 import { helpers } from "../../../util/helpers";
 import { SearchTypes } from "../../../components/collection-search/types";
-import { CardTypeClasses } from "../../../types/jsClasses";
+import { SearchColors } from "../../../components/collection-search/colors";
+import { SelectorClasses } from "../../../types/jsClasses";
+import { SelectorListType } from "../../../types/searchTypes";
 
 
 export default function Search(){
     const searchEndpoint = '/api/collection/search/?action=searchQuery';
     //class names used for interactivity
     const jsClassNames = {
-        types: {
+        selectorClasses: {
             item:'js-item-type',
             removeItem: 'js-remove-item-type',
             changeIs: 'js-change-item-type-is',
-            partialsToggle: 'js-partials-toggle',
-        } as CardTypeClasses
+            partialsToggle: 'js-partials-type-toggle',
+        } as SelectorClasses,
+    }
+
+    const fieldNames = {
+        types: {
+            partials: 'typePartials'
+        }
     }
 
     const [searchQueryState, setSearchQueryState] = useState({
         cardName: '',
         cardText: '',
-        cardTypes: [] as {name:string, is:boolean}[],
-        allowTypePartials: false,
+        cardTypes: {queryKey:'cardTypes', items: [], allowPartials: false} as SelectorListType,
+        cardColors: {queryKey:'cardColors', items: [], allowPartials: false} as SelectorListType,
         isSearching: false,
     });
 
@@ -96,7 +104,7 @@ export default function Search(){
             break;
 
             case 'typePartials':
-                searchQueryState.allowTypePartials = !searchQueryState.allowTypePartials;
+                searchQueryState.cardTypes.allowPartials = !searchQueryState.cardTypes.allowPartials;
             break;
         }
        
@@ -120,18 +128,24 @@ export default function Search(){
 
     };
 
-    const typesClickHandler = (event: React.MouseEvent<Element, MouseEvent>) => {
+    const selectorClickHandler = (event: React.MouseEvent<Element, MouseEvent>) => {
         const clickedElement = event.target as HTMLElement;
+        const queryKey = clickedElement.dataset.key ? clickedElement.dataset.key : null;
+
+        if(!queryKey){
+            return;
+        }
 
         //add from avaialable types list to selected list
-        if(clickedElement.className.includes(jsClassNames.types.item)){
+        if(clickedElement.className.includes(jsClassNames.selectorClasses.item)){
             const type = {name:clickedElement.innerHTML, is:true}
-            searchQueryState.cardTypes.push(type);
+            //@ts-ignore - it matches the query key so TS can ignore safely
+            searchQueryState[queryKey].items.push(type);
             updateSearchQueryState();
         }
 
         //remove item from selected list
-        else if(clickedElement.className.includes(jsClassNames.types.removeItem)){
+        else if(clickedElement.className.includes(jsClassNames.selectorClasses.removeItem)){
            const itemToRemove = clickedElement.dataset.index ? parseInt(clickedElement.dataset.index) : null;
 
            //verify we have item
@@ -139,12 +153,13 @@ export default function Search(){
                return;
            }
 
-           searchQueryState.cardTypes.splice(itemToRemove, 1);
+           //@ts-ignore - it matches the query key so TS can ignore safely
+           searchQueryState[queryKey].items.splice(itemToRemove, 1);
            updateSearchQueryState();
         }
 
         //change is/not
-        else if(clickedElement.className.includes(jsClassNames.types.changeIs)){
+        else if(clickedElement.className.includes(jsClassNames.selectorClasses.changeIs)){
             const itemToChange = clickedElement.dataset.index ? parseInt(clickedElement.dataset.index) : null;
              //verify we have item
             
@@ -152,7 +167,8 @@ export default function Search(){
                 return;
             }
 
-            searchQueryState.cardTypes[itemToChange].is = !searchQueryState.cardTypes[itemToChange].is;
+            //@ts-ignore - it matches the query key so TS can ignore safely
+            searchQueryState[queryKey].items[itemToChange].is = !searchQueryState[queryKey].items[itemToChange].is;
             updateSearchQueryState();
         }
 
@@ -175,12 +191,27 @@ export default function Search(){
 
                 <hr />
 
-                <div className={styles.searchTypeSection + " form-section"} onClick={typesClickHandler}>
+                <div className={styles.searchTypeSection + " form-section"} onClick={selectorClickHandler}>
                 <label>Types</label>
                     <SearchTypes 
-                        selectedTypes={searchQueryState.cardTypes} 
-                        classes={jsClassNames.types}
-                        allowPartials={searchQueryState.allowTypePartials}
+                        selectedItems={searchQueryState.cardTypes.items} 
+                        queryKey={searchQueryState.cardTypes.queryKey}
+                        classes={jsClassNames.selectorClasses}
+                        allowPartials={searchQueryState.cardTypes.allowPartials}
+                        partialsHandler={onChangeHandler}
+                        partialsName={fieldNames.types.partials}
+                    />
+                </div>
+
+                <hr />
+
+                <div className={styles.searchColorsSection + " form-section"} onClick={selectorClickHandler}>
+                    <label>Colors</label>
+                    <SearchColors
+                        selectedItems={searchQueryState.cardColors.items} 
+                        queryKey={searchQueryState.cardColors.queryKey}
+                        classes={jsClassNames.selectorClasses}
+                        allowPartials={searchQueryState.cardColors.allowPartials}
                         partialsHandler={onChangeHandler}
                     />
                 </div>

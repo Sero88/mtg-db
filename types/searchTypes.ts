@@ -1,11 +1,11 @@
-export type SearchCardType = {
-    name: string,
-    is: boolean
+export type SelectorListType = {
+    queryKey: string //same as object key, used to match the update
+    items: {name:string, is:boolean}[], 
+    allowPartials: boolean
 }
 
 export type SearchObject = {
     cardName?: string,
     cardText?: string,
-    cardTypes?: SearchCardType[]
-    allowTypePartials?: boolean
+    cardTypes?: SelectorListType[]
 }

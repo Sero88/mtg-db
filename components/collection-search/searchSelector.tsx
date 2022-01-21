@@ -1,31 +1,33 @@
 import { ReactElement } from 'react';
-import { CardTypeClasses } from '../../types/jsClasses';
+import { SelectorClasses } from '../../types/jsClasses';
 import {SearchList} from './_searchList';
+import styles from "../../styles/searchSelectorList.module.scss";
+
 
 type SearchListParentProp = {
-    styles:any
+    queryKey: string,
     canChangeIs: boolean,
     selectedItems: {name:string, is:boolean}[],
-    classes: CardTypeClasses,
+    classes: SelectorClasses,
     children: ReactElement,
     listItems: string[]
 }
-export function SearchSelector({styles, canChangeIs, selectedItems, classes, children, listItems}:SearchListParentProp){
+export function SearchSelector({ canChangeIs, selectedItems, classes, children, listItems, queryKey}:SearchListParentProp){
     return (
-        <div className={styles.searchTypes}>
-            <div className={styles.selectedTypesListWrapper}>
-                <div className={styles.selectedTypesList}>
+        <div className={styles.searchSelectorList}>
+            <div className={styles.selectedListWrapper}>
+                <div className={styles.selectedList}>
                     {
                         selectedItems.map( (typeObj, index) => {
                             return (
-                                <div className={styles.typeObject} key={index}>
-                                    <span className={styles.typeRemove + " " + classes.removeItem} data-index={index}>x</span>
+                                <div className={styles.itemObject} key={index}>
+                                    <span className={styles.itemRemove + " " + classes.removeItem} data-index={index} data-key={queryKey}>x</span>
                                     { 
-                                        canChangeIs && <span className={styles.typeIs + " " + classes.changeIs + ` ${typeObj.is ? styles.typeIsTrue : styles.typeIsFalse }`} data-index={index}> 
+                                        canChangeIs && <span className={styles.itemIs + " " + classes.changeIs + ` ${typeObj.is ? styles.itemIsTrue : styles.itemIsFalse }`} data-index={index} data-key={queryKey}> 
                                             {typeObj.is ? "IS" : "NOT"}
                                         </span> 
                                     }
-                                    <span className={styles.typeName}>{typeObj.name}</span>
+                                    <span className={styles.itemName}>{typeObj.name}</span>
                                 </div>
                             );
                         })
@@ -34,9 +36,9 @@ export function SearchSelector({styles, canChangeIs, selectedItems, classes, chi
                 {children}
             </div>
 
-            <div className={styles.availableTypes}>
+            <div className={styles.availableitems}>
                 <p>Search types in collection:</p>
-                <SearchList list={listItems} itemClass={classes.item}/>
+                <SearchList list={listItems} itemClass={classes.item} queryKey={queryKey}/>
             </div>
         </div>
     )
