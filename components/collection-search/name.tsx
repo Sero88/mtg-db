@@ -1,13 +1,14 @@
 
 type SearchNameProps = {
-    name: any
+    fieldName: string,
+    fieldValue: string,
     changeHandler:  (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export function SearchName({changeHandler, name}:SearchNameProps){
+export function SearchName({changeHandler, fieldName, fieldValue}:SearchNameProps){
     return (
         <label>
-            <input name="cardName" onChange={changeHandler} value={name} autoComplete="off" />
+            <input name={fieldName} onChange={changeHandler} value={fieldValue} autoComplete="off" />
             <br />
             Card name
         </label>

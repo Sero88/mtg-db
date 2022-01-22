@@ -27,7 +27,10 @@ export default function Search(){
     const fieldNames = {
         types: {
             partials: 'typePartials'
-        }
+        },
+        cardName: 'cardName',
+        cardText: 'cardText',
+
     }
 
     const [searchQueryState, setSearchQueryState] = useState({
@@ -95,15 +98,15 @@ export default function Search(){
     const onChangeHandler =  (event: React.ChangeEvent<HTMLInputElement>) => {  
 
         switch (event.target.name){
-            case 'cardName':
+            case fieldNames.cardName:
                 searchQueryState.cardName = event.target.value;
             break;
 
-            case 'cardText':
+            case fieldNames.cardText:
                 searchQueryState.cardText = event.target.value;
             break;
 
-            case 'typePartials':
+            case fieldNames.types.partials:
                 searchQueryState.cardTypes.allowPartials = !searchQueryState.cardTypes.allowPartials;
             break;
         }
@@ -180,13 +183,13 @@ export default function Search(){
             <h1>Search Collection</h1>
             <form action="search/results/" onSubmit={submitHandler} className={styles.searchForm}>
                 <div className="form-section">
-                    <SearchName changeHandler={onChangeHandler} name={searchQueryState.cardName}/>
+                    <SearchName changeHandler={onChangeHandler} fieldName={fieldNames.cardName} fieldValue={searchQueryState.cardName}/>
                 </div>
 
                 <hr />
 
                 <div className={styles.searchTextSection + " form-section"}>
-                    <SearchText changeHandler={onChangeHandler} clickHandler={clickHandler} text={searchQueryState.cardText}/>
+                    <SearchText changeHandler={onChangeHandler} clickHandler={clickHandler} text={searchQueryState.cardText} fieldName={fieldNames.cardText}/>
                 </div>
 
                 <hr />
