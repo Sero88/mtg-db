@@ -2,7 +2,7 @@ import {connectToDatabase} from "../util/mongodb";
 import { CollectionCard } from "../util/collectionCard";
 import { ApiCard } from "../types/apiCard";
 import { CardQuantity } from "../types/cardQuantity";
-import { SearchObject, SearchCardType } from "../types/searchTypes";
+import { SearchObject, SelectorListTypeItem } from "../types/searchTypes";
 import { helpers } from "../util/helpers";
 
 
@@ -110,7 +110,7 @@ export class CardCollection{
         return new RegExp(uniqueText.text,'i');
     }
 
-    private constructTypesQuery(types: SearchCardType[], allowTypePartials: boolean ){
+    private constructTypesQuery(types: SelectorListTypeItem[], allowTypePartials: boolean ){
         const isTypes:string[] = [];
         const notTypes:string[] = [];
         const query:{$all?:string[], $in?:string[], $nin?:string[]} = {};
@@ -235,10 +235,10 @@ export class CardCollection{
             queryObject['cardFaces.oracleText'] = this.constructTextQuery(searchObject.cardText);
         }
 
-        if(searchObject.cardTypes && searchObject.cardTypes.length > 0){ 
+        if(searchObject.cardTypes && searchObject.cardTypes.items.length > 0){ 
             //todo: remove after completing searchObject functionality
             //@ts-ignore
-            queryObject['types'] = this.constructTypesQuery(searchObject.cardTypes, searchObject.allowTypePartials);
+            queryObject['types'] = this.constructTypesQuery(searchObject.cardTypes.items, searchObject.cardTypes.conditionals.allowPartials);
         }
 
 

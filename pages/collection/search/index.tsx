@@ -30,14 +30,24 @@ export default function Search(){
         },
         cardName: 'cardName',
         cardText: 'cardText',
-
     }
 
     const [searchQueryState, setSearchQueryState] = useState({
         cardName: '',
         cardText: '',
-        cardTypes: {queryKey:'cardTypes', items: [], allowPartials: false} as SelectorListType,
-        cardColors: {queryKey:'cardColors', items: [], allowPartials: false} as SelectorListType,
+        cardTypes: { 
+            queryKey:'cardTypes', 
+            items: [], 
+            conditionals: {
+                allowPartials: false
+            }
+        } as SelectorListType,
+        cardColors: {
+            queryKey:'cardColors', 
+            items: [], 
+            conditionals: {
+            }
+        } as SelectorListType,
         isSearching: false,
     });
 
@@ -107,7 +117,7 @@ export default function Search(){
             break;
 
             case fieldNames.types.partials:
-                searchQueryState.cardTypes.allowPartials = !searchQueryState.cardTypes.allowPartials;
+                searchQueryState.cardTypes.conditionals.allowPartials = !searchQueryState.cardTypes.conditionals.allowPartials;
             break;
         }
        
@@ -200,7 +210,7 @@ export default function Search(){
                         selectedItems={searchQueryState.cardTypes.items} 
                         queryKey={searchQueryState.cardTypes.queryKey}
                         classes={jsClassNames.selectorClasses}
-                        allowPartials={searchQueryState.cardTypes.allowPartials}
+                        allowPartials={searchQueryState.cardTypes.conditionals.allowPartials ?? false}
                         partialsHandler={onChangeHandler}
                         partialsName={fieldNames.types.partials}
                     />
@@ -214,7 +224,6 @@ export default function Search(){
                         selectedItems={searchQueryState.cardColors.items} 
                         queryKey={searchQueryState.cardColors.queryKey}
                         classes={jsClassNames.selectorClasses}
-                        allowPartials={searchQueryState.cardColors.allowPartials}
                         partialsHandler={onChangeHandler}
                     />
                 </div>
