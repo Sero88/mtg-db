@@ -1,4 +1,5 @@
 import { CardQuantity } from "../types/cardQuantity";
+import { DisplayListItem } from "../types/searchTypes";
 
 export const helpers = {
     officialSetCharLimit: 3, // official sets have 3 chars
@@ -72,23 +73,26 @@ export const helpers = {
         return {words: uniqueWords, text: uniqueText};
     },
 
-    getTextMatchesFromList(searchText:string, list:string[]){
-        const matches:string[] = [];
+    getTextMatchesFromList(searchText:string, list:DisplayListItem[]){
+        const matchedString:string[] = [];
+        const matchedItems:DisplayListItem[] = [];
     
-        list.forEach( item => {
-            if(matches.includes(item)){
+    
+        list.forEach( (item:DisplayListItem, index:number) => {
+            if(matchedString.includes(item.name)){
                 return;
             }
             const regex = new RegExp(`${searchText}`,'i');
-            const matchResults =  regex.exec(item);
+            const matchResults =  regex.exec(item.name);
 
             if(matchResults){
-                matches.push(matchResults.input);
+                matchedString.push(matchResults.input);
+                matchedItems.push(list[index]);
             }
 
         })
 
-        return matches;
+        return matchedItems;
 
     }
 }

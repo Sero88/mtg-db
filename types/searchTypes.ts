@@ -8,7 +8,15 @@ export type SelectorListType = {
 
 export type SelectorListTypeItem = {
     name:string, 
-    is:boolean
+    is:boolean, 
+    value: string
+}
+ 
+
+export type DisplayListItem = {
+    name: string,
+    uri?: string, 
+    value: string, 
 }
 
 export type SearchObject = {

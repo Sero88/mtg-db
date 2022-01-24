@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { SelectorClasses } from "../../types/jsClasses";
+import { DisplayListItem } from "../../types/searchTypes";
 import {SearchSelector} from "./searchSelector";
 
 type SearchTypeProps = {
@@ -8,11 +9,12 @@ type SearchTypeProps = {
     allowPartials: boolean,
     partialsHandler:  (event: React.ChangeEvent<HTMLInputElement>) => void,
     classes: SelectorClasses,
-    partialsName:string
+    partialsName:string,
+    selectorClickHandler:  (event:React.MouseEvent) => void
 }
 
-export function SearchTypes({selectedItems, classes, allowPartials, queryKey, partialsHandler, partialsName}:SearchTypeProps){
-    const [types, setTypes] = useState([]);
+export function SearchTypes({selectedItems, classes, allowPartials, queryKey, partialsHandler, partialsName, selectorClickHandler}:SearchTypeProps){
+    const [types, setTypes] = useState([] as DisplayListItem[]);
     
     const getTypes = () => {
         const endpoint = '/api/collection/search?action=getTypes';
@@ -20,7 +22,10 @@ export function SearchTypes({selectedItems, classes, allowPartials, queryKey, pa
             .then(response => response.json())
             .then(response => {
                   if(response && 'status' in response && response.status == 'success'){
-                    setTypes(response.data);
+                      const retrievedTypes = response.data.map( (type:string) => {
+                          return {name: type, value: type}
+                      });
+                    setTypes(retrievedTypes);
                   }
                 }
             );
@@ -35,6 +40,7 @@ export function SearchTypes({selectedItems, classes, allowPartials, queryKey, pa
             classes={classes}
             listItems={types}
             queryKey={queryKey}
+            selectorClickHandler={selectorClickHandler}
         >
             <label>
                 <input type="checkbox" className={classes.partialsToggle} checked={allowPartials} onChange={partialsHandler} name={partialsName}/>

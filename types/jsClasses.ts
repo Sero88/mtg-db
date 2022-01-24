@@ -1,5 +1,6 @@
 export type SelectorClasses = {
-    item:string,
+    itemWrapper: string,
+    item: string,
     removeItem: string,
     changeIs: string,
     partialsToggle: string,

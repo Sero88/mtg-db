@@ -17,16 +17,20 @@ export default function Search(){
     //class names used for interactivity
     const jsClassNames = {
         selectorClasses: {
-            item:'js-item-type',
-            removeItem: 'js-remove-item-type',
-            changeIs: 'js-change-item-type-is',
-            partialsToggle: 'js-partials-type-toggle',
+            itemWrapper: 'js-selector-item-wrapper',
+            item: 'js-selector-item',
+            removeItem: 'js-selector-remove-item',
+            changeIs: 'js-selector-item-is',
+            partialsToggle: 'js-selector-partials-toggle',
         } as SelectorClasses,
     }
 
     const fieldNames = {
         types: {
             partials: 'typePartials'
+        },
+        colors: {
+            conditional:'colorsConditional'
         },
         cardName: 'cardName',
         cardText: 'cardText',
@@ -141,24 +145,36 @@ export default function Search(){
 
     };
 
-    const selectorClickHandler = (event: React.MouseEvent<Element, MouseEvent>) => {
-        const clickedElement = event.target as HTMLElement;
+    const selectorClickHandler= (event: React.MouseEvent<Element, MouseEvent>) => {
+        const clickedElement = event.currentTarget as HTMLElement;
         const queryKey = clickedElement.dataset.key ? clickedElement.dataset.key : null;
-
+  
         if(!queryKey){
             return;
         }
 
         //add from avaialable types list to selected list
-        if(clickedElement.className.includes(jsClassNames.selectorClasses.item)){
-            const type = {name:clickedElement.innerHTML, is:true}
+        if(clickedElement.className.includes(jsClassNames.selectorClasses.itemWrapper)){
+            const item = {name:clickedElement.dataset.name, value:clickedElement.dataset.value, is:true}
             //@ts-ignore - it matches the query key so TS can ignore safely
-            searchQueryState[queryKey].items.push(type);
+            searchQueryState[queryKey].items.push(item);
             updateSearchQueryState();
         }
 
+       
+    }
+
+    const formSectionClickHandler = (event: React.MouseEvent<Element, MouseEvent>) => {
+        const clickedElement = event.target as HTMLElement;
+        const queryKey = clickedElement.dataset.key ? clickedElement.dataset.key : null;
+
+  
+        if(!queryKey){
+            return;
+        }
+
         //remove item from selected list
-        else if(clickedElement.className.includes(jsClassNames.selectorClasses.removeItem)){
+        if(clickedElement.className.includes(jsClassNames.selectorClasses.removeItem)){
            const itemToRemove = clickedElement.dataset.index ? parseInt(clickedElement.dataset.index) : null;
 
            //verify we have item
@@ -204,7 +220,7 @@ export default function Search(){
 
                 <hr />
 
-                <div className={styles.searchTypeSection + " form-section"} onClick={selectorClickHandler}>
+                <div className={styles.searchTypeSection + " form-section"} onClick={formSectionClickHandler}>
                 <label>Types</label>
                     <SearchTypes 
                         selectedItems={searchQueryState.cardTypes.items} 
@@ -213,18 +229,21 @@ export default function Search(){
                         allowPartials={searchQueryState.cardTypes.conditionals.allowPartials ?? false}
                         partialsHandler={onChangeHandler}
                         partialsName={fieldNames.types.partials}
+                        selectorClickHandler={selectorClickHandler}
                     />
                 </div>
 
                 <hr />
 
-                <div className={styles.searchColorsSection + " form-section"} onClick={selectorClickHandler}>
+                <div className={styles.searchColorsSection + " form-section"} onClick={formSectionClickHandler}>
                     <label>Colors</label>
                     <SearchColors
                         selectedItems={searchQueryState.cardColors.items} 
                         queryKey={searchQueryState.cardColors.queryKey}
                         classes={jsClassNames.selectorClasses}
-                        partialsHandler={onChangeHandler}
+                        conditionalHandler={onChangeHandler}
+                        conditionalName={fieldNames.colors.conditional}
+                        selectorClickHandler={selectorClickHandler}
                     />
                 </div>
                

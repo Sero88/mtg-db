@@ -2,6 +2,7 @@ import { ReactElement } from 'react';
 import { SelectorClasses } from '../../types/jsClasses';
 import {SearchList} from './_searchList';
 import styles from "../../styles/searchSelectorList.module.scss";
+import { DisplayListItem } from '../../types/searchTypes';
 
 
 type SearchListParentProp = {
@@ -10,9 +11,12 @@ type SearchListParentProp = {
     selectedItems: {name:string, is:boolean}[],
     classes: SelectorClasses,
     children: ReactElement,
-    listItems: string[]
+    listItems: DisplayListItem[],
+    selectorClickHandler: (event:React.MouseEvent) => void
 }
-export function SearchSelector({ canChangeIs, selectedItems, classes, children, listItems, queryKey}:SearchListParentProp){
+
+export function SearchSelector({ canChangeIs, selectedItems, classes, children, listItems, queryKey,selectorClickHandler}:SearchListParentProp){
+
     return (
         <div className={styles.searchSelectorList}>
             <div className={styles.selectedListWrapper}>
@@ -27,7 +31,7 @@ export function SearchSelector({ canChangeIs, selectedItems, classes, children, 
                                             {typeObj.is ? "IS" : "NOT"}
                                         </span> 
                                     }
-                                    <span className={styles.itemName}>{typeObj.name}</span>
+                                   <span className={styles.itemName}>{typeObj.name}</span>
                                 </div>
                             );
                         })
@@ -37,8 +41,8 @@ export function SearchSelector({ canChangeIs, selectedItems, classes, children, 
             </div>
 
             <div className={styles.availableitems}>
-                <p>Search types in collection:</p>
-                <SearchList list={listItems} itemClass={classes.item} queryKey={queryKey}/>
+                <p>Search:</p>
+                <SearchList listItems={listItems} classes={classes} queryKey={queryKey} selectorClickHandler={selectorClickHandler}/>
             </div>
         </div>
     )

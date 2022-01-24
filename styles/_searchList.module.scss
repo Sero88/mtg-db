@@ -17,12 +17,15 @@
         li {
             cursor: pointer;
             margin-bottom: .25rem;
+            display: flex;
+            align-items: center;
+            gap: .2rem;
 
-            
             &:hover {
                 color: $dark-green;
                 font-weight: bold;
             }
+
         }
     }
 

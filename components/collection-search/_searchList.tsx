@@ -2,36 +2,63 @@
 import React, {useState} from 'react';
 import { helpers } from '../../util/helpers';
 import styles from '../../styles/_searchList.module.scss';
+import { SelectorClasses } from '../../types/jsClasses';
+import { DisplayListItem } from '../../types/searchTypes';
+import Image from 'next/image';
 
 type SearchListProps = {
-    list:string[],
-    itemClass: string
+    listItems:DisplayListItem[],
+    classes: SelectorClasses,
     queryKey: string,
+    selectorClickHandler:  (event:React.MouseEvent) => void
 }
 
-export function SearchList({list,itemClass, queryKey}:SearchListProps){
+export function SearchList({listItems,classes, queryKey, selectorClickHandler}:SearchListProps){
     const [searchText, setSearchText] = useState('');
     
     const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchText(event.target.value);
     }
 
-    const clickHandler = (event: React.MouseEvent<Element, MouseEvent>) => {
+    const clearClickHandler = (event: React.MouseEvent<Element, MouseEvent>) => {
         event.preventDefault();
         setSearchText('');
     }
 
-    const showList = searchText ? helpers.getTextMatchesFromList(searchText,list) : list;
+    const getImage = (item:DisplayListItem) => {
+        return(
+            <Image
+                src={item.uri ?? ''}
+                alt={item.name}
+                height={15}
+                width={15}
+            />
+        );
+    }
 
-    const results =  showList.map( (item, index) => {
-        return <li key={index} className={itemClass} data-key={queryKey}>{item}</li>
-    })
+    const showList = searchText ? helpers.getTextMatchesFromList(searchText,listItems) : listItems;
+
+
+    const results = showList.map( (item:DisplayListItem, index:number) => {
+        return (
+            <li 
+                key={index} 
+                className={classes.itemWrapper} 
+                data-key={queryKey}
+                data-name={item.name} 
+                data-value={item.value ?? ''}
+                onClick={selectorClickHandler}
+            >
+                {item.uri && getImage(item)}<span className={classes.item}>{item.name}</span>
+            </li>
+        );
+    });
 
 
     return (
         <div className={styles.searchList}>
             <input onChange={searchHandler} type="text" value={searchText}/>
-            <a href="#" onClick={clickHandler}>Clear</a>
+            <a href="#" onClick={clearClickHandler}>Clear</a>
             {
                 results.length > 0 
                 ? <ul>

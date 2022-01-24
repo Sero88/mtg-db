@@ -118,7 +118,7 @@ export class CardCollection{
         const inclusionType = allowTypePartials ? '$in' : '$all';
 
         types.forEach( type => {
-            type.is ? isTypes.push(type.name) : notTypes.push(type.name);
+            type.is ? isTypes.push(type.value) : notTypes.push(type.value);
         });
 
         isTypes.length > 0 ? query[inclusionType] = isTypes : false;
