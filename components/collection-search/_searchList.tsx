@@ -4,7 +4,6 @@ import { helpers } from '../../util/helpers';
 import styles from '../../styles/_searchList.module.scss';
 import { SelectorClasses } from '../../types/jsClasses';
 import { DisplayListItem } from '../../types/searchTypes';
-import Image from 'next/image';
 
 type SearchListProps = {
     listItems:DisplayListItem[],
@@ -25,16 +24,6 @@ export function SearchList({listItems,classes, queryKey, selectorClickHandler}:S
         setSearchText('');
     }
 
-    const getImage = (item:DisplayListItem) => {
-        return(
-            <Image
-                src={item.uri ?? ''}
-                alt={item.name}
-                height={15}
-                width={15}
-            />
-        );
-    }
 
     const showList = searchText ? helpers.getTextMatchesFromList(searchText,listItems) : listItems;
 
@@ -49,7 +38,7 @@ export function SearchList({listItems,classes, queryKey, selectorClickHandler}:S
                 data-value={item.value ?? ''}
                 onClick={selectorClickHandler}
             >
-                {item.uri && getImage(item)}<span className={classes.item}>{item.name}</span>
+                {item.uri && helpers.getDisplayItemImage(item)}<span className={classes.item}>{item.name}</span>
             </li>
         );
     });

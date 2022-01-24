@@ -1,5 +1,6 @@
 import { CardQuantity } from "../types/cardQuantity";
 import { DisplayListItem } from "../types/searchTypes";
+import Image from 'next/image';
 
 export const helpers = {
     officialSetCharLimit: 3, // official sets have 3 chars
@@ -94,5 +95,16 @@ export const helpers = {
 
         return matchedItems;
 
+    },
+
+    getDisplayItemImage(item:DisplayListItem){
+        return(
+            <Image
+                src={item.uri ?? ''}
+                alt={item.name}
+                height={15}
+                width={15}
+            />
+        );
     }
 }

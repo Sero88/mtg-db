@@ -10,6 +10,7 @@ import { SearchTypes } from "../../../components/collection-search/types";
 import { SearchColors } from "../../../components/collection-search/colors";
 import { SelectorClasses } from "../../../types/jsClasses";
 import { SelectorListType } from "../../../types/searchTypes";
+import {ColorConditionals} from "../../../util/enums/colorEnums";
 
 
 export default function Search(){
@@ -30,7 +31,7 @@ export default function Search(){
             partials: 'typePartials'
         },
         colors: {
-            conditional:'colorsConditional'
+            conditional:'colorConditionals'
         },
         cardName: 'cardName',
         cardText: 'cardText',
@@ -47,11 +48,9 @@ export default function Search(){
             }
         } as SelectorListType,
         cardColors: {
-            queryKey:'cardColors', 
-            items: [], 
-            conditionals: {
-            }
-        } as SelectorListType,
+            selected:[],
+            conditionals: ColorConditionals.exact
+        },
         isSearching: false,
     });
 
