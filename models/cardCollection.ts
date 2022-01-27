@@ -2,8 +2,9 @@ import {connectToDatabase} from "../util/mongodb";
 import { CollectionCard } from "../util/collectionCard";
 import { ApiCard } from "../types/apiCard";
 import { CardQuantity } from "../types/cardQuantity";
-import { SearchObject, SelectorListTypeItem } from "../types/searchTypes";
+import { ColorsSelectorType, SearchObject, SelectorListTypeItem } from "../types/searchTypes";
 import { helpers } from "../util/helpers";
+import { ColorConditionals } from "../util/enums/colorEnums";
 
 
 export class CardCollection{
@@ -127,6 +128,24 @@ export class CardCollection{
         return query;
     }
 
+    private constructColorsQuery(colorOptions: ColorsSelectorType) {
+
+        //colorless cards use null (no color)
+        if(colorOptions.selected.indexOf('null') >= 0 ){
+            return null;
+        }
+
+        // example {colorIdentity: {$all:['B','R','U'], $size: 3}}
+        const query:{$all?:string[], $in?:string[], $size?: number} = {};
+        const inclusionType = colorOptions.conditional == ColorConditionals.exact || colorOptions.conditional == ColorConditionals.include ? '$all' : '$in';
+        const includeSize = colorOptions.conditional == ColorConditionals.exact ? true : false;
+
+        query[inclusionType] = colorOptions.selected;
+        includeSize ? query.$size = colorOptions.selected.length : false;
+
+        return query;
+    }
+
     async dbConnect(){
         const {client, db} = await connectToDatabase();    
         this.client = client;
@@ -239,6 +258,12 @@ export class CardCollection{
             //todo: remove after completing searchObject functionality
             //@ts-ignore
             queryObject['types'] = this.constructTypesQuery(searchObject.cardTypes.items, searchObject.cardTypes.conditionals.allowPartials);
+        }
+
+        if(searchObject.cardColors && searchObject.cardColors.selected.length > 0){
+            //todo: remove after completing searchObject functionality
+            //@ts-ignore
+            queryObject['colorIdentity'] = this.constructColorsQuery(searchObject.cardColors);
         }
 
 

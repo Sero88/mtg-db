@@ -11,6 +11,11 @@ export type SelectorListTypeItem = {
     is:boolean, 
     value: string
 }
+
+export type ColorsSelectorType = {
+    selected: string[],
+    conditional: number
+}
  
 
 export type DisplayListItem = {
@@ -23,4 +28,5 @@ export type SearchObject = {
     cardName?: string,
     cardText?: string,
     cardTypes?: SelectorListType,
+    cardColors?: ColorsSelectorType
 }
