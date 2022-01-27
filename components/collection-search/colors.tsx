@@ -7,15 +7,12 @@ import {ColorConditionals} from "../../util/enums/colorEnums";
 import styles from "../../styles/colorSearch.module.scss";
 
 type ColorSearchProps = {
-    selectedItems: {name:string, is:boolean}[],
-    queryKey:string,
     conditionalName:string,
-    conditionalHandler:  (event: React.ChangeEvent<HTMLInputElement>) => void,
-    selectorClickHandler:  (event:React.MouseEvent) => void,
-    classes: SelectorClasses,
+    changeHandler:  (event: React.ChangeEvent<HTMLSelectElement|HTMLInputElement>) => void,
+    checkboxFieldName: string,
 }
 
-export function SearchColors({selectedItems, classes, queryKey, conditionalHandler, conditionalName,selectorClickHandler}:ColorSearchProps){
+export function SearchColors({changeHandler, conditionalName, checkboxFieldName}:ColorSearchProps){
     const [colors, setColors] = useState([] as DisplayListItem[]);
     
     const getSymbols = () => {
@@ -31,9 +28,6 @@ export function SearchColors({selectedItems, classes, queryKey, conditionalHandl
                     return [];
                 }
                
-                  //todo remove after testing 👇
-                  console.log('symbols', symbols );
-                  //todo remove after testing 👆
                 symbols.data.forEach( (symbol:SymbolType) => {
                    
                     // is a mana symbol, has a loose variant (example G for green), is at least one color, or if it doesn't have a color the name is colorless
@@ -59,17 +53,16 @@ export function SearchColors({selectedItems, classes, queryKey, conditionalHandl
                     colors.map((color:DisplayListItem, index:number) => {
                         return (
                             <label key={index}>
-                            <input type="checkbox" value={color.value} />
-                            {helpers.getDisplayItemImage(color)}
+                                <input type="checkbox" data-value={color.value} name={checkboxFieldName} onChange={changeHandler}/>
+                                {helpers.getDisplayItemImage(color, 20)}
                             </label>
                         );
 
                     })
                 }
             </div>
-            
 
-            <select name={conditionalName}>
+            <select name={conditionalName} onChange={changeHandler}>
                 <option value={ColorConditionals.exact}>Exactly these colors</option>
                 <option value={ColorConditionals.include}>Including these colors</option>
                 <option value={ColorConditionals.atMost}>At most one of these colors</option>

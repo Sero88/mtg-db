@@ -3,7 +3,8 @@ Doing:
 Colors Search
 * [] Plan out how user is going to use this field
 ** [] Similar to Types, going to abstract types component to be able to do different types of add/remove lists (set and color) total of three different components using this.
-** [] Not sure how I feel about search list selector for colors. I think it works best if it is a checklist rather than a select list
+** [] Not sure how I feel about search list selector for colors. I think it works best if it is a checklist rather than a select list 
+*** [] Work on color state and then backend for query
 *** Maybe not so, with colors there are three types we can search: exactly, including and any of the selected. With sets, we don't allow partials, sets include selected sets only. We can create this separately, or just have the condition of search be its own unique thing for each component (yeah!). 
 **** [x] Refactor Types component to use composition model (parent / child, specialization/generic)
 **** [x] Colors pass icon to list and fix click of items to selected list

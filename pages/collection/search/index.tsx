@@ -31,7 +31,8 @@ export default function Search(){
             partials: 'typePartials'
         },
         colors: {
-            conditional:'colorConditionals'
+            conditional:'colorConditionals',
+            checkbox: 'colorValue'
         },
         cardName: 'cardName',
         cardText: 'cardText',
@@ -48,8 +49,8 @@ export default function Search(){
             }
         } as SelectorListType,
         cardColors: {
-            selected:[],
-            conditionals: ColorConditionals.exact
+            selected:[] as string[],
+            conditional: ColorConditionals.exact as number
         },
         isSearching: false,
     });
@@ -108,11 +109,12 @@ export default function Search(){
         
     };
 
-    const onChangeHandler =  (event: React.ChangeEvent<HTMLInputElement>) => {  
+    const onChangeHandler =  (event: React.ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {  
 
         switch (event.target.name){
             case fieldNames.cardName:
-                searchQueryState.cardName = event.target.value;
+            
+                searchQueryState.cardName = event.target.value ;
             break;
 
             case fieldNames.cardText:
@@ -121,6 +123,23 @@ export default function Search(){
 
             case fieldNames.types.partials:
                 searchQueryState.cardTypes.conditionals.allowPartials = !searchQueryState.cardTypes.conditionals.allowPartials;
+            break;
+
+            case fieldNames.colors.conditional:
+                searchQueryState.cardColors.conditional = parseInt(event.target.value) as number
+            break;
+
+            case fieldNames.colors.checkbox:
+                const value = event.target.dataset.value ? event.target.dataset.value : '';
+                const checked = 'checked' in event.target && event.target.checked ? event.target.checked : false;
+
+                if(checked){
+                    searchQueryState.cardColors.selected.push(value);
+                } else {
+                    const valueToRemove = searchQueryState.cardColors.selected.indexOf(value);
+                    searchQueryState.cardColors.selected.splice(valueToRemove, 1);
+                }
+                
             break;
         }
        
@@ -234,15 +253,12 @@ export default function Search(){
 
                 <hr />
 
-                <div className={styles.searchColorsSection + " form-section"} onClick={formSectionClickHandler}>
+                <div className={styles.searchColorsSection + " form-section"} >
                     <label>Colors</label>
                     <SearchColors
-                        selectedItems={searchQueryState.cardColors.items} 
-                        queryKey={searchQueryState.cardColors.queryKey}
-                        classes={jsClassNames.selectorClasses}
-                        conditionalHandler={onChangeHandler}
+                        changeHandler={onChangeHandler}
                         conditionalName={fieldNames.colors.conditional}
-                        selectorClickHandler={selectorClickHandler}
+                        checkboxFieldName={fieldNames.colors.checkbox}
                     />
                 </div>
                

@@ -97,13 +97,13 @@ export const helpers = {
 
     },
 
-    getDisplayItemImage(item:DisplayListItem){
+    getDisplayItemImage(item:DisplayListItem, size = 15){
         return(
             <Image
                 src={item.uri ?? ''}
                 alt={item.name}
-                height={15}
-                width={15}
+                height={size}
+                width={size}
             />
         );
     }
