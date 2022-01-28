@@ -10,9 +10,11 @@ type ColorSearchProps = {
     conditionalName:string,
     changeHandler:  (event: React.ChangeEvent<HTMLSelectElement|HTMLInputElement>) => void,
     checkboxFieldName: string,
+    selectedItems: string[],
+    selectedConditional: number,
 }
 
-export function SearchColors({changeHandler, conditionalName, checkboxFieldName}:ColorSearchProps){
+export function SearchColors({changeHandler, conditionalName, checkboxFieldName, selectedItems, selectedConditional}:ColorSearchProps){
     const [colors, setColors] = useState([] as DisplayListItem[]);
     
     const getSymbols = () => {
@@ -44,8 +46,6 @@ export function SearchColors({changeHandler, conditionalName, checkboxFieldName}
 
     useEffect(getSymbols,[]);
 
-    const colorNames = colors.map( color => color.name)
-
     return (
         <div>
             <div className={styles.colorChoices}>
@@ -53,7 +53,7 @@ export function SearchColors({changeHandler, conditionalName, checkboxFieldName}
                     colors.map((color:DisplayListItem, index:number) => {
                         return (
                             <label key={index}>
-                                <input type="checkbox" data-value={color.value} name={checkboxFieldName} onChange={changeHandler}/>
+                                <input type="checkbox" data-value={color.value} checked={selectedItems.includes(color.value)} name={checkboxFieldName} onChange={changeHandler}/>
                                 {helpers.getDisplayItemImage(color, 20)}
                             </label>
                         );
@@ -62,11 +62,16 @@ export function SearchColors({changeHandler, conditionalName, checkboxFieldName}
                 }
             </div>
 
-            <select name={conditionalName} onChange={changeHandler}>
-                <option value={ColorConditionals.exact}>Exactly these colors</option>
-                <option value={ColorConditionals.include}>Including these colors</option>
-                <option value={ColorConditionals.atMost}>At most one of these colors</option>
-            </select>
+            {
+                // only display conditionals when users chooses colors
+                !selectedItems.includes('null') &&
+                <select name={conditionalName} value={selectedConditional} onChange={changeHandler}>
+                    <option value={ColorConditionals.exact}>Exactly these colors</option>
+                    <option value={ColorConditionals.include}>Including these colors</option>
+                    <option value={ColorConditionals.atMost}>At most one of these colors</option>
+                </select>
+            }
+            
         </div>
         
     );

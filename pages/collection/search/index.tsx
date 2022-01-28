@@ -133,6 +133,15 @@ export default function Search(){
                 const value = event.target.dataset.value ? event.target.dataset.value : '';
                 const checked = 'checked' in event.target && event.target.checked ? event.target.checked : false;
 
+
+                //if user chooses colorless remove the rest of the color selections or vise versa (cannot be color and colorless at the same time)
+                if(checked && value == 'null'){
+                    searchQueryState.cardColors.selected = [];
+                } else {
+                    const colorlessPos = searchQueryState.cardColors.selected.indexOf('null'); 
+                    colorlessPos >=0 ? searchQueryState.cardColors.selected.splice(colorlessPos, 1) : false;
+                }
+
                 if(checked){
                     searchQueryState.cardColors.selected.push(value);
                 } else {
@@ -256,6 +265,8 @@ export default function Search(){
                 <div className={styles.searchColorsSection + " form-section"} >
                     <label>Colors</label>
                     <SearchColors
+                        selectedItems={searchQueryState.cardColors.selected}
+                        selectedConditional={searchQueryState.cardColors.conditional}
                         changeHandler={onChangeHandler}
                         conditionalName={fieldNames.colors.conditional}
                         checkboxFieldName={fieldNames.colors.checkbox}
