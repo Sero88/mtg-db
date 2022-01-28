@@ -68,7 +68,7 @@ export function SearchColors({changeHandler, conditionalName, checkboxFieldName,
                 <select name={conditionalName} value={selectedConditional} onChange={changeHandler}>
                     <option value={ColorConditionals.exact}>Exactly these colors</option>
                     <option value={ColorConditionals.include}>Including these colors</option>
-                    <option value={ColorConditionals.atMost}>At most one of these colors</option>
+                    <option value={ColorConditionals.atLeast}>At least one of these colors</option>
                 </select>
             }
             
