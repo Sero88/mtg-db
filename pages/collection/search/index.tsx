@@ -10,7 +10,8 @@ import { SearchTypes } from "../../../components/collection-search/types";
 import { SearchColors } from "../../../components/collection-search/colors";
 import { SelectorClasses } from "../../../types/jsClasses";
 import { SelectorListType } from "../../../types/searchTypes";
-import {ColorConditionals} from "../../../util/enums/colorEnums";
+import {ColorConditionals} from "../../../util/enums/searchConditionals";
+import { SearchStats} from "../../../components/collection-search/stats";
 
 
 export default function Search(){
@@ -271,6 +272,14 @@ export default function Search(){
                         conditionalName={fieldNames.colors.conditional}
                         checkboxFieldName={fieldNames.colors.checkbox}
                     />
+                </div>
+
+                <hr />
+
+                <div className={styles.statsSection + " form-section"} >
+                    <label>Stats</label>
+                    <SearchStats
+                      />
                 </div>
                
                 <input type="submit" value="Search"/>

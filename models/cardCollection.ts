@@ -4,7 +4,7 @@ import { ApiCard } from "../types/apiCard";
 import { CardQuantity } from "../types/cardQuantity";
 import { ColorsSelectorType, SearchObject, SelectorListTypeItem } from "../types/searchTypes";
 import { helpers } from "../util/helpers";
-import { ColorConditionals } from "../util/enums/colorEnums";
+import { ColorConditionals } from "../util/enums/searchConditionals";
 
 
 export class CardCollection{

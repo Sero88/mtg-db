@@ -1,17 +1,17 @@
 Doing:
 
-Colors Search
-* [] Plan out how user is going to use this field
-** [] Similar to Types, going to abstract types component to be able to do different types of add/remove lists (set and color) total of three different components using this.
-** [] Not sure how I feel about search list selector for colors. I think it works best if it is a checklist rather than a select list 
-*** [x] Work on color state and then backend for query
-****[x] How are we going to handle colorless. Do conditionals apply? Either color or colorless can be chosen. Conditionals only apply to colors. Colorless doesn't make sense to have them.
-*** Maybe not so, with colors there are three types we can search: exactly, including and any of the selected. With sets, we don't allow partials, sets include selected sets only. We can create this separately, or just have the condition of search be its own unique thing for each component (yeah!). 
-**** [x] Refactor Types component to use composition model (parent / child, specialization/generic)
-**** [x] Colors pass icon to list and fix click of items to selected list
-***** [x] Refactor query (mongodb) side for type partials 
-*** Regarding the exact match with colors, you can use the size array operator : {colorIdentity: {$all:['B','R','U'], $size: 3}}
-
+Stats selector
+[] plan how the query will be constructed: 
+** {X} in mana value is considered 0, so {X}{G} has a mana value of 1 not 2, because {X} can be 0
+** {'cardFaces.manaValue': {$ne: 1}}, 
+** "*" are considered less than 0, we will include them for searches were is 0, or >=0, < 0, or <=0. 
+*** for less than 0, will use zero (for $lte too), this will include cards with asterics, is okay: {'cardFaces.toughness':{$lt:"0"}}
+*** Greater than 0 we use 0: {'cardFaces.toughness':{$gt:"0"}} - we don't include the asterics since it is considered a no value 
+*** Greater or equal 0 we use {$or:[{'cardFaces.toughness':{$gte:"0"}}, {'cardFaces.toughness':{$eq:"*"}} ]} to include asterics and zero
+*** When number is equal to 0, we use or to include asterics{ 'types':{$in:['Creature']}, $or:[{'cardFaces.toughness':{$eq:"*"}},{'cardFaces.toughness':{$eq:"0"}}] }
+[x] plan how the user will interact with these
+** [] All four fields will be displayed, user can change wether is >, >=, <, <=, =, ≠
+** [] Fields with no value entered will not be considered in query
 
 
 Search Functionality:
@@ -110,6 +110,18 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+Colors Search
+* [x] Plan out how user is going to use this field
+** [x] Similar to Types, going to abstract types component to be able to do different types of add/remove lists (set and color) total of three different components using this.
+** [x] Not sure how I feel about search list selector for colors. I think it works best if it is a checklist rather than a select list. Went with checkbox list.
+*** [x] Work on color state and then backend for query
+****[x] How are we going to handle colorless. Do conditionals apply? Either color or colorless can be chosen. Conditionals only apply to colors. Colorless doesn't make sense to have them.
+*** Maybe not so, with colors there are three types we can search: exactly, including and any of the selected. With sets, we don't allow partials, sets include selected sets only. We can create this separately, or just have the condition of search be its own unique thing for each component (yeah!). 
+**** [x] Refactor Types component to use composition model (parent / child, specialization/generic)
+**** [x] Colors pass icon to list and fix click of items to selected list
+***** [x] Refactor query (mongodb) side for type partials 
+*** Regarding the exact match with colors, you can use the size array operator : {colorIdentity: {$all:['B','R','U'], $size: 3}}
 
 Begin with the Type search
 * [x] add partials option

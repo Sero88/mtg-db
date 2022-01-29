@@ -3,7 +3,7 @@ import { SelectorClasses } from "../../types/jsClasses";
 import { SymbolType } from "../../types/symbol";
 import { DisplayListItem } from "../../types/searchTypes";
 import { helpers } from "../../util/helpers";
-import {ColorConditionals} from "../../util/enums/colorEnums";
+import {ColorConditionals} from "../../util/enums/searchConditionals";
 import styles from "../../styles/colorSearch.module.scss";
 
 type ColorSearchProps = {
