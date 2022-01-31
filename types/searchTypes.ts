@@ -1,3 +1,5 @@
+import { StatConditionalEnums } from "../util/enums/searchConditionals";
+
 export type SelectorListType = {
     queryKey: string //same as object key, used to match the update
     items: SelectorListTypeItem[], 
@@ -24,9 +26,18 @@ export type DisplayListItem = {
     value: string, 
 }
 
+export type CardStatsType = {
+    [key:string]: {
+        type: string, 
+        conditional:StatConditionalEnums, 
+        value?: number
+    }
+}
+
 export type SearchObject = {
     cardName?: string,
     cardText?: string,
     cardTypes?: SelectorListType,
-    cardColors?: ColorsSelectorType
+    cardColors?: ColorsSelectorType,
+    cardStats?: CardStatsType
 }

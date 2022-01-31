@@ -9,7 +9,7 @@ import { helpers } from "../../../util/helpers";
 import { SearchTypes } from "../../../components/collection-search/types";
 import { SearchColors } from "../../../components/collection-search/colors";
 import { SelectorClasses } from "../../../types/jsClasses";
-import { SelectorListType } from "../../../types/searchTypes";
+import { CardStatsType, SelectorListType } from "../../../types/searchTypes";
 import {ColorConditionals} from "../../../util/enums/searchConditionals";
 import { SearchStats} from "../../../components/collection-search/stats";
 
@@ -53,6 +53,7 @@ export default function Search(){
             selected:[] as string[],
             conditional: ColorConditionals.exact as number
         },
+        cardStats:{} as CardStatsType,
         isSearching: false,
     });
 
@@ -231,6 +232,31 @@ export default function Search(){
 
     }
 
+    const statsChangeHandler =  (event: React.ChangeEvent<HTMLDivElement>) => {  
+        const currentStat =  event.currentTarget.dataset.name;
+       
+        //verify we have stat name
+        if(!currentStat){
+            return null;
+        }
+
+        //get the elements
+        const conditionalSelect = document.querySelector(`.js-${currentStat}-conditional`) as HTMLSelectElement;
+        const statValueElement = document.querySelector(`.js-${currentStat}-value`) as HTMLInputElement;
+
+        //get the element values
+        const conditionalValue = conditionalSelect ? conditionalSelect.value : '';
+        const statValue = statValueElement ? statValueElement.value : '';
+
+        //set the query state with value data
+        searchQueryState.cardStats[currentStat] = {type: currentStat, conditional: parseInt(conditionalValue)};
+
+        //value is optional - those without a value won't be processed, but conditional can still be changed by the user
+        statValue ? searchQueryState.cardStats[currentStat].value = parseInt(statValue) : false;
+
+        updateSearchQueryState();
+    }
+
     return (
     <>
         <div className="searchForm">
@@ -279,6 +305,8 @@ export default function Search(){
                 <div className={styles.statsSection + " form-section"} >
                     <label>Stats</label>
                     <SearchStats
+                        cardStats={searchQueryState.cardStats}
+                        changeHandler={statsChangeHandler}
                       />
                 </div>
                

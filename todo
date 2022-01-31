@@ -1,7 +1,7 @@
 Doing:
 
 Stats selector
-[] plan how the query will be constructed: 
+[x] plan how the query will be constructed: 
 ** {X} in mana value is considered 0, so {X}{G} has a mana value of 1 not 2, because {X} can be 0
 ** {'cardFaces.manaValue': {$ne: 1}}, 
 ** "*" are considered less than 0, we will include them for searches were is 0, or >=0, < 0, or <=0. 
@@ -10,8 +10,9 @@ Stats selector
 *** Greater or equal 0 we use {$or:[{'cardFaces.toughness':{$gte:"0"}}, {'cardFaces.toughness':{$eq:"*"}} ]} to include asterics and zero
 *** When number is equal to 0, we use or to include asterics{ 'types':{$in:['Creature']}, $or:[{'cardFaces.toughness':{$eq:"*"}},{'cardFaces.toughness':{$eq:"0"}}] }
 [x] plan how the user will interact with these
-** [] All four fields will be displayed, user can change wether is >, >=, <, <=, =, ≠
-** [] Fields with no value entered will not be considered in query
+* [x] All four fields will be displayed, user can change wether is >, >=, <, <=, =, ≠
+* [] Fields with no value entered will not be considered in query
+* [] Work on field states
 
 
 Search Functionality:
