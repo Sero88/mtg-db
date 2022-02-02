@@ -1,6 +1,7 @@
 import { CardStatsType } from "../../types/searchTypes"
 import { StatConditionalEnums } from "../../util/enums/searchConditionals";
 import { StatConditions } from "./_statConditions"
+import { stats } from "../../util/stats";
 
 
 type SearchStatsProps = {
@@ -14,12 +15,6 @@ type StatField = {
     title: string
 }
 
-const stats = [
-    {name:"manaValue", title:"Mana Value"},
-    {name:"power", title:"Power"},
-    {name:"toughness", title:"Toughness"},
-    {name:"loyalty",  title:"Loyalty"},
-];
 
 export function SearchStats({cardStats, changeHandler}:SearchStatsProps){
     

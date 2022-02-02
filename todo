@@ -4,15 +4,15 @@ Stats selector
 [x] plan how the query will be constructed: 
 ** {X} in mana value is considered 0, so {X}{G} has a mana value of 1 not 2, because {X} can be 0
 ** {'cardFaces.manaValue': {$ne: 1}}, 
-** "*" are considered less than 0, we will include them for searches were is 0, or >=0, < 0, or <=0. 
+** [x] "*" are considered less than 0, we will include them for searches were is 0, or >=0, < 0, or <=0. 
 *** for less than 0, will use zero (for $lte too), this will include cards with asterics, is okay: {'cardFaces.toughness':{$lt:"0"}}
 *** Greater than 0 we use 0: {'cardFaces.toughness':{$gt:"0"}} - we don't include the asterics since it is considered a no value 
 *** Greater or equal 0 we use {$or:[{'cardFaces.toughness':{$gte:"0"}}, {'cardFaces.toughness':{$eq:"*"}} ]} to include asterics and zero
 *** When number is equal to 0, we use or to include asterics{ 'types':{$in:['Creature']}, $or:[{'cardFaces.toughness':{$eq:"*"}},{'cardFaces.toughness':{$eq:"0"}}] }
 [x] plan how the user will interact with these
 * [x] All four fields will be displayed, user can change wether is >, >=, <, <=, =, ≠
-* [] Fields with no value entered will not be considered in query
-* [] Work on field states
+* [x] Fields with no value entered will not be considered in query
+* [x] Work on field states
 
 
 Search Functionality:
@@ -32,7 +32,9 @@ Refactor structure a little
 
 * [] Refactor Text symbols so it uses list? -- AddSymbols and _searchList are different kinds of lists, they do share some similarities, but not the same. We could probably make the addsymbols list comply with _searchList
  
+
 Learn more about indexes and to DB where needed
+* [] lear more about nosql injection - learn about vulnerabilities. Familiar with mysql, but not with nosql
 
 ================================
 Bugs: 

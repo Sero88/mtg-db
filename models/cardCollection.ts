@@ -2,9 +2,10 @@ import {connectToDatabase} from "../util/mongodb";
 import { CollectionCard } from "../util/collectionCard";
 import { ApiCard } from "../types/apiCard";
 import { CardQuantity } from "../types/cardQuantity";
-import { ColorsSelectorType, SearchObject, SelectorListTypeItem } from "../types/searchTypes";
+import { CardStatsType, ColorsSelectorType, SearchObject, SelectorListTypeItem } from "../types/searchTypes";
 import { helpers } from "../util/helpers";
-import { ColorConditionals } from "../util/enums/searchConditionals";
+import { ColorConditionals, StatConditionalEnums } from "../util/enums/searchConditionals";
+import { stats } from "../util/stats";
 
 
 export class CardCollection{
@@ -145,6 +146,42 @@ export class CardCollection{
 
         return query;
     }
+    private constructStatQueries(selectedStats:CardStatsType, queryObject: any){//todo add query object type here
+        //continue adding different type of stat queries
+        //define the stats above and only used the ones I set, not the ones passed by the props to prevent injection
+
+        //this.getConditionalQuery(StatConditionalEnums.gt);
+
+        stats.forEach(stat => {
+            //check to see if the query field was selected and has a value
+            
+            const conditional = selectedStats[stat.name] && selectedStats[stat.name].hasOwnProperty('conditional') ? `$${StatConditionalEnums[selectedStats[stat.name].conditional]}` : null;
+            const value = selectedStats[stat.name] && selectedStats[stat.name].hasOwnProperty('value') ? selectedStats[stat.name].value : null;
+
+            //verify required query data is available
+            if(value === null || conditional === null){
+                return;
+            }
+
+            //only manaValue uses number values the rest use strings
+            const convertedValue = stat.name == 'manaValue' && value !== undefined ? parseInt(value) : value;
+            let queryField = `cardFaces.${stat.name}`;
+            let queryValue: {}|[] = {[conditional]: convertedValue};
+
+            //fields where 0 is used and is gte or eq, we need to include "*" values, because these are considered as 0
+            // * is already < than 0 so no need to check for these when using lte = 0
+            if( (selectedStats[stat.name].conditional== StatConditionalEnums.eq || selectedStats[stat.name].conditional == StatConditionalEnums.gte) && convertedValue === "0"){
+                //example: {$or:[{'cardFaces.toughness':{$gte:"0"}}, {'cardFaces.toughness':{$eq:"*"}} ]}
+                queryValue = {$or:[{[queryField]:{[conditional]:convertedValue}},{[queryField]:{$eq:"*"}}]};
+                queryObject.hasOwnProperty('$and') ? queryObject.$and.push(queryValue) : queryObject.$and = [queryValue]; //add $or field to $and operator
+            } else {
+                queryObject[queryField] = queryValue;
+            }
+
+        });
+
+        return queryObject;
+    } 
 
     async dbConnect(){
         const {client, db} = await connectToDatabase();    
@@ -240,7 +277,7 @@ export class CardCollection{
     }
 
     async getCards(searchObject: SearchObject){
-        const queryObject = {};
+        let queryObject = {};
 
         if(searchObject.cardName){
             //todo: remove after completing searchObject functionality
@@ -266,6 +303,12 @@ export class CardCollection{
             queryObject['colorIdentity'] = this.constructColorsQuery(searchObject.cardColors);
         }
 
+        if(searchObject.cardStats && Object.keys(searchObject.cardStats).length > 0){
+            //todo: remove after completing searchObject functionality
+            //@ts-ignore
+            queryObject = this.constructStatQueries(searchObject.cardStats, queryObject);
+        }
+
 
         //todo remove after testing 👇
         console.log('search form data: ', searchObject );
@@ -273,6 +316,10 @@ export class CardCollection{
 
         //todo remove after testing 👇
         console.log('searching query object:', queryObject );
+        //todo remove after testing 👆
+
+        //todo remove after testing 👇
+        console.log('searching query object:', JSON.stringify(queryObject) );
         //todo remove after testing 👆
          
         const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).find(queryObject, {sort:{name: 1},projection: this.findProjection}).toArray();

@@ -30,7 +30,7 @@ export type CardStatsType = {
     [key:string]: {
         type: string, 
         conditional:StatConditionalEnums, 
-        value?: number
+        value?: string
     }
 }
 

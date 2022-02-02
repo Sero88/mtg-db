@@ -252,7 +252,7 @@ export default function Search(){
         searchQueryState.cardStats[currentStat] = {type: currentStat, conditional: parseInt(conditionalValue)};
 
         //value is optional - those without a value won't be processed, but conditional can still be changed by the user
-        statValue ? searchQueryState.cardStats[currentStat].value = parseInt(statValue) : false;
+        statValue ? searchQueryState.cardStats[currentStat].value = statValue : false;
 
         updateSearchQueryState();
     }
