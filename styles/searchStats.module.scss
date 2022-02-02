@@ -1,0 +1,23 @@
+
+.statsWrapper {
+    margin-top: 2rem;
+
+    .statField {
+        margin-top: .4rem;
+       
+
+        .statLabel {
+            display: flex;
+            gap: .5rem;
+        }
+
+        .statLabelText {
+            width: 8rem;
+            text-align: right;
+        }
+
+        input {
+            max-width: 8rem;
+        }
+    }
+}
