@@ -332,4 +332,64 @@ export class CardCollection{
         const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).distinct("types");
         return this.responseObject('success', results);
     }
+
+   async getSets(){
+        let query = 
+        {
+            $lookup:
+                {
+                from: process.env.DATABASE_TABLE_CARDS,
+                //let: { versions: "$versions"},
+                pipeline: [
+                    { $match:
+                        {
+                            distinct: process.env.DATABASE_TABLE_CARDS,
+                            key: "versions"
+                        }
+                    },
+                ],
+                as: "versionsne"
+                }
+            }
+
+        let query2 = { 'versions.$.set':/.+/i };
+
+        let query3 = { $match:
+            {
+                distinct: process.env.DATABASE_TABLE_CARDS,
+                key: "versions"
+            }
+        };
+        
+
+        let query4 = [
+            {
+                distinct: process.env.DATABASE_TABLE_CARDS,
+                key: "versions"
+
+            }
+            
+        ];
+
+        let query5 = [
+            {
+                $group : { _id:"$versions" } 
+            }, 
+            {
+                $group: {_id: "_id."}
+            }
+        ]
+
+        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).aggregate(query5);
+
+        results.forEach(test => {
+            console.log('test', test);
+        })
+
+        //todo remove after testing 👇
+       // console.log('results of distinct', results );
+        //todo remove after testing 👆
+ 
+        return this.responseObject('sucess', results);
+    } 
 }

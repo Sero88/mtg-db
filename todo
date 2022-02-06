@@ -1,18 +1,29 @@
 Doing:
 
-Stats selector
-[x] plan how the query will be constructed: 
-** {X} in mana value is considered 0, so {X}{G} has a mana value of 1 not 2, because {X} can be 0
-** {'cardFaces.manaValue': {$ne: 1}}, 
-** [x] "*" are considered less than 0, we will include them for searches were is 0, or >=0, < 0, or <=0. 
-*** for less than 0, will use zero (for $lte too), this will include cards with asterics, is okay: {'cardFaces.toughness':{$lt:"0"}}
-*** Greater than 0 we use 0: {'cardFaces.toughness':{$gt:"0"}} - we don't include the asterics since it is considered a no value 
-*** Greater or equal 0 we use {$or:[{'cardFaces.toughness':{$gte:"0"}}, {'cardFaces.toughness':{$eq:"*"}} ]} to include asterics and zero
-*** When number is equal to 0, we use or to include asterics{ 'types':{$in:['Creature']}, $or:[{'cardFaces.toughness':{$eq:"*"}},{'cardFaces.toughness':{$eq:"0"}}] }
-[x] plan how the user will interact with these
-* [x] All four fields will be displayed, user can change wether is >, >=, <, <=, =, ≠
-* [x] Fields with no value entered will not be considered in query
-* [x] Work on field states
+Sets
+* [x] plan sets: for this it does make sense to use the searchable list. Selector search. Won't use IS/NOT functionality. Will have set icon on list.
+* [x] Do refactoring on Type search handlers. Make them unique to types. Search sets will have its own handlers to avoid confusion and easier to modify and add icons
+* [] Began writing api endpoint to get all sets to populate list of sets from collection
+** [] There is an issue when searching for sets, due to the structure of versions, we use versions with child objects so I can udpate version.id via upsert. If it was an array it couldn't be update but it can be easily queried. 
+
+I tried using a subquery. My intention is to first extract all the distinct versions, then from the results of those versions, I would need to get the distinct sets. However, neither the $lookup nor aggregate work because they return the top most document, not the inner sub object. It is dealing with objects, with collection objects, not with array data. I could possibly run an aggreate or lookup but everytime the result of these is an collection object, not a single value, because it is looking for objects.
+
+It is not possible to run a distinct command inside aggregate, but even if I was able to do chain two distinct commands inside, at the end aggregate would return objects. WAIT: if I can return objects with based on unique sets, this would solve the issue, but I cannot link distinct commands inside aggregate
+
+You can also get distinct value on aggregation by using {group: {$_id:"$versions"}} but in order to link another group value into this, I need to know the name of the keys. Once again this is the issue, that it is an object inside an object, rather than an array with object values. 
+
+The distinct command on the other hand does return array of unique versions, but from here I cannot chain another distinct command to filter through those values to get the distinct sets. I can do it with JS, I can go through all values and get unique value from distinct results, but I rather have the structure be correct. 
+
+Here it sounds like it is a structure issue. The very nature of the data structure for Card and Versions, already sounds like two separate collections. This has been a natural progression I have discovered as I have continued to develop this app. I have arrived at this conclusion. 
+
+I tried using aggregate, but it does not allow distinct values
+
+So my alternatives are the following:
+* Separate the data into two separate collections Cards and Versions
+* Find a way to due attribute pattern design, versions becomes an array with object values, but I need a way to update upsert these values
+* pull down distict versions and then with JS get unique set values
+So the best solution is to separate them, versions will be on their own table, the way they will point back to the Card is via the oracle_id.x
+
 
 
 Search Functionality:
@@ -113,6 +124,20 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+Stats selector
+[x] plan how the query will be constructed: 
+** {X} in mana value is considered 0, so {X}{G} has a mana value of 1 not 2, because {X} can be 0
+** {'cardFaces.manaValue': {$ne: 1}}, 
+** [x] "*" are considered less than 0, we will include them for searches were is 0, or >=0, < 0, or <=0. 
+*** for less than 0, will use zero (for $lte too), this will include cards with asterics, is okay: {'cardFaces.toughness':{$lt:"0"}}
+*** Greater than 0 we use 0: {'cardFaces.toughness':{$gt:"0"}} - we don't include the asterics since it is considered a no value 
+*** Greater or equal 0 we use {$or:[{'cardFaces.toughness':{$gte:"0"}}, {'cardFaces.toughness':{$eq:"*"}} ]} to include asterics and zero
+*** When number is equal to 0, we use or to include asterics{ 'types':{$in:['Creature']}, $or:[{'cardFaces.toughness':{$eq:"*"}},{'cardFaces.toughness':{$eq:"0"}}] }
+[x] plan how the user will interact with these
+* [x] All four fields will be displayed, user can change wether is >, >=, <, <=, =, ≠
+* [x] Fields with no value entered will not be considered in query
+* [x] Work on field states
 
 Colors Search
 * [x] Plan out how user is going to use this field

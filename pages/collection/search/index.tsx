@@ -12,6 +12,7 @@ import { SelectorClasses } from "../../../types/jsClasses";
 import { CardStatsType, SelectorListType } from "../../../types/searchTypes";
 import {ColorConditionals} from "../../../util/enums/searchConditionals";
 import { SearchStats} from "../../../components/collection-search/stats";
+import { SearchSets } from "../../../components/collection-search/sets";
 
 
 export default function Search(){
@@ -158,7 +159,7 @@ export default function Search(){
     
     };
 
-    const clickHandler = (event: React.MouseEvent<Element, MouseEvent>) =>{
+    const textSearchSymbolClickHandler = (event: React.MouseEvent<Element, MouseEvent>) =>{
         const clickedElement = event.target as HTMLElement;
 
         //symbols
@@ -174,7 +175,7 @@ export default function Search(){
 
     };
 
-    const selectorClickHandler= (event: React.MouseEvent<Element, MouseEvent>) => {
+    const typeSelectorClickHandler= (event: React.MouseEvent<Element, MouseEvent>) => {
         const clickedElement = event.currentTarget as HTMLElement;
         const queryKey = clickedElement.dataset.key ? clickedElement.dataset.key : null;
   
@@ -269,7 +270,7 @@ export default function Search(){
                 <hr />
 
                 <div className={styles.searchTextSection + " form-section"}>
-                    <SearchText changeHandler={onChangeHandler} clickHandler={clickHandler} text={searchQueryState.cardText} fieldName={fieldNames.cardText}/>
+                    <SearchText changeHandler={onChangeHandler} clickHandler={textSearchSymbolClickHandler} text={searchQueryState.cardText} fieldName={fieldNames.cardText}/>
                 </div>
 
                 <hr />
@@ -283,7 +284,7 @@ export default function Search(){
                         allowPartials={searchQueryState.cardTypes.conditionals.allowPartials ?? false}
                         partialsHandler={onChangeHandler}
                         partialsName={fieldNames.types.partials}
-                        selectorClickHandler={selectorClickHandler}
+                        selectorClickHandler={typeSelectorClickHandler}
                     />
                 </div>
 
@@ -308,6 +309,21 @@ export default function Search(){
                         cardStats={searchQueryState.cardStats}
                         changeHandler={statsChangeHandler}
                       />
+                </div>
+
+                <hr />
+
+                <div className={styles.searchTypeSection + " form-section"} onClick={formSectionClickHandler}>
+                <label>Sets</label>
+                    <SearchSets 
+                        selectedItems={searchQueryState.cardTypes.items} 
+                        queryKey={searchQueryState.cardTypes.queryKey}
+                        classes={jsClassNames.selectorClasses}
+                        allowPartials={searchQueryState.cardTypes.conditionals.allowPartials ?? false}
+                        partialsHandler={onChangeHandler}
+                        partialsName={fieldNames.types.partials}
+                        selectorClickHandler={typeSelectorClickHandler}
+                    />
                 </div>
                
                 <input type="submit" value="Search"/>
