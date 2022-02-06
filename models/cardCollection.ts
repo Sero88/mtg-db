@@ -2,6 +2,7 @@ import {connectToDatabase} from "../util/mongodb";
 import { CollectionCard } from "../util/collectionCard";
 import { ApiCard } from "../types/apiCard";
 import { CardQuantity } from "../types/cardQuantity";
+import { CollectionCardType } from "../types/collectionCard";
 import { CardStatsType, ColorsSelectorType, SearchObject, SelectorListTypeItem } from "../types/searchTypes";
 import { helpers } from "../util/helpers";
 import { ColorConditionals, StatConditionalEnums } from "../util/enums/searchConditionals";
@@ -331,5 +332,36 @@ export class CardCollection{
     async getTypes(){
         const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).distinct("types");
         return this.responseObject('success', results);
+    }
+
+    async updateDbV3(){
+        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).find().toArray();
+        const versions = [];
+
+        if(results.length){
+             results.forEach(async (card) => {
+                versions.push(card.versions);
+                
+                for (const [key, value] of Object.entries(card.versions)) {
+                    value.oracleId = card.oracleId;
+                    await this.db.collection(process.env.DATABASE_TABLE_VERSIONS).insert(value);
+                }
+                    
+        
+                //delete card.versions;
+                //await this.db.collection(process.env.DATABASE_TABLE_CARDS_NEW).insert(card);
+            })
+
+            /* versions.forEach(async (version) => {
+                for (const [key, value] of Object.entries(version)) {
+                    await this.db.collection(process.env.DATABASE_TABLE_VERSIONS).insert(value);
+                  }
+                
+            }) */
+        }
+
+        
+
+        return results;
     }
 }
