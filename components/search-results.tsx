@@ -32,18 +32,20 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
     const [showResults, setShowResults] = useState(false);
     const cards:ApiCard[] = apiResults.data;
 
-    function updateCollectionDataStatus(card:CollectionCardType){
-        
-        if('versions' in card){
-            Object.entries(card.versions).forEach( (versionObj) => {
-                const version = versionObj[1];
+    function updateCollectionDataStatus(versions:Version[]){
+        //todo remove after testing 👇
+        console.log('collection versions: ', versions );
+        //todo remove after testing 👆
+
+        versions.forEach( version => {
+            if(Object.keys(version).length){
                 const quantity = version.quantity.regular ?? 0;
                 const quantityFoil = version.quantity.foil ?? 0;
                 collectionData[version.scryfallId] = {regular: quantity, foil: quantityFoil};
-            });
-            
-            setCollectionData({...collectionData});   
-        }
+            }
+        })
+
+        setCollectionData({...collectionData});
          
     }
 
@@ -63,13 +65,12 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
         })
         .then(response => response.json())
         .then(apiResponse => {
+
             if( !('status' in apiResponse) || (('status' in apiResponse) && apiResponse.status != 'success') ) {
                 return false;
             }
 
-            const card:CollectionCardType = apiResponse.data[0] ?? {};
-
-            updateCollectionDataStatus(card);
+            updateCollectionDataStatus(apiResponse.data);
             setShowResults(true);     
                     
         })
@@ -108,7 +109,7 @@ export default function SearchResults({apiResults, backButtonHandler, showPrints
         .then(response => response.json())
         .then(response => {
             if('status' in response && response.status == 'success'){
-                updateCollectionDataStatus(response.data);
+                updateCollectionDataStatus([response.data]);
             }
         });
 

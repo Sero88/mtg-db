@@ -21,17 +21,12 @@ export function SearchSets({selectedItems, classes, allowPartials, queryKey, par
         fetch(endpoint)
             .then(response => response.json())
             .then(response => {
-                //todo remove after testing 👇
-                console.log('response sets', response );
-                //todo remove after testing 👆
+               
                   if(response && 'status' in response && response.status == 'success'){
                       const retrievedSets = response.data.map( (type:string) => {
                           return {name: type, value: type}
                       });
                       
-                    //todo remove after testing 👇
-                    console.log('retrieved sets', retrievedSets);
-                    //todo remove after testing 👆
                     updateSets(retrievedSets);
                   }
                 }

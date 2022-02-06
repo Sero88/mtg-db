@@ -7,11 +7,6 @@ import { ResultsState } from '../../types/resultsState';
 
 export function SearchResults({resultsState}:{resultsState:ResultsState}){
 
-
-    //todo remove after testing 👇
-    console.log('type of', typeof resultsState );
-    //todo remove after testing 👆
-
     const results = resultsState.results;
 
     const cards = results.length 

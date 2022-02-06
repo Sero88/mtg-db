@@ -37,10 +37,6 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
     searchObject.cardName = getQueryValue('cardName');
 
     const cards = await cardCollection.getCards(searchObject);
-  
-    //todo remove after testing 👇
-    console.log('card results: ', cards);
-    //todo remove after testing 👆
     
     const props = {results: cards.data};
     return {props};

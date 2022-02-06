@@ -1,6 +1,6 @@
 import { ApiCard, CardFace} from "../types/apiCard";
 import { helpers } from "./helpers";
-import { CollectionCardFace, CollectionCardType, CollectionCardTypeQuery, Version } from "../types/collectionCard";
+import { CollectionCardFace, CollectionCardType, Version, VersionQuery } from "../types/collectionCard";
 import { ApiCardHelper } from "./apiCardHelpers";
 import { CardQuantity } from "../types/cardQuantity";
 
@@ -131,11 +131,47 @@ export const CollectionCard= {
         return {artist, imageUri};
     },
 
-    buildQueryObject: function (apiData: ApiCard, quantity:CardQuantity, type: string){
+    buildQueryObject: function (apiData: ApiCard, type: string){
         //prepare values
-        const collectorsData = ApiCardHelper.getCollectorsData(apiData);
         const types = this.getTypes(apiData);
-        const set = helpers.getCardSet(apiData.set);
+        const cardFaces = [];
+       
+        //multiface values
+        if(this.isMultiface(apiData)){
+            //@ts-ignore
+            apiData.card_faces.forEach( (cardFace:CardFace, faceIndex) => {
+                cardFaces.push(this.assignCardFaceValues(faceIndex, apiData, cardFace));
+            });
+        } else {
+            cardFaces.push(this.assignCardFaceValues(0, apiData, null));
+        }
+
+        //build query object
+        const cardCollectionObject:CollectionCardType =  {
+            name: apiData.name,
+            oracleId: apiData.oracle_id,
+            colorIdentity: apiData.color_identity && apiData.color_identity.length > 0 ? apiData.color_identity : null,
+            types,
+            cardFaces
+        }
+
+        //optional cardObject values 
+        'keywords' in apiData && apiData.keywords.length > 0 ?  cardCollectionObject.keywords = apiData.keywords : false;
+
+        return cardCollectionObject;
+    },
+
+    buildVersionObject(apiData: ApiCard, quantity:CardQuantity, type: string){
+        const collectorsData = ApiCardHelper.getCollectorsData(apiData);
+        const version = {} as VersionQuery;
+
+        version.set = helpers.getCardSet(apiData.set);
+        version.scryfallId = apiData.id;
+        version.oracleId = apiData.oracle_id;
+        version.isPromo = apiData.promo;
+        version.collectionNumber = collectorsData.number;
+        version.rarity= apiData.rarity;
+        
         const regularPrice = apiData 
             && 'prices' in apiData
             && 'usd' in apiData.prices
@@ -150,51 +186,32 @@ export const CollectionCard= {
             ? parseFloat(apiData.prices.usd_foil)
             : null;
 
-        const cardFaces = [];
+        version.prices = {regular: regularPrice, foil: foilPrice };
+       
+        //version images
         const images = [];
 
         //multiface values
         if(this.isMultiface(apiData)){
             //@ts-ignore
             apiData.card_faces.forEach( (cardFace:CardFace, faceIndex) => {
-                cardFaces.push(this.assignCardFaceValues(faceIndex, apiData, cardFace));
                 images.push(this.assignImageValues(faceIndex, apiData, cardFace));
             });
         } else {
-            cardFaces.push(this.assignCardFaceValues(0, apiData, null));
             images.push(this.assignImageValues(0, apiData, null));
         }
 
-        //build query object
-        const cardCollectionObject:CollectionCardTypeQuery =  {
-            name: apiData.name,
-            oracleId: apiData.oracle_id,
-            colorIdentity: apiData.color_identity && apiData.color_identity.length > 0 ? apiData.color_identity : null,
-            types,
-            cardFaces
-        }
-
-        //optional cardObject values 
-        'keywords' in apiData && apiData.keywords.length > 0 ?  cardCollectionObject.keywords = apiData.keywords : false;
-
-        const versionId = apiData.id;
-        //assign version values for query
-        cardCollectionObject['versions.'+versionId+'.scryfallId'] = apiData.id;
-        cardCollectionObject['versions.'+versionId+'.isPromo'] = apiData.promo;
-        cardCollectionObject['versions.'+versionId+'.collectionNumber'] = collectorsData.number;
-        cardCollectionObject['versions.'+versionId+'.rarity'] = apiData.rarity;
-        cardCollectionObject['versions.'+versionId+'.prices'] = {regular: regularPrice, foil: foilPrice };
-        cardCollectionObject['versions.'+versionId+'.set'] = set;
-        cardCollectionObject['versions.'+versionId+'.images'] = images;
+        version.images = images;
 
         //optional version values 
-        'promo_types' in apiData ? cardCollectionObject['versions.'+versionId+'.promoTypes'] = apiData.promo_types: false;
+        'promo_types' in apiData ? version.promoTypes = apiData.promo_types: false;
 
         //quantity value for either regular or foil
         type == 'regular' 
-        ? cardCollectionObject['versions.'+versionId+'.quantity.regular'] = quantity.regular 
-        : cardCollectionObject['versions.'+versionId+'.quantity.foil'] = quantity.foil;
+        ? version['quantity.regular'] = quantity.regular 
+        : version['quantity.foil'] = quantity.foil;
 
-        return cardCollectionObject;
+        return version;
+
     }
 }

@@ -7,7 +7,7 @@ What I learned, usually with SQL, you see the table to learn the structure. With
 to learn the structure, because some fields are optional. This types file is my structure for the DB, because it contains all optional and required fields.
 */
 
-interface CollectionCard {
+export type CollectionCardType =  {
     name: string;
     oracleId: string;
     colorIdentity: string[] | null; //cards always have a color identity, colorless = null (empty array on scryfall)
@@ -19,6 +19,7 @@ interface CollectionCard {
 
 interface VersionInterface {
     scryfallId: string;
+    oracleId: string;
     isPromo: boolean;
     collectionNumber: string;
     rarity: string;
@@ -44,13 +45,6 @@ export interface VersionQuery extends VersionInterface {
     'quantity.foil'?: number
 }
 
-export interface CollectionCardType extends CollectionCard{ 
-    versions: {[key:string]:Version},
-}
-
-export interface CollectionCardTypeQuery extends CollectionCard{
-    [key:string]: any, // The version keys and values vary, so it can by any
-}
 
 export type CollectionCardFace = {
     manaValue: number | null, // not on scryfall, my own field:  mana value(aka cmc) field
