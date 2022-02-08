@@ -9,12 +9,11 @@ export const CollectionCard= {
 
     getCardImage(card:CollectionCardType, type = 'no_promo'){
         let image = '';
-        const versions = Object.entries(card.versions);
+        const versions = card.versions ? card.versions : [];
 
         if(type == 'no_promo'){
            
-            for(const versionObj of versions){
-                const version:Version = versionObj[1];
+            for(const version of versions){
                 if(!version.isPromo && version.images[0].imageUri){
                     image = version.images[0].imageUri;
                     break;
@@ -24,9 +23,7 @@ export const CollectionCard= {
 
         //get default image
         if(!image){
-            for(const versionObj of versions){
-                const version:Version = versionObj[1];
-
+            for(const version of versions){
                 if(version.images[0].imageUri){
                     image = version.images[0].imageUri;
                     break;

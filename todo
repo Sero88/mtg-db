@@ -24,16 +24,18 @@ So my alternatives are the following:
 * pull down distict versions and then with JS get unique set values
 So the best solution is to separate them, versions will be on their own table, the way they will point back to the Card is via the oracle_id.x
 
-*** [] Continue refactoring - get collection data and update react component after updating card quantity
+*** [x] Continue refactoring - get collection data and update react component after updating card quantity
+*** [] Continue refactoring - begin with search functionalities
+*** [] Finish changing Image to img, also is there a way to continue using but with optimization turned off, otherwise set srcset as well
 
 Search Functionality:
-Card Name (unique)
-Text (differ) (may need to add an "exact text" functionality later on - look into indexes too for faster searching if needed)
-Type (unique)
-Colors (unique)
-Stats(cmc, power, toughness, loyalty) (unique)
-Sets (unique)
-Rarity (unique)
+Card Name (unique) (Card)
+Text (differ) (may need to add an "exact text" functionality later on - look into indexes too for faster searching if needed) (Version)
+Type (unique) (Card)
+Colors (unique) (Card)
+Stats(cmc, power, toughness, loyalty) (unique) (Card)
+Sets (unique) (Version)
+Rarity (unique) (Version)
 
 
 ================================

@@ -361,8 +361,27 @@ export class CardCollection{
         //todo remove after testing 👇
         console.log('searching query object:', JSON.stringify(queryObject) );
         //todo remove after testing 👆
+
+        const queryWithVersions = [  {
+            $lookup:
+                {
+                    from: process.env.DATABASE_TABLE_VERSIONS,
+                    localField: "oracleId",
+                    foreignField: "oracleId",
+                    as: "versions"
+                }
+            },
+           /*  {
+               // $match: {"versions.isPromo":true}
+            }, */
+            {
+                $match: queryObject
+            }           
+        ]
+
+       // {sort:{name: 1},projection: this.findProjection}
          
-        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).find(queryObject, {sort:{name: 1},projection: this.findProjection}).toArray();
+        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).aggregate(queryWithVersions).toArray();
 
         return this.responseObject('success', results);
 
@@ -420,11 +439,21 @@ export class CardCollection{
             }
         ]
 
-        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).aggregate(query5);
+        let query6 = [  {
+            $lookup:
+              {
+                from: process.env.DATABASE_TABLE_VERSIONS,
+                localField: "oracleId",
+                foreignField: "oracleId",
+                as: "versions"
+              }
+         }]
 
-        results.forEach(test => {
-            console.log('test', test);
-        })
+        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).aggregate(query6).toArray();
+
+        //todo remove after testing 👇
+        console.log('results', results );
+        //todo remove after testing 👆
  
         return this.responseObject('sucess', results);
     } 

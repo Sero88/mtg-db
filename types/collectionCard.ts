@@ -13,7 +13,8 @@ export type CollectionCardType =  {
     colorIdentity: string[] | null; //cards always have a color identity, colorless = null (empty array on scryfall)
     types: string[];
     cardFaces: CollectionCardFace[]; 
-    
+
+    versions?: Version[]; //CollectionCardType will be usually queried with versions
     keywords?: string[]; //not all cards can have keywords it is an optional field
 }
 
