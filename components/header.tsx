@@ -20,6 +20,7 @@ export default function Header(){
                                 alt="Lovers&#39; Standard"
                                 width={140}
                                 height={68}
+                                unoptimized={true}
                             />
                         </a>
                     </Link>

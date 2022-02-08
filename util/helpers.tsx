@@ -104,6 +104,7 @@ export const helpers = {
                 alt={item.name}
                 height={size}
                 width={size}
+                unoptimized={true}
             />
         );
     }

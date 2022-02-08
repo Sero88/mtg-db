@@ -13,6 +13,7 @@ export default function AccessDenied(){
                             width={300}
                             height={418}
                             alt=""
+                            unoptimized={true}
                         />
                     </div>
                     <p>You must be logged in to access this site.</p>

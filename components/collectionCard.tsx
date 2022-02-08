@@ -16,6 +16,7 @@ function showCardImage(data:CollectionCardType) {
             data-name={name}
             alt={name}
             className={styles.cardImage}
+            unoptimized={true}
         />
     );
 }

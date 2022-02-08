@@ -20,6 +20,7 @@ function showCardImage(imageUri:string, name:string, type:string, key: number = 
             data-type={type}
             alt={name}
             className={styles.cardImage+imageClass}
+            unoptimized={true}
         />
     );
 }

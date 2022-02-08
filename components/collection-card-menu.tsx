@@ -39,6 +39,7 @@ export function CollectionCardMenu({quantity, updateCollectionHandler, cardData}
                     width={25}
                     height={25}
                     alt="collection logo"
+                    unoptimized={true}
                 />
             </li>
 

@@ -33,7 +33,7 @@ export function AddSymbol({currentText, clickHandler}:{currentText:string, click
                         return (
                             <div key={"dk-"+index} data-symbol={symbol.symbol}>
                                 <dt>{symbol.symbol}: </dt>
-                                <dd>{symbol.svg_uri && <div className={styles.symbolImage}><Image src={symbol.svg_uri} width={15} height={15}/></div>} &nbsp;{symbol.english}</dd>
+                                <dd>{symbol.svg_uri && <div className={styles.symbolImage}><Image src={symbol.svg_uri} width={15} height={15} unoptimized={true}/></div>} &nbsp;{symbol.english}</dd>
                             </div>
                         );
                     })
