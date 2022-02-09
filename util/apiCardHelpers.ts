@@ -61,4 +61,11 @@ export const ApiCardHelper = {
         }
     },
 
+    async getAllSets(){
+        const endpoint = '/api/scryfall/sets';
+        const response = await fetch(endpoint);
+        const setsList = await response.json();
+         return setsList;
+    }
+
 }

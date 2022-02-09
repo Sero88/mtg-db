@@ -3,5 +3,6 @@ export  type ApiSet = {
     name: string, 
     released_at: string,
     digital: boolean,
-    set_type: string
+    set_type: string,
+    icon_svg_uri: string
 }

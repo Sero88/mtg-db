@@ -7,6 +7,7 @@ import LoaderAnimation from "../../components/loader-animation";
 import {helpers} from '../../util/helpers';
 import {useRouter} from 'next/router';
 import { PreviousStateType } from '../../types/previousState';
+import { ApiCardHelper } from "../../util/apiCardHelpers";
 
 let searchTimeout: NodeJS.Timeout;
 
@@ -182,16 +183,10 @@ export default function AddPage(){
     }
 
     const getCardSets = () => {
-        //setCardSets([{name:'test', code:'afr', released_at:'2021-10-29'}]);
-        const endpoint = '/api/scryfall/sets';
-        fetch(endpoint)
-        .then(response => response.json())
-        .then(setsList => 
-            {
+        ApiCardHelper.getAllSets()
+            .then( setsList => {
                 setCardSets(setsList.data);
-            }
-        );
-
+            });
     }
 
     const setChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {

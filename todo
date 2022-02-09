@@ -25,8 +25,9 @@ So my alternatives are the following:
 So the best solution is to separate them, versions will be on their own table, the way they will point back to the Card is via the oracle_id.x
 
 *** [x] Continue refactoring - get collection data and update react component after updating card quantity
-*** [] Continue refactoring - begin with search functionalities
-*** [] Finish changing Image to img, also is there a way to continue using but with optimization turned off, otherwise set srcset as well
+*** [x] Continue refactoring - begin with search functionalities
+*** [x] Finish changing Image to img, also is there a way to continue using but with optimization turned off, otherwise set srcset as well. FIX: there is an "unoptimized" prop to prevent optimization.
+* [] write code to get sets from database with icons (will need to query for all sets then get the image). Or when saving set, save the image url associated with the set?
 
 Search Functionality:
 Card Name (unique) (Card)

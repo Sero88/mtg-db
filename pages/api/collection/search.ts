@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/client';
 import { CardCollection } from '../../../models/cardCollection';
+import { ApiResponseEnum } from '../../../util/enums/responseEnums';
 import { helpers } from '../../../util/helpers';
 
 
@@ -42,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             
             const searchResults = await cardCollection.searchIds(cardIds);
 
-            if(searchResults.status == "success"){
+            if(searchResults.status == ApiResponseEnum.success){
                 res.status(200).json(helpers.collectionApiResponse('success', 'Collection data retrieved successfully', searchResults.data));
             } else {
                 res.status(400).json(helpers.collectionApiResponse('error', 'Unable to get data.'));
@@ -52,7 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         case 'dailyFlavorText':
             const flavorTextResponse = await cardCollection.dailyFlavorTextSearch();
-            if(flavorTextResponse.status == "success"){
+            if(flavorTextResponse.status == ApiResponseEnum.success){
                 res.status(200).json(helpers.collectionApiResponse('success', 'Flavor text retrieved successfully', flavorTextResponse.data));
             } else {
                 res.status(400).json(helpers.collectionApiResponse('error', 'Unable to get data.'));
@@ -66,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             //get the cards from db
             const searchQueryResults = await cardCollection.getCards(searchQuery);
 
-            if(searchQueryResults.status == "success"){
+            if(searchQueryResults.status == ApiResponseEnum.success){
                 res.status(200).json(helpers.collectionApiResponse('success', 'Flavor text retrieved successfully', searchQueryResults.data));
             } else {
                 res.status(400).json(helpers.collectionApiResponse('error', 'Unable to get search data.'));
@@ -77,7 +78,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             //get the cards from db
             const typeResults = await cardCollection.getTypes();
 
-            if(typeResults.status == "success"){
+            if(typeResults.status == ApiResponseEnum.success){
                 res.status(200).json(helpers.collectionApiResponse('success', 'Types retrieved successfully', typeResults.data));
             } else {
                 res.status(400).json(helpers.collectionApiResponse('error', 'Unable to get search data.'));
@@ -88,10 +89,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             //get the cards from db
             const setResults = await cardCollection.getSets();
 
-            if(setResults.status == "success"){
+            if(setResults.status == ApiResponseEnum.success){
                 res.status(200).json(helpers.collectionApiResponse('success', 'Sets retrieved successfully', setResults.data));
             } else {
-                res.status(400).json(helpers.collectionApiResponse('error', 'Unable to get search data.'));
+                res.status(400).json(helpers.collectionApiResponse('error', 'Unable to get set data.'));
             }
         break;
 

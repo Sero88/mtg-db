@@ -45,7 +45,11 @@ export default function SearchByName(
                             sets.map( (set:ApiSet, index:number) => {
                            
                                 if(!set.digital && allowedSets.includes(set.set_type) && ApiCardHelper.isRegularSet(set.code) ){
-                                    return  (<option value={set.code} key={index}>{set.name}</option>);
+                                    return  (
+                                        <option value={set.code} key={index}>
+                                            {set.name}
+                                        </option>
+                                    );
                                 }                              
                             })
                         )}

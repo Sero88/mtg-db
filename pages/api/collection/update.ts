@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/client';
 import { helpers } from '../../../util/helpers';
 import { CardCollection } from '../../../models/cardCollection';
+import { ApiResponseEnum } from '../../../util/enums/responseEnums';
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -27,9 +28,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (action){
         case 'set': 
             const setResponse = await cardCollection.setQuantity(card, quantity, type);
-            ('status' in setResponse && setResponse.status == 'error') || !('data' in setResponse)
+            ('status' in setResponse && setResponse.status == ApiResponseEnum.error) || !('data' in setResponse)
                 ? res.status(400).json(helpers.collectionApiResponse('error', 'something went wrong, unable to set card quantity in collection'))
-                : res.status(200).json(helpers.collectionApiResponse('success', setResponse.status, setResponse.data));
+                : res.status(200).json(helpers.collectionApiResponse('success', ApiResponseEnum[ApiResponseEnum.success], setResponse.data));
 
             break;
 
