@@ -2,13 +2,14 @@ import { ReactElement } from 'react';
 import { SelectorClasses } from '../../types/jsClasses';
 import {SearchList} from './_searchList';
 import styles from "../../styles/searchSelectorList.module.scss";
-import { DisplayListItem } from '../../types/searchTypes';
+import { DisplayListItem, SelectorListTypeItem } from '../../types/searchTypes';
+import { helpers } from '../../util/helpers';
 
 
 type SearchListParentProp = {
     queryKey: string,
     canChangeIs: boolean,
-    selectedItems: {name:string, is:boolean}[],
+    selectedItems: SelectorListTypeItem[],
     classes: SelectorClasses,
     children: ReactElement,
     listItems: DisplayListItem[],
@@ -31,7 +32,8 @@ export function SearchSelector({ canChangeIs, selectedItems, classes, children, 
                                             {typeObj.is ? "IS" : "NOT"}
                                         </span> 
                                     }
-                                   <span className={styles.itemName}>{typeObj.name}</span>
+                                     {typeObj.uri && helpers.getDisplayItemImage(typeObj)}
+                                    <span className={styles.itemName}>{typeObj.name}</span>
                                 </div>
                             );
                         })

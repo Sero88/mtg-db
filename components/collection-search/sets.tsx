@@ -1,21 +1,18 @@
 import { useEffect, useState } from "react";
 import { ApiSet } from "../../types/apiSet";
 import { SelectorClasses } from "../../types/jsClasses";
-import { DisplayListItem } from "../../types/searchTypes";
+import { DisplayListItem, SelectorListTypeItem } from "../../types/searchTypes";
 import { ApiCardHelper } from "../../util/apiCardHelpers";
 import {SearchSelector} from "./searchSelector";
 
 type SearchSetsProps = {
-    selectedItems: {name:string, is:boolean}[],
+    selectedItems: SelectorListTypeItem[],
     queryKey:string,
-    allowPartials: boolean,
-    partialsHandler:  (event: React.ChangeEvent<HTMLInputElement>) => void,
     classes: SelectorClasses,
-    partialsName:string,
     selectorClickHandler:  (event:React.MouseEvent) => void
 }
 
-export function SearchSets({selectedItems, classes, allowPartials, queryKey, partialsHandler, partialsName, selectorClickHandler}:SearchSetsProps){
+export function SearchSets({selectedItems, classes, queryKey, selectorClickHandler}:SearchSetsProps){
     const [sets, updateSets] = useState([] as DisplayListItem[]);
     const [scryfallSets, updateScryfallSets] = useState([] as ApiSet[])
 
@@ -60,17 +57,14 @@ export function SearchSets({selectedItems, classes, allowPartials, queryKey, par
 
     return (
         <SearchSelector 
-            canChangeIs={true}
+            canChangeIs={false}
             selectedItems={selectedItems}
             classes={classes}
             listItems={sets}
             queryKey={queryKey}
             selectorClickHandler={selectorClickHandler}
         >
-            <label>
-                <input type="checkbox" className={classes.partialsToggle} checked={allowPartials} onChange={partialsHandler} name={partialsName}/>
-                Allow partials
-            </label>
+            <></>
         </SearchSelector>  
     );
 }

@@ -56,6 +56,10 @@ export default function Search(){
         },
         cardStats:{} as CardStatsType,
         isSearching: false,
+        cardSets: {
+            queryKey: 'cardSets',
+            items: [],
+        }
     });
 
     const initialResultsState:ResultsState = {
@@ -175,25 +179,6 @@ export default function Search(){
 
     };
 
-    const typeSelectorClickHandler= (event: React.MouseEvent<Element, MouseEvent>) => {
-        const clickedElement = event.currentTarget as HTMLElement;
-        const queryKey = clickedElement.dataset.key ? clickedElement.dataset.key : null;
-  
-        if(!queryKey){
-            return;
-        }
-
-        //add from avaialable types list to selected list
-        if(clickedElement.className.includes(jsClassNames.selectorClasses.itemWrapper)){
-            const item = {name:clickedElement.dataset.name, value:clickedElement.dataset.value, is:true}
-            //@ts-ignore - it matches the query key so TS can ignore safely
-            searchQueryState[queryKey].items.push(item);
-            updateSearchQueryState();
-        }
-
-       
-    }
-
     const formSectionClickHandler = (event: React.MouseEvent<Element, MouseEvent>) => {
         const clickedElement = event.target as HTMLElement;
         const queryKey = clickedElement.dataset.key ? clickedElement.dataset.key : null;
@@ -258,6 +243,27 @@ export default function Search(){
         updateSearchQueryState();
     }
 
+
+    const selectorClickHandler = (event: React.MouseEvent<Element, MouseEvent>) => {
+        const clickedElement = event.currentTarget as HTMLElement;
+        const queryKey = clickedElement.dataset.key ? clickedElement.dataset.key : null;
+  
+        if(!queryKey){
+            return;
+        }
+
+        //add from avaialable types list to selected list
+        if(clickedElement.className.includes(jsClassNames.selectorClasses.itemWrapper)){
+            const uri = clickedElement.dataset.image?? '';
+            const item = {name:clickedElement.dataset.name, value:clickedElement.dataset.value, is:true, uri }
+            //@ts-ignore - it matches the query key so TS can ignore safely
+            searchQueryState[queryKey].items.push(item);
+            updateSearchQueryState();
+        }
+    }
+
+
+
     return (
     <>
         <div className="searchForm">
@@ -284,7 +290,7 @@ export default function Search(){
                         allowPartials={searchQueryState.cardTypes.conditionals.allowPartials ?? false}
                         partialsHandler={onChangeHandler}
                         partialsName={fieldNames.types.partials}
-                        selectorClickHandler={typeSelectorClickHandler}
+                        selectorClickHandler={selectorClickHandler}
                     />
                 </div>
 
@@ -316,13 +322,10 @@ export default function Search(){
                 <div className={styles.searchTypeSection + " form-section"} onClick={formSectionClickHandler}>
                 <label>Sets</label>
                     <SearchSets 
-                        selectedItems={searchQueryState.cardTypes.items} 
-                        queryKey={searchQueryState.cardTypes.queryKey}
+                        selectedItems={searchQueryState.cardSets.items} 
+                        queryKey={searchQueryState.cardSets.queryKey}
                         classes={jsClassNames.selectorClasses}
-                        allowPartials={searchQueryState.cardTypes.conditionals.allowPartials ?? false}
-                        partialsHandler={onChangeHandler}
-                        partialsName={fieldNames.types.partials}
-                        selectorClickHandler={typeSelectorClickHandler}
+                        selectorClickHandler={selectorClickHandler}
                     />
                 </div>
                

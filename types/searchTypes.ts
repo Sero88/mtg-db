@@ -12,6 +12,7 @@ export type SelectorListTypeItem = {
     name:string, 
     is:boolean, 
     value: string
+    uri?: string
 }
 
 export type ColorsSelectorType = {

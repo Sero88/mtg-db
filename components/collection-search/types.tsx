@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { SelectorClasses } from "../../types/jsClasses";
-import { DisplayListItem } from "../../types/searchTypes";
+import { DisplayListItem, SelectorListTypeItem } from "../../types/searchTypes";
 import {SearchSelector} from "./searchSelector";
 
 type SearchTypeProps = {
-    selectedItems: {name:string, is:boolean}[],
+    selectedItems: SelectorListTypeItem[],
     queryKey:string,
     allowPartials: boolean,
     partialsHandler:  (event: React.ChangeEvent<HTMLInputElement>) => void,

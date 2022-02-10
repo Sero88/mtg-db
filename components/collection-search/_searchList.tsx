@@ -36,6 +36,7 @@ export function SearchList({listItems,classes, queryKey, selectorClickHandler}:S
                 data-key={queryKey}
                 data-name={item.name} 
                 data-value={item.value ?? ''}
+                data-image={item.uri ?? ''}
                 onClick={selectorClickHandler}
             >
                 {item.uri && helpers.getDisplayItemImage(item)}<span className={classes.item}>{item.name}</span>
