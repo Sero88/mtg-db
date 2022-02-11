@@ -336,6 +336,27 @@ export class CardCollection{
 
     async updateDbV3(){
         const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).find().toArray();
+
+        //testing to make sure card total is correct
+        //todo remove after testing 👇
+        console.log('results', results.length);
+        let counter = 0;
+
+        results.forEach( card => {
+            if(card.versions){
+                for(const prop in card.versions){
+                    counter++;
+                }
+            }
+        })
+
+        //todo remove after testing 👇
+        console.log('versions total', counter);
+        //todo remove after testing 👆
+        //todo remove after testing 👆
+
+        //block of actual change in cards table
+        /* const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).find().toArray();
         const versions = [];
 
         if(results.length){
@@ -344,23 +365,14 @@ export class CardCollection{
                 
                 for (const [key, value] of Object.entries(card.versions)) {
                     value.oracleId = card.oracleId;
-                    await this.db.collection(process.env.DATABASE_TABLE_VERSIONS).insert(value);
+                    await this.db.collection(process.env.DATABASE_TABLE_VERSIONS).insertOne(value);
                 }
                     
-        
-                //delete card.versions;
-                //await this.db.collection(process.env.DATABASE_TABLE_CARDS_NEW).insert(card);
+                delete card.versions;
+                await this.db.collection(process.env.DATABASE_TABLE_CARDS_NEW).insertOne(card);
             })
 
-            /* versions.forEach(async (version) => {
-                for (const [key, value] of Object.entries(version)) {
-                    await this.db.collection(process.env.DATABASE_TABLE_VERSIONS).insert(value);
-                  }
-                
-            }) */
-        }
-
-        
+        } */
 
         return results;
     }
