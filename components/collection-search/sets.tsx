@@ -14,7 +14,7 @@ type SearchSetsProps = {
 
 export function SearchSets({selectedItems, classes, queryKey, selectorClickHandler}:SearchSetsProps){
     const [sets, updateSets] = useState([] as DisplayListItem[]);
-    const [scryfallSets, updateScryfallSets] = useState([] as ApiSet[])
+    //const [scryfallSets, updateScryfallSets] = useState([] as ApiSet[])
 
     const getCollectionSets = (scryfallSets:ApiSet[]) => {
         const endpoint = '/api/collection/search?action=getSets';

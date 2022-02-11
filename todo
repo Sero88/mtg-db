@@ -1,10 +1,11 @@
 Doing:
 
 Sets
+* [] apply new db format to prod db. And push set changes.
 * [x] plan sets: for this it does make sense to use the searchable list. Selector search. Won't use IS/NOT functionality. Will have set icon on list.
 * [x] Do refactoring on Type search handlers. Make them unique to types. Search sets will have its own handlers to avoid confusion and easier to modify and add icons
-* [] Began writing api endpoint to get all sets to populate list of sets from collection
-** [] There is an issue when searching for sets, due to the structure of versions, we use versions with child objects so I can udpate version.id via upsert. If it was an array it couldn't be update but it can be easily queried. 
+* [x] Begin writing api endpoint to get all sets to populate list of sets from collection
+** [x] There is an issue when searching for sets, due to the structure of versions, we use versions with child objects so I can udpate version.id via upsert. If it was an array it couldn't be update but it can be easily queried. 
 
 I tried using a subquery. My intention is to first extract all the distinct versions, then from the results of those versions, I would need to get the distinct sets. However, neither the $lookup nor aggregate work because they return the top most document, not the inner sub object. It is dealing with objects, with collection objects, not with array data. I could possibly run an aggreate or lookup but everytime the result of these is an collection object, not a single value, because it is looking for objects.
 
@@ -27,7 +28,7 @@ So the best solution is to separate them, versions will be on their own table, t
 *** [x] Continue refactoring - get collection data and update react component after updating card quantity
 *** [x] Continue refactoring - begin with search functionalities
 *** [x] Finish changing Image to img, also is there a way to continue using but with optimization turned off, otherwise set srcset as well. FIX: there is an "unoptimized" prop to prevent optimization.
-* [] write code to get sets from database with icons (will need to query for all sets then get the image). Or when saving set, save the image url associated with the set?
+* [x] write code to get sets from database with icons (will need to query for all sets then get the image). Or when saving set, save the image url associated with the set?
 
 Search Functionality:
 Card Name (unique) (Card)

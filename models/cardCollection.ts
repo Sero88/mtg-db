@@ -230,6 +230,15 @@ export class CardCollection{
         return queryObject;
     } 
 
+    private constructSetsQuery(selectedSets: SelectorListTypeItem[]){
+      
+        const sets = selectedSets.map( set => {
+            return set.value;
+        })
+
+        return {'versions.set': {$in:sets}};
+    }
+
     async dbConnect(){
         const {client, db} = await connectToDatabase();    
         this.client = client;
@@ -318,7 +327,8 @@ export class CardCollection{
     }
 
     async getCards(searchObject: SearchObject){
-        let queryObject = {};
+        let queryObject =  { $expr: { $eq: [1, 1] } };
+        let setsQuery ={ $expr: { $eq: [1, 1] } };
 
         if(searchObject.cardName){
             //todo: remove after completing searchObject functionality
@@ -350,18 +360,11 @@ export class CardCollection{
             queryObject = this.constructStatQueries(searchObject.cardStats, queryObject);
         }
 
-
-        //todo remove after testing 👇
-        console.log('search form data: ', searchObject );
-        //todo remove after testing 👆
-
-        //todo remove after testing 👇
-        console.log('searching query object:', queryObject );
-        //todo remove after testing 👆
-
-        //todo remove after testing 👇
-        console.log('searching query object:', JSON.stringify(queryObject) );
-        //todo remove after testing 👆
+        if(searchObject.cardSets && searchObject.cardSets.items.length > 0){ 
+            //todo: remove after completing searchObject functionality
+            //@ts-ignore
+            setsQuery = this.constructSetsQuery(searchObject.cardSets.items);
+        }
 
         const queryWithVersions = [  {
             $lookup:
@@ -372,15 +375,27 @@ export class CardCollection{
                     as: "versions"
                 }
             },
-           /*  {
-               // $match: {"versions.isPromo":true}
-            }, */
+            {
+                $match: setsQuery
+            },
             {
                 $match: queryObject
             }           
         ]
 
        // {sort:{name: 1},projection: this.findProjection}
+
+       //todo remove after testing 👇
+       console.log('search form data: ', searchObject );
+       //todo remove after testing 👆
+
+       //todo remove after testing 👇
+       console.log('searching query object:', queryWithVersions );
+       //todo remove after testing 👆
+
+       //todo remove after testing 👇
+       console.log('searching query object:', JSON.stringify(queryWithVersions) );
+       //todo remove after testing 👆
          
         const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).aggregate(queryWithVersions).toArray();
 
@@ -394,10 +409,7 @@ export class CardCollection{
     }
 
    async getSets(){
-
         const results = await this.db.collection(process.env.DATABASE_TABLE_VERSIONS).distinct('set');
-
- 
         return this.responseObject(ApiResponseEnum.success, results);
     } 
 }

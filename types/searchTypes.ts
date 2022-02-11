@@ -40,5 +40,6 @@ export type SearchObject = {
     cardText?: string,
     cardTypes?: SelectorListType,
     cardColors?: ColorsSelectorType,
-    cardStats?: CardStatsType
+    cardStats?: CardStatsType,
+    cardSets?: SelectorListType,
 }
