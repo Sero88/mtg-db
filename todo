@@ -1,7 +1,6 @@
 Doing:
 
 Sets
-* [] apply new db format to prod db. And push set changes.
 * [x] plan sets: for this it does make sense to use the searchable list. Selector search. Won't use IS/NOT functionality. Will have set icon on list.
 * [x] Do refactoring on Type search handlers. Make them unique to types. Search sets will have its own handlers to avoid confusion and easier to modify and add icons
 * [x] Begin writing api endpoint to get all sets to populate list of sets from collection
@@ -29,6 +28,9 @@ So the best solution is to separate them, versions will be on their own table, t
 *** [x] Continue refactoring - begin with search functionalities
 *** [x] Finish changing Image to img, also is there a way to continue using but with optimization turned off, otherwise set srcset as well. FIX: there is an "unoptimized" prop to prevent optimization.
 * [x] write code to get sets from database with icons (will need to query for all sets then get the image). Or when saving set, save the image url associated with the set?
+* [x] apply new db format to prod db. 
+* [] Fix issue with sets, showing promo instead of regular name - also check the query, I think we what we have in the db not what we pull from scryfall
+
 
 Search Functionality:
 Card Name (unique) (Card)
@@ -54,7 +56,7 @@ Learn more about indexes and to DB where needed
 ================================
 Bugs: 
 
-
+Fix lay out shift flavor text on homepage
 
 
 Reset the Card Text
