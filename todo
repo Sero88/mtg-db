@@ -29,7 +29,7 @@ So the best solution is to separate them, versions will be on their own table, t
 *** [x] Finish changing Image to img, also is there a way to continue using but with optimization turned off, otherwise set srcset as well. FIX: there is an "unoptimized" prop to prevent optimization.
 * [x] write code to get sets from database with icons (will need to query for all sets then get the image). Or when saving set, save the image url associated with the set?
 * [x] apply new db format to prod db. 
-* [] Fix issue with sets, showing promo instead of regular name - also check the query, I think we what we have in the db not what we pull from scryfall
+* [x] Fix issue with sets, showing promo instead of regular name - also check the query, I think what we have in the db not what we pull from scryfall
 
 
 Search Functionality:
