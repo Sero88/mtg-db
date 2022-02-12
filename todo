@@ -31,7 +31,6 @@ So the best solution is to separate them, versions will be on their own table, t
 * [x] apply new db format to prod db. 
 * [x] Fix issue with sets, showing promo instead of regular name - also check the query, I think what we have in the db not what we pull from scryfall
 
-
 Search Functionality:
 Card Name (unique) (Card)
 Text (differ) (may need to add an "exact text" functionality later on - look into indexes too for faster searching if needed) (Version)
