@@ -4,7 +4,7 @@ import { SymbolType } from "../../types/symbol";
 import { DisplayListItem } from "../../types/searchTypes";
 import { helpers } from "../../util/helpers";
 import {ColorConditionals} from "../../util/enums/searchConditionals";
-import styles from "../../styles/colorSearch.module.scss";
+import styles from "../../styles/checkboxChoices.module.scss";
 
 type ColorSearchProps = {
     conditionalName:string,
@@ -48,7 +48,7 @@ export function SearchColors({changeHandler, conditionalName, checkboxFieldName,
 
     return (
         <div>
-            <div className={styles.colorChoices}>
+            <div className={styles.checkboxChoices}>
                 {
                     colors.map((color:DisplayListItem, index:number) => {
                         return (

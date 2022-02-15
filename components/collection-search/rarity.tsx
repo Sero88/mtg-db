@@ -1,4 +1,4 @@
-import styles from "../../styles/colorSearch.module.scss";
+import styles from "../../styles/checkboxChoices.module.scss";
 import { CardRarityEnum } from "../../util/enums/rarityEnums";
 
 type RaritySearchProps = {
@@ -32,7 +32,7 @@ export function SearchRarity({changeHandler, checkboxFieldName, selectedItems}:R
 
     return (
         <div>
-            <div className={styles.colorChoices}>
+            <div className={styles.checkboxChoices}>
                 {
                     rarities
                 }
