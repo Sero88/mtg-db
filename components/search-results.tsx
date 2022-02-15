@@ -1,5 +1,5 @@
 import { ApiCard } from '../types/apiCard';
-import { CollectionCardType, Version } from '../types/collectionCard';
+import { Version } from '../types/collectionCard';
 import Card from '../components/apiCard';
 import {useState, useEffect} from 'react'; 
 import styles from '../styles/results.module.scss';

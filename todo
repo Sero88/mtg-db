@@ -1,35 +1,11 @@
 Doing:
 
-Sets
-* [x] plan sets: for this it does make sense to use the searchable list. Selector search. Won't use IS/NOT functionality. Will have set icon on list.
-* [x] Do refactoring on Type search handlers. Make them unique to types. Search sets will have its own handlers to avoid confusion and easier to modify and add icons
-* [x] Begin writing api endpoint to get all sets to populate list of sets from collection
-** [x] There is an issue when searching for sets, due to the structure of versions, we use versions with child objects so I can udpate version.id via upsert. If it was an array it couldn't be update but it can be easily queried. 
+Rarity
+* [x] Plan the interface: similar to colors, going to have a checklist. No conditionals necessary for this one, similar to sets, where if you select a set, only the selected items under it are included.
+* [] Start coding interface
+** [] Think more about special/bonus rarity, do we need it, if not included, how to incorporate cards in search?
 
-I tried using a subquery. My intention is to first extract all the distinct versions, then from the results of those versions, I would need to get the distinct sets. However, neither the $lookup nor aggregate work because they return the top most document, not the inner sub object. It is dealing with objects, with collection objects, not with array data. I could possibly run an aggreate or lookup but everytime the result of these is an collection object, not a single value, because it is looking for objects.
 
-It is not possible to run a distinct command inside aggregate, but even if I was able to do chain two distinct commands inside, at the end aggregate would return objects. WAIT: if I can return objects with based on unique sets, this would solve the issue, but I cannot link distinct commands inside aggregate
-
-You can also get distinct value on aggregation by using {group: {$_id:"$versions"}} but in order to link another group value into this, I need to know the name of the keys. Once again this is the issue, that it is an object inside an object, rather than an array with object values. 
-
-The distinct command on the other hand does return array of unique versions, but from here I cannot chain another distinct command to filter through those values to get the distinct sets. I can do it with JS, I can go through all values and get unique value from distinct results, but I rather have the structure be correct. 
-
-Here it sounds like it is a structure issue. The very nature of the data structure for Card and Versions, already sounds like two separate collections. This has been a natural progression I have discovered as I have continued to develop this app. I have arrived at this conclusion. 
-
-I tried using aggregate, but it does not allow distinct values
-
-So my alternatives are the following:
-* Separate the data into two separate collections Cards and Versions
-* Find a way to due attribute pattern design, versions becomes an array with object values, but I need a way to update upsert these values
-* pull down distict versions and then with JS get unique set values
-So the best solution is to separate them, versions will be on their own table, the way they will point back to the Card is via the oracle_id.x
-
-*** [x] Continue refactoring - get collection data and update react component after updating card quantity
-*** [x] Continue refactoring - begin with search functionalities
-*** [x] Finish changing Image to img, also is there a way to continue using but with optimization turned off, otherwise set srcset as well. FIX: there is an "unoptimized" prop to prevent optimization.
-* [x] write code to get sets from database with icons (will need to query for all sets then get the image). Or when saving set, save the image url associated with the set?
-* [x] apply new db format to prod db. 
-* [x] Fix issue with sets, showing promo instead of regular name - also check the query, I think what we have in the db not what we pull from scryfall
 
 Search Functionality:
 Card Name (unique) (Card)
@@ -40,6 +16,12 @@ Stats(cmc, power, toughness, loyalty) (unique) (Card)
 Sets (unique) (Version)
 Rarity (unique) (Version)
 
+
+================================
+Things I have learned
+* Planning is very important. I think one important planning tool is design. Designing the entire search page would have saved me time refactoring some of code to make it DRYer. (example reusing the checklist and search types) 
+
+================================
 
 ================================
 Future enhancements
@@ -55,8 +37,11 @@ Learn more about indexes and to DB where needed
 ================================
 Bugs: 
 
+Sort sets (in search) by release date. You can do this by going through the set array vs the collection array. Check count of the collection array to avoid looping through all the items in scryfall set array.
+
 Fix lay out shift flavor text on homepage
 
+Fix name search, currently typing the exact name return too many cards, remove words like "the", "of", "on", etc
 
 Reset the Card Text
 We need to reset the card text whenever we use the back button on prints. Only happens when the user types a new name since the the search text is replaced whenever the user types a new name (being replaced as the user types not when submit- part of change handler for the input).
@@ -129,6 +114,37 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+Sets
+* [x] plan sets: for this it does make sense to use the searchable list. Selector search. Won't use IS/NOT functionality. Will have set icon on list.
+* [x] Do refactoring on Type search handlers. Make them unique to types. Search sets will have its own handlers to avoid confusion and easier to modify and add icons
+* [x] Begin writing api endpoint to get all sets to populate list of sets from collection
+** [x] There is an issue when searching for sets, due to the structure of versions, we use versions with child objects so I can udpate version.id via upsert. If it was an array it couldn't be update but it can be easily queried. 
+
+I tried using a subquery. My intention is to first extract all the distinct versions, then from the results of those versions, I would need to get the distinct sets. However, neither the $lookup nor aggregate work because they return the top most document, not the inner sub object. It is dealing with objects, with collection objects, not with array data. I could possibly run an aggreate or lookup but everytime the result of these is an collection object, not a single value, because it is looking for objects.
+
+It is not possible to run a distinct command inside aggregate, but even if I was able to do chain two distinct commands inside, at the end aggregate would return objects. WAIT: if I can return objects with based on unique sets, this would solve the issue, but I cannot link distinct commands inside aggregate
+
+You can also get distinct value on aggregation by using {group: {$_id:"$versions"}} but in order to link another group value into this, I need to know the name of the keys. Once again this is the issue, that it is an object inside an object, rather than an array with object values. 
+
+The distinct command on the other hand does return array of unique versions, but from here I cannot chain another distinct command to filter through those values to get the distinct sets. I can do it with JS, I can go through all values and get unique value from distinct results, but I rather have the structure be correct. 
+
+Here it sounds like it is a structure issue. The very nature of the data structure for Card and Versions, already sounds like two separate collections. This has been a natural progression I have discovered as I have continued to develop this app. I have arrived at this conclusion. 
+
+I tried using aggregate, but it does not allow distinct values
+
+So my alternatives are the following:
+* Separate the data into two separate collections Cards and Versions
+* Find a way to due attribute pattern design, versions becomes an array with object values, but I need a way to update upsert these values
+* pull down distict versions and then with JS get unique set values
+So the best solution is to separate them, versions will be on their own table, the way they will point back to the Card is via the oracle_id.x
+
+*** [x] Continue refactoring - get collection data and update react component after updating card quantity
+*** [x] Continue refactoring - begin with search functionalities
+*** [x] Finish changing Image to img, also is there a way to continue using but with optimization turned off, otherwise set srcset as well. FIX: there is an "unoptimized" prop to prevent optimization.
+* [x] write code to get sets from database with icons (will need to query for all sets then get the image). Or when saving set, save the image url associated with the set?
+* [x] apply new db format to prod db. 
+* [x] Fix issue with sets, showing promo instead of regular name - also check the query, I think what we have in the db not what we pull from scryfall
 
 Stats selector
 [x] plan how the query will be constructed: 

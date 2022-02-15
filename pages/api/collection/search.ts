@@ -96,6 +96,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
         break;
 
+        case 'getRarity':
+            //get the cards from db
+            const rarityResults = await cardCollection.getRarities();
+
+            if(rarityResults.status == ApiResponseEnum.success){
+                res.status(200).json(helpers.collectionApiResponse('success', 'Rarity retrieved successfully', rarityResults.data));
+            } else {
+                res.status(400).json(helpers.collectionApiResponse('error', 'Unable to get set data.'));
+            }
+        break;
+
         default:
             res.status(400).json(helpers.collectionApiResponse('error', 'Unable to perform action'));
     }

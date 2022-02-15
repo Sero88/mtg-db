@@ -8,6 +8,7 @@ import { ColorConditionals, StatConditionalEnums } from "../util/enums/searchCon
 import { stats } from "../util/stats";
 import { CollectionCardType, Version, VersionQuery } from "../types/collectionCard";
 import { ApiResponseEnum } from "../util/enums/responseEnums";
+import { CardRarityEnum } from "../util/enums/rarityEnums";
 
 
 export class CardCollection{
@@ -239,6 +240,24 @@ export class CardCollection{
         return {'versions.set': {$in:sets}};
     }
 
+    private constructRarityQuery(selectedRarity: string[]){
+
+        const rarities = [] as string[];
+        
+        selectedRarity.forEach( rarity => {
+            const rarityNum = parseInt(rarity);
+
+            if(rarityNum == CardRarityEnum.specialBonus){
+                rarities.push('special');
+                rarities.push('bonus');
+            } else {
+                rarities.push(CardRarityEnum[rarityNum]);
+            }
+        })
+        
+        return {'versions.rarity': {$in:rarities}};
+    }
+
     async dbConnect(){
         const {client, db} = await connectToDatabase();    
         this.client = client;
@@ -329,6 +348,7 @@ export class CardCollection{
     async getCards(searchObject: SearchObject){
         let queryObject =  { $expr: { $eq: [1, 1] } };
         let setsQuery ={ $expr: { $eq: [1, 1] } };
+        let rarityQuery ={ $expr: { $eq: [1, 1] } };
 
         if(searchObject.cardName){
             //todo: remove after completing searchObject functionality
@@ -366,6 +386,13 @@ export class CardCollection{
             setsQuery = this.constructSetsQuery(searchObject.cardSets.items);
         }
 
+        if(searchObject.cardRarity && searchObject.cardRarity.selected.length > 0){
+            //todo: remove after completing searchObject functionality
+            //@ts-ignore
+            rarityQuery = this.constructRarityQuery(searchObject.cardRarity.selected);
+
+        }
+
         const queryWithVersions = [  {
             $lookup:
                 {
@@ -378,6 +405,9 @@ export class CardCollection{
             {
                 $match: setsQuery
             },
+            {
+                $match: rarityQuery
+            },     
             {
                 $match: queryObject
             }           
@@ -412,4 +442,9 @@ export class CardCollection{
         const results = await this.db.collection(process.env.DATABASE_TABLE_VERSIONS).distinct('set');
         return this.responseObject(ApiResponseEnum.success, results);
     } 
+
+    async getRarities(){
+        const results = await this.db.collection(process.env.DATABASE_TABLE_VERSIONS).distinct('rarity');
+        return this.responseObject(ApiResponseEnum.success, results);
+    }
 }

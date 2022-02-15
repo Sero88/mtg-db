@@ -13,6 +13,7 @@ import { CardStatsType, SelectorListType } from "../../../types/searchTypes";
 import {ColorConditionals} from "../../../util/enums/searchConditionals";
 import { SearchStats} from "../../../components/collection-search/stats";
 import { SearchSets } from "../../../components/collection-search/sets";
+import { SearchRarity } from "../../../components/collection-search/rarity";
 
 
 export default function Search(){
@@ -38,6 +39,9 @@ export default function Search(){
         },
         cardName: 'cardName',
         cardText: 'cardText',
+        cardRarity: {
+            checkbox: 'colorRarity'
+        }
     }
 
     const [searchQueryState, setSearchQueryState] = useState({
@@ -59,6 +63,9 @@ export default function Search(){
         cardSets: {
             queryKey: 'cardSets',
             items: [],
+        },
+        cardRarity:{
+            selected:[] as string[],
         }
     });
 
@@ -156,6 +163,18 @@ export default function Search(){
                     searchQueryState.cardColors.selected.splice(valueToRemove, 1);
                 }
                 
+            break;
+
+            case fieldNames.cardRarity.checkbox:
+                const rarityValue = event.target.dataset.value ? event.target.dataset.value : '';
+                const rarityChecked = 'checked' in event.target && event.target.checked ? event.target.checked : false;
+
+                if(rarityChecked){
+                    searchQueryState.cardRarity.selected.push(rarityValue);
+                } else {
+                    const valueToRemove = searchQueryState.cardRarity.selected.indexOf(rarityValue);
+                    searchQueryState.cardRarity.selected.splice(valueToRemove, 1);
+                }
             break;
         }
        
@@ -326,6 +345,17 @@ export default function Search(){
                         queryKey={searchQueryState.cardSets.queryKey}
                         classes={jsClassNames.selectorClasses}
                         selectorClickHandler={selectorClickHandler}
+                    />
+                </div>
+
+                <hr />
+
+                <div className={styles.searchTypeSection + " form-section"}>
+                <label>Rarity</label>
+                    <SearchRarity
+                        selectedItems={searchQueryState.cardRarity.selected}
+                        changeHandler={onChangeHandler}
+                        checkboxFieldName={fieldNames.cardRarity.checkbox}
                     />
                 </div>
                

@@ -20,6 +20,9 @@ export type ColorsSelectorType = {
     conditional: number
 }
  
+export type RaritySelectorType = {
+    selected: string[],
+}
 
 export type DisplayListItem = {
     name: string,
@@ -42,4 +45,5 @@ export type SearchObject = {
     cardColors?: ColorsSelectorType,
     cardStats?: CardStatsType,
     cardSets?: SelectorListType,
+    cardRarity?: RaritySelectorType
 }
