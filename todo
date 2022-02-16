@@ -1,10 +1,6 @@
 Doing:
 
-Rarity
-* [x] Plan the interface: similar to colors, going to have a checklist. No conditionals necessary for this one, similar to sets, where if you select a set, only the selected items under it are included.
-* [] Start coding interface
-** [] Think more about special/bonus rarity, do we need it, if not included, how to incorporate cards in search?
-
+Work on bugs.
 
 
 Search Functionality:
@@ -114,6 +110,13 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+Rarity
+* [x] Plan the interface: similar to colors, going to have a checklist. No conditionals necessary for this one, similar to sets, where if you select a set, only the selected items under it are included.
+* [x] query the db
+* [x] Start coding interface
+** [x] Think more about special/bonus rarity, do we need it, if not included, how to incorporate cards in search?
+
 
 Sets
 * [x] plan sets: for this it does make sense to use the searchable list. Selector search. Won't use IS/NOT functionality. Will have set icon on list.

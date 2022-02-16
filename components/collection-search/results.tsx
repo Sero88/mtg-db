@@ -28,7 +28,7 @@ export function SearchResults({resultsState}:{resultsState:ResultsState}){
                 <>
                 <h1>Search Results</h1>
                 <div>
-                    <p>Cards({results.length})</p>
+                    <p>Results({results.length})</p>
 
                     <ul className={styles.resultsList}>
                         { cards }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ApiSet } from "../../types/apiSet";
 import { SelectorClasses } from "../../types/jsClasses";
-import { DisplayListItem, SelectorListTypeItem } from "../../types/searchTypes";
+import { DisplayListItem, SelectorListType, SelectorListTypeItem } from "../../types/searchTypes";
 import { ApiCardHelper } from "../../util/apiCardHelpers";
 import { helpers } from "../../util/helpers";
 import {SearchSelector} from "./searchSelector";
@@ -28,20 +28,23 @@ export function SearchSets({selectedItems, classes, queryKey, selectorClickHandl
                     return [''];
                 }
 
-                const searchSets = response.data.map( (set:string) => {
-                    for(const scryfallSet of scryfallSets){
+                const searchSets = [] as DisplayListItem[];
+            
+                for(const scryfallSet of scryfallSets){
+                    if(searchSets.length == response.data.length){
+                        break;
+                    }
 
+                    response.data.forEach( (set:string) =>{
                         // scryfall broke the 3 letter mtg set convetion, so some sets on scryfall have more then 3 letters such as hrt20
                         // parent_set_code is set for scryfall sets such as promo and tokens, the parent is the set we want, so ignore the child
                         // lastly, if none of the above worked, convert the set into three letters and check againts it
                         if( !scryfallSet.parent_set_code && ( scryfallSet.code == set || helpers.getCardSet(scryfallSet.code) == set)){
-                            return {name: scryfallSet.name, uri:scryfallSet.icon_svg_uri, value:set}
+                            searchSets.push({name: scryfallSet.name, uri:scryfallSet.icon_svg_uri, value:set});
                         }
-                        
-                    }
-                    return '';
-                });
-
+                    })
+                    
+                }
                     //todo remove after testing 👇
                     console.log('sets', searchSets );
                     //todo remove after testing 👆
