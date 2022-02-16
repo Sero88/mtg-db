@@ -10,9 +10,9 @@ const DailyFlavorText = dynamic(() => import('../components/daily-flavor-text'))
 export default function Home() {
   return (
     <>  
-  
-      <DailyFlavorText />
-   
+      <div className={styles.flavorTextWrapper}>
+        <DailyFlavorText />
+      </div>
 
       <div className={styles.collectionOptionsWrapper}>
         

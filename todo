@@ -33,8 +33,6 @@ Learn more about indexes and to DB where needed
 ================================
 Bugs: 
 
-Sort sets (in search) by release date. You can do this by going through the set array vs the collection array. Check count of the collection array to avoid looping through all the items in scryfall set array.
-
 Fix lay out shift flavor text on homepage
 
 Fix name search, currently typing the exact name return too many cards, remove words like "the", "of", "on", etc
@@ -110,6 +108,9 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+Search set order
+Sort sets (in search) by release date. You can do this by going through the set array vs the collection array. Check count of the collection array to avoid looping through all the items in scryfall set array.
 
 Rarity
 * [x] Plan the interface: similar to colors, going to have a checklist. No conditionals necessary for this one, similar to sets, where if you select a set, only the selected items under it are included.
