@@ -56,6 +56,13 @@ export const helpers = {
     },
 
     getUniqueWords: function(text:string):{words:string[], text:string}{
+        //remove any stop words
+        const stopWords = ['in', 'on', 'a', 'the', 'of', 'at'];
+        stopWords.forEach( stopWord => {
+            const regex = new RegExp(`${stopWord}\\s`,'gi');
+            text = text.replace(regex,'');
+        })
+
         //remove any extra space and split by space
         text = text.trim();
         const words = text.split(' ');
