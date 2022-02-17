@@ -33,10 +33,6 @@ Learn more about indexes and to DB where needed
 ================================
 Bugs: 
 
-
-Search text 
-Fix name search, currently typing the exact name return too many cards, remove words like "the", "of", "on", etc
-
 Reset the Card Text
 We need to reset the card text whenever we use the back button on prints. Only happens when the user types a new name since the the search text is replaced whenever the user types a new name (being replaced as the user types not when submit- part of change handler for the input).
 
@@ -108,6 +104,10 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+
+Search text mismatch
+Fix name search, currently typing the exact name return too many cards, remove words like "the", "of", "on", etc
 
 flavor text layout shift
 Fix lay out shift flavor text on homepage
