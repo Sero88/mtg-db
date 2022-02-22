@@ -1,7 +1,18 @@
 Doing:
 
-Work on bugs.
-    
+Set promo bug
+Set such as strixhaven mystical archive is not showing when searching by set. I think there is an issue with the set code. Start by confirming the card Eliminate. See the version: set.
+
+[] The next thing is to tackle is viewing cards from results page. If clicked we show all info about the card.
+[x] plan it:
+    [x] modal or page: modal. This way I don't have to query the db again. I already have the data.
+    [x] what data do we show:
+        * Image of selected version
+        * Different versions of card, Set #collection number (foil), price, quantity in db.
+          * Magic Core Set 2021 #17 (Foil)   $7.50  2
+        * Clicking on version swaps the image with version. Highlights the current one.
+    [x] can dual face cards show both faces on hover: during search we need to add this functionality. During page view, it will just show both faces
+
 
 Search Functionality:
 Card Name (unique) (Card)
@@ -32,6 +43,10 @@ Learn more about indexes and to DB where needed
 
 ================================
 Bugs: 
+
++2 mace search
+AFR set has a card card called +2 Mace, when I try to click on it to add to db I see a blank page
+Add two cards non foil after you fix the issue.
 
 Reset the Card Text
 We need to reset the card text whenever we use the back button on prints. Only happens when the user types a new name since the the search text is replaced whenever the user types a new name (being replaced as the user types not when submit- part of change handler for the input).
@@ -104,10 +119,6 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
-
-[]+2 mace search
-AFR set has a card card called +2 Mace, when I try to click on it to add to db I see a blank page
-Add two cards non foil after you fix the issue.
 
 Work on bugs.
 

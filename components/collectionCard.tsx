@@ -6,11 +6,11 @@ import {CollectionCard} from "../util/collectionCard";
 
 function showCardImage(data:CollectionCardType) {
     const name = data.name;
-    const imageUri = CollectionCard.getCardImage(data, 'no_promo');
+    const {uri} = CollectionCard.getCardImage(data, 'no_promo');
 
     return (
         <Image
-            src={imageUri}
+            src={uri}
             width={196}
             height={273}
             data-name={name}
@@ -32,10 +32,10 @@ function showCardDetails(data:CollectionCardType){
     );
 }
 
-export default function CollectionCardComponent({data}:{data:CollectionCardType}){
-
+export default function CollectionCardComponent({data, clickHandler}:{data:CollectionCardType, clickHandler: (event:React.MouseEvent) => void}){
+    
     return(
-        <div className={styles.card}>
+        <div className={styles.card} onClick={clickHandler} data-id={data.oracleId}>
             <div className={styles.imageCollectionWrapper}>
                 {showCardImage(data)}
             </div> 

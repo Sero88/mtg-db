@@ -64,7 +64,7 @@ export default function CardApi({data, showPrints, quantity, updateCollectionHan
                         {
                             data.card_faces.map((cardFace, index)=> {
                                 if('image_uris' in cardFace ){
-                                    //only show the main face of the card - return after the first face image
+                                    //only show the main face of the card if not showing prints- return after the first face image
                                     if(!showPrints && index > 0){
                                         return;
                                     }

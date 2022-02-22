@@ -9,6 +9,7 @@ export const CollectionCard= {
 
     getCardImage(card:CollectionCardType, type = 'no_promo'){
         let image = '';
+        let scryfallId = '';
         const versions = card.versions ? card.versions : [];
 
         if(type == 'no_promo'){
@@ -16,22 +17,24 @@ export const CollectionCard= {
             for(const version of versions){
                 if(!version.isPromo && version.images[0].imageUri){
                     image = version.images[0].imageUri;
+                    scryfallId = version.scryfallId;
                     break;
                 }
             }
         }
 
-        //get default image
+        //get default image - the first one
         if(!image){
             for(const version of versions){
                 if(version.images[0].imageUri){
                     image = version.images[0].imageUri;
+                    scryfallId = version.scryfallId;
                     break;
                 }
             }
         }
   
-        return image;
+        return {uri: image, scryfallId};
     },
 
     convertManaCost: function (manaCost: string){
