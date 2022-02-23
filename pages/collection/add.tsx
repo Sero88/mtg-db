@@ -47,7 +47,7 @@ export default function AddPage(){
 
     //function to search cards
     const searchCards = (cardName:string, _showResults:boolean, _showSuggestions:boolean, _showPrints:boolean = false, _generalResultsPage = generalResultsPage) => {
-        
+     
         //user is no longer typing                 
         setIsTyping(false);     
         
@@ -65,7 +65,7 @@ export default function AddPage(){
         }
 
         cardName = cardName && _showPrints
-            ? `!"${cardName}"`
+            ? `"${encodeURIComponent(cardName)}"`
             : cardName;
 
         const set = selectedSet 
@@ -76,9 +76,9 @@ export default function AddPage(){
         const page = _generalResultsPage
             ? _generalResultsPage
             : 1;
-
+           
         let endpoint = _showPrints 
-            ? '/api/scryfall/cards/?order=released&unique=prints&query=' + encodeURIComponent(cardName + set)
+            ? '/api/scryfall/cards/?order=released&unique=prints&query=!' + cardName + set
             : '/api/scryfall/cards/?query=' + encodeURIComponent(cardName + set) + "&page=" + page;
   
         //fetch new data only if the new search query is different than what we already fetched

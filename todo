@@ -1,7 +1,7 @@
 Doing:
 
 Work on bugs.
-
+    
 
 Search Functionality:
 Card Name (unique) (Card)
@@ -105,6 +105,11 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 ======================================
 DONE
 
+[]+2 mace search
+AFR set has a card card called +2 Mace, when I try to click on it to add to db I see a blank page
+Add two cards non foil after you fix the issue.
+
+Work on bugs.
 
 Search text mismatch
 Fix name search, currently typing the exact name return too many cards, remove words like "the", "of", "on", etc

@@ -15,8 +15,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const apiUrl = 'https://api.scryfall.com';
     const {query, unique, order, page} = req.query;    
+
+
     //?order=released&q=elvish&unique=prints
-    const apiQuery = query + ' game:paper lang:en';
+    const apiQuery = encodeURIComponent( query as string) + ' game:paper lang:en';
     const uniquePrintsQuery = unique ? '&unique=prints': '';
     const orderQuery = order ? `&order=${order}&dir=asc` : '&order=released&dir=asc'; //direction ascending 1 to XX
     const pageQuery = page ? `&page=${page}` : '&page=1';
