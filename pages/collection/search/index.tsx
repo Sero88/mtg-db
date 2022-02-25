@@ -1,5 +1,5 @@
 import { SearchName } from "../../../components/collection-search/name";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SearchResults } from "../../../components/collection-search/results";
 import { ResultsState } from "../../../types/resultsState";
 import LoadingAnimation from '../../../components/loader-animation';
@@ -14,6 +14,8 @@ import {ColorConditionals} from "../../../util/enums/searchConditionals";
 import { SearchStats} from "../../../components/collection-search/stats";
 import { SearchSets } from "../../../components/collection-search/sets";
 import { SearchRarity } from "../../../components/collection-search/rarity";
+import { ApiCardHelper } from "../../../util/apiCardHelpers";
+import { ApiSet } from "../../../types/apiSet";
 
 
 export default function Search(){
@@ -71,10 +73,21 @@ export default function Search(){
 
     const initialResultsState:ResultsState = {
         results: [],
-        canShowResults: false
+        canShowResults: false, 
+        sets: [] as ApiSet[]
     }
     
     const [resultsState, setResultsState] = useState(initialResultsState);
+
+    const getScryfallSets = () => {
+        ApiCardHelper.getAllSets()
+            .then( setsList => {
+                resultsState.sets = setsList.data;
+                updateResultsState();
+            });
+    };
+
+    useEffect(getScryfallSets,[]);
 
     const updateSearchQueryState = () => {
          //update the state, using prev state so it merges prev values and it doesn't overwrite it
@@ -345,6 +358,7 @@ export default function Search(){
                         queryKey={searchQueryState.cardSets.queryKey}
                         classes={jsClassNames.selectorClasses}
                         selectorClickHandler={selectorClickHandler}
+                        apiSets={resultsState.sets}
                     />
                 </div>
 
@@ -370,6 +384,7 @@ export default function Search(){
                 <div className="results">
                     <SearchResults 
                         resultsState={resultsState} 
+                        apiSets={resultsState.sets}
                     />
                 </div>
             )

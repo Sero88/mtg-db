@@ -7,8 +7,9 @@ import { ResultsState } from '../../types/resultsState';
 import { CollectionCardModal } from '../collection-card-modal';
 import { useState } from 'react';
 import { cardModalStateType } from '../../types/cardModal';
+import { ApiSet } from '../../types/apiSet';
 
-export function SearchResults({resultsState}:{resultsState:ResultsState}){
+export function SearchResults({resultsState,apiSets}:{resultsState:ResultsState, apiSets:ApiSet[]}){
     const initalCardModalState = {
         showModal: false,
         selectedCard: {}
@@ -72,6 +73,7 @@ export function SearchResults({resultsState}:{resultsState:ResultsState}){
                 </div>
                 <CollectionCardModal 
                     cardModalState={cardModal}
+                    apiSets={apiSets}
                 />
                 </>
             )

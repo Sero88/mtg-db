@@ -4,6 +4,7 @@ Set promo bug
 Set such as strixhaven mystical archive is not showing when searching by set. I think there is an issue with the set code. Start by confirming the card Eliminate. See the version: set.
 
 [] The next thing is to tackle is viewing cards from results page. If clicked we show all info about the card.
+[] Add promo info to version. Check Kianne
 [x] plan it:
     [x] modal or page: modal. This way I don't have to query the db again. I already have the data.
     [x] what data do we show:

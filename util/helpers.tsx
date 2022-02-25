@@ -1,6 +1,7 @@
 import { CardQuantity } from "../types/cardQuantity";
 import { DisplayListItem } from "../types/searchTypes";
 import Image from 'next/image';
+import { ApiSet } from "../types/apiSet";
 
 export const helpers = {
     officialSetCharLimit: 3, // official sets have 3 chars
@@ -114,5 +115,13 @@ export const helpers = {
                 unoptimized={true}
             />
         );
+    }, 
+
+    getImageFromSet(apiSets:ApiSet[], set:string){
+        for(let apiSet of apiSets){
+            if(apiSet.code == set){
+                return apiSet.icon_svg_uri;
+            }
+        }
     }
 }

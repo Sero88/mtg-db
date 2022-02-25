@@ -10,14 +10,18 @@ type SearchSetsProps = {
     selectedItems: SelectorListTypeItem[],
     queryKey:string,
     classes: SelectorClasses,
+    apiSets: ApiSet[],
     selectorClickHandler:  (event:React.MouseEvent) => void
 }
 
-export function SearchSets({selectedItems, classes, queryKey, selectorClickHandler}:SearchSetsProps){
+export function SearchSets({selectedItems, classes, queryKey, selectorClickHandler, apiSets}:SearchSetsProps){
     const [sets, updateSets] = useState([] as DisplayListItem[]);
     //const [scryfallSets, updateScryfallSets] = useState([] as ApiSet[])
 
     const getCollectionSets = (scryfallSets:ApiSet[]) => {
+        if(!scryfallSets.length){
+            return;
+        }
         const endpoint = '/api/collection/search?action=getSets';
         fetch(endpoint)
             .then(response => response.json())
@@ -56,13 +60,10 @@ export function SearchSets({selectedItems, classes, queryKey, selectorClickHandl
             });
     }
     const getScryfallSets = () => {
-        ApiCardHelper.getAllSets()
-            .then( setsList => {
-                getCollectionSets(setsList.data);
-            });
+        getCollectionSets(apiSets);
     };
 
-    useEffect(getScryfallSets,[]);
+    useEffect(getScryfallSets,[apiSets]);
 
     return (
         <SearchSelector 
