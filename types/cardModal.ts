@@ -1,6 +1,7 @@
-import { CollectionCardType } from "./collectionCard";
+import { CollectionCardType, Version } from "./collectionCard";
 
 export type cardModalStateType = {
     selectedCard: CollectionCardType,
-    showModal: boolean
+    showModal: boolean,
+    selectedVersion: Version,
 }

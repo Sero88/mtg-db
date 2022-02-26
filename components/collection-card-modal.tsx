@@ -1,5 +1,4 @@
 import { cardModalStateType } from "../types/cardModal";
-import { CollectionCard } from "../util/collectionCard";
 import styles from "../styles/card.module.scss";
 import Image from 'next/image';
 import { CollectionCardType, Version } from "../types/collectionCard";
@@ -32,68 +31,67 @@ function showCardImage(imageUri:string, name:string,  key: number = 1) {
     );
 }
 
-function getImages(card:CollectionCardType, versions:Version[]){
-    const initialImage = CollectionCard.getCardImage(card);
-    let images = [] as JSX.Element[];
-
-    //cycle through versions to match the one shown in results
-    for(const version of versions){
-        if(version.scryfallId == initialImage.scryfallId){
-            //for each card face get the correspondant image
-            images = card.cardFaces.map((cardFace, index)=> {
-                let imageUri = 'imageUri' in  version.images[index]
-                    && version.images[index].imageUri 
-                    ? version.images[index].imageUri 
-                    : '';
-               
-                let imageJSX = <></>
-
-                //verify there is an image uri, if there is none for the main face, show not available. (Multiple face cards can have null values on non-main faces, this is okay)
-                if(imageUri){
-                    imageJSX = showCardImage(imageUri, card.name, index);
-                } else if( index >= 1 ){
-                    imageJSX = <></>;
-                } else {
-                    imageJSX = showCardImage('/images/notavailable.png', card.name, index);
-                }
-                
-                return imageJSX;
-        })
+function getImages(card:CollectionCardType, version:Version){
+    //for each card face get the correspondant image
+    const images = card.cardFaces.map((cardFace, index)=> {
+        let imageUri = 'imageUri' in  version.images[index]
+            && version.images[index].imageUri 
+            ? version.images[index].imageUri 
+            : '';
         
-        break;
+        let imageJSX = <></>
 
+        //verify there is an image uri, if there is none for the main face, show not available. (Multiple face cards can have null values on non-main faces, this is okay)
+        if(imageUri){
+            imageJSX = showCardImage(imageUri, card.name, index);
+        } else if( index >= 1 ){
+            imageJSX = <></>;
+        } else {
+            imageJSX = showCardImage('/images/notavailable.png', card.name, index);
         }
-    }
+        
+        return imageJSX;
 
+    });
     return images;
 }
 
-function getVersionRows(versions: Version[],apiSets: ApiSet[]){
+function getVersionRows(versions: Version[],apiSets: ApiSet[], selectedVersion:Version, versionClickHandler:  (event:React.MouseEvent) => void){
     return versions.map((version,index) => {
-        const regularPrice = version.prices.regular ? "$" + version.prices.regular : '-';
-        const foilPrice = version.prices.foil ? "$" + version.prices.foil : '-';
+        const regularPrice = version.prices.regular ? "$" + version.prices.regular : 'N/A';
+        const foilPrice = version.prices.foil ? "$" + version.prices.foil : 'N/A';
         const setImage = helpers.getImageFromSet(apiSets,version.set);
         const promo = version.isPromo ?  <span> promo</span> : '';
+        const selectedRowClass = selectedVersion.scryfallId == version.scryfallId ? styles.selectedVersion : styles.versionRow;
         return(
-            <tr key={index} data-id={version.scryfallId}>
+            <tr key={index} data-id={version.scryfallId} className={selectedRowClass} onClick={versionClickHandler}>
                 <td>{setImage && showIconImage(setImage)}{`${version.set.toUpperCase()} ${version.collectionNumber}`}{promo}</td>
-                <td>{regularPrice} <b>/</b> {foilPrice}</td>
                 <td>{version.quantity.regular ?? 0}</td>
                 <td>{version.quantity.foil ?? 0}</td>
-                
+                <td>{regularPrice} <b>|</b> {foilPrice}</td>
             </tr>
         );
     });
 }
 
-export function CollectionCardModal({cardModalState, apiSets}:{cardModalState:cardModalStateType, apiSets:ApiSet[]}){
+type CollectionCardModalProps = {
+    cardModalState:cardModalStateType, 
+    apiSets:ApiSet[], 
+    versionClickHandler:  (event:React.MouseEvent) => void,
+    modalCloseClickHandler:  (event:React.MouseEvent) => void,
+}
+
+export function CollectionCardModal({cardModalState, apiSets, versionClickHandler, modalCloseClickHandler}:CollectionCardModalProps){
     const card = cardModalState.selectedCard;
     const versions = 'versions' in card && card.versions ? card.versions : [];
-    const images = getImages(card, versions);
-    const versionRows = getVersionRows(versions, apiSets);
+    const selectedVersion = cardModalState.selectedVersion;
+
+    const images = getImages(card, selectedVersion);
+    const versionRows = getVersionRows(versions, apiSets, selectedVersion, versionClickHandler);
     
     return(
         <div className="cardModalContainer">
+            <span className={styles.closeModal} onClick={modalCloseClickHandler}>X</span>
             <h1>{card.name}</h1>
             {images}
             <div>
@@ -101,9 +99,9 @@ export function CollectionCardModal({cardModalState, apiSets}:{cardModalState:ca
                     <thead>
                         <tr>
                             <th>Version</th>
-                            <th>Price</th>
                             <th>Regular</th>
                             <th>Foil</th>
+                            <th>Prices (R|F)</th>
                         </tr>
                         
                     </thead>

@@ -2,6 +2,7 @@ import { CardQuantity } from "../types/cardQuantity";
 import { DisplayListItem } from "../types/searchTypes";
 import Image from 'next/image';
 import { ApiSet } from "../types/apiSet";
+import { Version } from "../types/collectionCard";
 
 export const helpers = {
     officialSetCharLimit: 3, // official sets have 3 chars
@@ -123,5 +124,16 @@ export const helpers = {
                 return apiSet.icon_svg_uri;
             }
         }
+    },
+
+    getVersion(versions: Version[], scryfallId:string){
+        let selectedVersion = {} as Version;
+        for(let version of versions){
+            if(version.scryfallId == scryfallId){
+                selectedVersion = version;
+            }
+        }
+
+        return selectedVersion;
     }
 }
