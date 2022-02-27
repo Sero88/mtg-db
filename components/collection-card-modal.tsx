@@ -1,5 +1,5 @@
 import { cardModalStateType } from "../types/cardModal";
-import styles from "../styles/card.module.scss";
+import styles from "../styles/collectionCardModal.module.scss";
 import Image from 'next/image';
 import { CollectionCardType, Version } from "../types/collectionCard";
 import { ApiSet } from "../types/apiSet";
@@ -12,7 +12,7 @@ function showIconImage(uri:string){
             width={15}
             height={15}
             unoptimized={true}
-        />
+        /> 
     );
 }
 
@@ -65,7 +65,7 @@ function getVersionRows(versions: Version[],apiSets: ApiSet[], selectedVersion:V
         const selectedRowClass = selectedVersion.scryfallId == version.scryfallId ? styles.selectedVersion : styles.versionRow;
         return(
             <tr key={index} data-id={version.scryfallId} className={selectedRowClass} onClick={versionClickHandler}>
-                <td>{setImage && showIconImage(setImage)}{`${version.set.toUpperCase()} ${version.collectionNumber}`}{promo}</td>
+                <td className={styles.versionCell}>{setImage && showIconImage(setImage)}{`${version.set.toUpperCase()} ${version.collectionNumber}`}{promo}</td>
                 <td>{version.quantity.regular ?? 0}</td>
                 <td>{version.quantity.foil ?? 0}</td>
                 <td>{regularPrice} <b>|</b> {foilPrice}</td>
@@ -95,10 +95,10 @@ export function CollectionCardModal({cardModalState, apiSets, versionClickHandle
             <h1>{card.name}</h1>
             {images}
             <div>
-                <table>
+                <table className={styles.versionsTable} >
                     <thead>
                         <tr>
-                            <th>Version</th>
+                            <th className={styles.versionHeader}>Version</th>
                             <th>Regular</th>
                             <th>Foil</th>
                             <th>Prices (R|F)</th>

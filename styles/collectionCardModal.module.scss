@@ -1,0 +1,41 @@
+@import './variables.scss';
+
+.versionsTable{
+    border-collapse: collapse;
+}
+
+.versionRow,
+.selectedVersion {
+
+    text-align: center;
+    cursor: pointer;
+
+    &:nth-child(even){
+        background-color: $gray;
+    }
+    
+    td {
+        min-width: 3.5rem;
+        padding: .75rem;
+    }
+
+    &:hover{
+        background-color: $highlight-green;
+    }
+
+}
+
+.selectedVersion {
+    border-left: .25rem solid $light-green;
+}
+
+.versionHeader,
+.versionCell {
+    text-align: left;
+}
+
+.versionCell{
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+}
