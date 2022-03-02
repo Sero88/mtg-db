@@ -60,12 +60,7 @@ export function SearchResults({resultsState,apiSets}:{resultsState:ResultsState,
 
         const versionElement = event.currentTarget as HTMLTableRowElement
         const versions = cardModal.selectedCard.versions ? cardModal.selectedCard.versions : [];
-        const scryfallId = 'dataset' in versionElement
-            && versionElement.dataset
-            && 'id' in versionElement.dataset
-            && versionElement.dataset.id
-            ? versionElement.dataset.id
-            : null;
+        const scryfallId = helpers.getDataset(versionElement, 'id');
 
         if(!scryfallId){
             return;
@@ -76,6 +71,18 @@ export function SearchResults({resultsState,apiSets}:{resultsState:ResultsState,
     }
 
     const modalCloseClickHandler = (event: React.MouseEvent<Element, MouseEvent>) => {
+        let target = 
+            event.target == event.currentTarget 
+            || ( event.target !== event.currentTarget && !event.currentTarget.matches('div[class*="Container"]') )
+            ? event.currentTarget
+            : false;
+
+        const canCloseModal = target ? helpers.getDataset(target as HTMLElement, 'close') : false;
+
+        if(!canCloseModal){
+            return;
+        }
+
         cardModal.showModal = false;
         updateCardModalState();
     }

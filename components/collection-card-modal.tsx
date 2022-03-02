@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { CollectionCardType, Version } from "../types/collectionCard";
 import { ApiSet } from "../types/apiSet";
 import { helpers } from "../util/helpers";
+import { Icon } from "../components/font-awesome-icon";
 
 function showIconImage(uri:string){
     return (
@@ -90,25 +91,34 @@ export function CollectionCardModal({cardModalState, apiSets, versionClickHandle
     const versionRows = getVersionRows(versions, apiSets, selectedVersion, versionClickHandler);
     
     return(
-        <div className="cardModalContainer">
-            <span className={styles.closeModal} onClick={modalCloseClickHandler}>X</span>
-            <h1>{card.name}</h1>
-            {images}
-            <div>
-                <table className={styles.versionsTable} >
-                    <thead>
-                        <tr>
-                            <th className={styles.versionHeader}>Version</th>
-                            <th>Regular</th>
-                            <th>Foil</th>
-                            <th>Prices (R|F)</th>
-                        </tr>
-                        
-                    </thead>
-                    <tbody>
-                        {versionRows}
-                    </tbody>
-                </table>
+        <div className={styles.cardModalContainer}  onClick={modalCloseClickHandler} data-close={true}>
+            <div className={styles.cardModalWrapper}>
+                <header>
+                    <h1>{card.name}</h1>
+                    <div className={styles.closeModal} onClick={modalCloseClickHandler} data-close={true}><Icon icon="times" /></div>
+                </header>
+    
+                <div className={styles.cardModalMain}>
+                    <div className={styles.cardImages}>
+                        {images}
+                    </div>
+                    
+                    <table className={styles.versionsTable} >
+                        <thead>
+                            <tr>
+                                <th className={styles.versionHeader}>Version</th>
+                                <th>Regular</th>
+                                <th>Foil</th>
+                                <th>Prices (R|F)</th>
+                            </tr>
+                            
+                        </thead>
+                        <tbody>
+                            {versionRows}
+                        </tbody>
+                    </table>
+                </div>
+              
             </div>
         </div>
     )

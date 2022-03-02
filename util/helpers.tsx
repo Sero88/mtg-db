@@ -135,5 +135,16 @@ export const helpers = {
         }
 
         return selectedVersion;
+    },
+
+    getDataset(element:HTMLElement, name:string ){
+        const value = 'dataset' in element
+            && element.dataset
+            && name in element.dataset
+            && element.dataset[name]
+            ? element.dataset[name]
+            : null;
+        
+        return value;
     }
 }
