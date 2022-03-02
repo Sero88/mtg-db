@@ -32,7 +32,7 @@ function showCardDetails(data:CollectionCardType){
     );
 }
 
-export default function CollectionCardComponent({data, clickHandler}:{data:CollectionCardType, clickHandler: (event:React.MouseEvent) => void}){
+export default function CollectionCardComponent({data, clickHandler}:{data:CollectionCardType, clickHandler?: (event:React.MouseEvent) => void}){
     
     return(
         <div className={styles.card} onClick={clickHandler} data-id={data.oracleId}>

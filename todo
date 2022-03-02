@@ -3,6 +3,8 @@ Doing:
 Set promo bug
 [] Fix: Set such as strixhaven mystical archive is not showing when searching by set. I think there is an issue with the set code. Start by confirming the card Eliminate. See the version: set.
 
+remove @ts-ignore in Collection DB modal where necessary.
+
 
 Search Functionality:
 Card Name (unique) (Card)
