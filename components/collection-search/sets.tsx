@@ -43,7 +43,7 @@ export function SearchSets({selectedItems, classes, queryKey, selectorClickHandl
                         // scryfall broke the 3 letter mtg set convetion, so some sets on scryfall have more then 3 letters such as hrt20
                         // parent_set_code is set for scryfall sets such as promo and tokens, the parent is the set we want, so ignore the child
                         // lastly, if none of the above worked, convert the set into three letters and check againts it
-                        if( !scryfallSet.parent_set_code && ( scryfallSet.code == set || helpers.getCardSet(scryfallSet.code) == set)){
+                        if(  scryfallSet.code == set || (!scryfallSet.parent_set_code && helpers.getCardSet(scryfallSet.code) == set)) {
                             searchSets.push({name: scryfallSet.name, uri:scryfallSet.icon_svg_uri, value:set});
                         }
                     })

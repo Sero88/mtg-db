@@ -1,7 +1,6 @@
 Doing:
 
-Set promo bug
-[] Fix: Set such as strixhaven mystical archive is not showing when searching by set. I think there is an issue with the set code. Start by confirming the card Eliminate. See the version: set.
+
 
 remove @ts-ignore in Collection DB modal where necessary.
 
@@ -111,6 +110,9 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+Set promo bug
+[x] Fix: Set such as strixhaven mystical archive is not showing when searching by set. I think there is an issue with the set code. Start by confirming the card Eliminate. See the version: set. The fix was to modify the condition. First check if sets matched, if not, try to match whatever is in the db for those cards with no parent set. The problem is that some sets have more than three letters, when we save them we save them as a three letter set. Also, some child sets have their own unique set letters that are different from the parent example: STX and STA, it is different than pSTX, STA is its own child that needs to be displayed.
 
 Search card: modal functionality
 [x] close modal functionality
