@@ -37,11 +37,15 @@ export default function Header(){
                                 <a><Icon icon="plus"/> Add Cards</a>
                             </Link>
                         </li>
+                        <li>
+                            <Link href="/reports">
+                            <a><Icon icon='chartBar'/> Data</a>
+                            </Link>
+                        </li>
                     </ul>
                 </nav>
             </div>
         </header>
-        
     );
 
 }

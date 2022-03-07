@@ -1,6 +1,16 @@
 Doing:
 
 
+Reports
+[] Link on the homepage and menu to report page
+[] Plan what we want to see in report
+  [] Total Cards
+  [] Unique cards:
+  [] Sum of rares and mythics total: 
+  [] Sum of collection total: 
+  [] How many of each card. Common, Uncommon, Rare, Mythic
+  [] Set quantity:
+
 
 remove @ts-ignore in Collection DB modal where necessary.
 
@@ -44,11 +54,20 @@ We need to reset the card text whenever we use the back button on prints. Only h
 
 
 ===============================
-Features:
+Future features:
 
-Add a way to go back to previuos search
-When clicking on a card to view the print, there should be a way to return to the results list
-
+[] Add a way to go back to previuos search
+[] When clicking on a card to view the print, there should be a way to return to the results list
+[] Update prices for all cards
+[] Refactor Search code
+[] Automated testing
+[] Add api to pull CSV data
+[] DB backups - currently there are no free backups
+[] Style more?
+[] Update Next.js and MongoDB
+[] Spinner for search page - initial load
+[] Search result filter and sorting
+[] Add search to text symbol list in search page, similar to types and sets
 ===============================
 NOTES About project
 

@@ -1,5 +1,5 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSearch, faPlus, faMinus, faQuoteLeft, faQuoteRight, faTimes} from '@fortawesome/free-solid-svg-icons';
+import {faSearch, faPlus, faMinus, faQuoteLeft, faQuoteRight, faTimes, faChartBar} from '@fortawesome/free-solid-svg-icons';
 
 const icons = {
     search: faSearch,
@@ -8,6 +8,7 @@ const icons = {
     quoteLeft: faQuoteLeft,
     quoteRight: faQuoteRight,
     times: faTimes,
+    chartBar: faChartBar,
 }
 
 type Icon = {

@@ -2,6 +2,8 @@ import styles from '../styles/home.module.scss';
 import { CollectionOption } from '../components/collection-option';
 import dynamic from 'next/dynamic';
 import Loader from '../components/loader-animation';
+import { Icon } from "../components/font-awesome-icon";
+import Link from 'next/link';
 
 
 
@@ -31,8 +33,16 @@ export default function Home() {
             mainImagePosition="left"
             link="/collection/add"
           />
-  
       </div>
+
+      <div className={styles.reportsWrapper}>
+        <Link href="/reports">
+          <a>
+            <Icon icon='chartBar'/> Collection Data
+          </a>
+        </Link>
+      </div>
+  
     </>
   )
 }
