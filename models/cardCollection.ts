@@ -447,4 +447,9 @@ export class CardCollection{
         const results = await this.db.collection(process.env.DATABASE_TABLE_VERSIONS).distinct('rarity');
         return this.responseObject(ApiResponseEnum.success, results);
     }
+
+    async getAllCards() {
+       const results = await this.db.collection(process.env.DATABASE_TABLE_VERSIONS).find().toArray();
+       return this.responseObject(ApiResponseEnum.success, results);
+    }
 }

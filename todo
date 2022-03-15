@@ -2,14 +2,24 @@ Doing:
 
 
 Reports
-[] Link on the homepage and menu to report page
-[] Plan what we want to see in report
-  [] Total Cards
-  [] Unique cards:
-  [] Sum of rares and mythics total: 
-  [] Sum of collection total: 
+[x] Link on the homepage and menu to report page
+[x] Plan what we want to see in report
+
+[] Free plan doesn't allow me to do $sum so I can return all the totals I need, will need to do that on the front end, possibly use a web worker?
+  [x] Regular Cards Qty: 
+  [x] Foil Cards Qty:
+  [x] Unique cards:
+  [x] Total Card Qty:
+
+
+  [x] Sum worth of rares and mythics total: 
+  [x] Foil Cards worth:
+  [x] Regular Cards worth: 
+  [x] Sum worth of collection total: 
+
   [] How many of each card. Common, Uncommon, Rare, Mythic
-  [] Set quantity:
+    [] continue writing out logic for this
+  [x] Set quantity
 
 
 remove @ts-ignore in Collection DB modal where necessary.
