@@ -1,0 +1,25 @@
+@import './variables.scss';
+
+.reports{
+    p span{
+        font-weight:600;
+    }
+    table {
+
+        border-collapse: collapse;
+        th{
+            font-weight: normal;
+            text-transform: capitalize;
+            background-color: $gray;
+        }
+        td{
+            padding: 0 2.5rem;
+            border: 1px solid $gray;
+    border-top: 0;
+        }
+    }
+}
+
+.reportSection{
+    margin-bottom: 4rem;
+}

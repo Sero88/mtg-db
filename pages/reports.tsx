@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { CardRarityEnum } from "../util/enums/rarityEnums";
 import { QuantityRarityTable } from "../components/reports/rarityQuantity";
+import styles from "../styles/reports.module.scss";
 
 export default function ReportsPage(){
 
@@ -98,26 +99,26 @@ export default function ReportsPage(){
     
 
     return (
-        <div>
+        <div className={styles.reports}>
             <h1>Collection Data Overview:</h1>
            
-            <div>
+            <div className={styles.reportSection}>
                 <h2>Quantity Data:</h2>
-                <p>Regular Cards: {reportData.quantity.regular}</p>
-                <p>Foil Cards: {reportData.quantity.foil}</p>
-                <p>Unique Cards: {reportData.quantity.unique}</p>
-                <p>Quantity By Rarities:</p>
+                <p><span>Regular Cards:</span> {reportData.quantity.regular}</p>
+                <p><span>Foil Cards:</span>  {reportData.quantity.foil}</p>
+                <p><span>Unique Cards:</span>  {reportData.quantity.unique}</p>
+                <p><span>By Rarities:</span> </p>
                 <QuantityRarityTable reportData={reportData} />
-                <p>Total Cards: {reportData.quantity.total}</p>
-                <p>Sets: {reportData.quantity.sets}</p>
+                <p><span>Total Cards:</span>  {reportData.quantity.total}</p>
+                <p><span>Sets:</span>  {reportData.quantity.sets}</p>
             </div>
             
-            <div>
+            <div className={styles.reportSection}>
                 <h2>Price Data:</h2>
-                <p>Regular Cards: ${reportData.prices.regular.toFixed(2)}</p>
-                <p>Foil Cards: ${reportData.prices.foil.toFixed(2)}</p>
-                <p>Rares and Mythics only: ${reportData.prices.rares.toFixed(2)}</p>
-                <p>Total Cards: ${reportData.prices.total.toFixed(2)}</p>
+                <p><span>Regular Cards:</span>  ${reportData.prices.regular.toFixed(2)}</p>
+                <p><span>Foil Cards:</span>  ${reportData.prices.foil.toFixed(2)}</p>
+                <p><span>Rares and Mythics only:</span>  ${reportData.prices.rares.toFixed(2)}</p>
+                <p><span>Total Cards:</span>  ${reportData.prices.total.toFixed(2)}</p>
             </div>
             
         </div>

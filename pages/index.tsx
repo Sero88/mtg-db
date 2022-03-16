@@ -35,6 +35,7 @@ export default function Home() {
           />
       </div>
 
+      <hr className={styles.homeDivider} />
       <div className={styles.reportsWrapper}>
         <Link href="/reports">
           <a>
