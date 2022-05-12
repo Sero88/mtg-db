@@ -22,7 +22,6 @@ export default function AddPage(){
         warnings: [''],
     };
 
-
     const prevInitialState:PreviousStateType = {
         query:  '',
         results: apiInitial,
@@ -30,46 +29,56 @@ export default function AddPage(){
         cardId: '', 
         page: 0
     }
-    
-    const[searchText, setSearchText] = useState("");   
-    const[apiResults, setApiResults] = useState(apiInitial);
-    const[previousState, setPreviousState] = useState(prevInitialState);
-    const[isTyping, setIsTyping] = useState(false);
-    const[isFocused, setisFocused] = useState(false);
-    const[showSuggestions, setShowSuggestions] = useState(false);
-    const[showResults, setShowResults] = useState(false);
-    const[fetchedQuery, setFetchedQuery] = useState('');
-    const[showPrints, setShowPrints] = useState(false);
-    const[cardSets, setCardSets] = useState<ApiSet[]>([]);
-    const[selectedSet, setSelectedSet] = useState("");
-    const[showLoader, setShowLoader] = useState(false);
-    const[generalResultsPage, setGeneralResultsPage] = useState(0);
+
+    const [addPageState, setAddPageState] = useState({
+        searchText: "",
+        apiResults: apiInitial,
+        previousState: prevInitialState,
+        isTyping: false,
+        isFocused: false,
+        showSuggestions: false,
+        showResults: false,
+        fetchedQuery: "",
+        showPrints: false,
+        cardSets: [],
+        selectedSet: "",
+        showLoader: false,
+        generalResultsPage: 0
+    });
+
+    function updatePageState(){
+        setAddPageState( (prevState) => {
+            return {...prevState, ...addPageState};
+        });
+    }
 
     //function to search cards
-    const searchCards = (cardName:string, _showResults:boolean, _showSuggestions:boolean, _showPrints:boolean = false, _generalResultsPage = generalResultsPage) => {
+    const searchCards = (cardName:string, _showResults:boolean, _showSuggestions:boolean, _showPrints:boolean = false, _generalResultsPage = addPageState.generalResultsPage) => {
      
         //user is no longer typing                 
-        setIsTyping(false);     
+        addPageState.isTyping = false;
+        updatePageState();
         
         //we're switching from results to print results
-        if((!showPrints && _showPrints)){
+        if((!addPageState.showPrints && _showPrints)){
             const previousStateData:PreviousStateType = {
-                query:  fetchedQuery,
-                results: apiResults,
-                searchText: searchText,
+                query:  addPageState.fetchedQuery,
+                results: addPageState.apiResults,
+                searchText: addPageState.searchText,
                 cardId: helpers.convertNameToId(cardName),
-                page: generalResultsPage
+                page: addPageState.generalResultsPage
             }
 
-            setPreviousState(previousStateData);
+            addPageState.previousState = previousStateData;
+            updatePageState();
         }
 
         cardName = cardName && _showPrints
             ? `"${encodeURIComponent(cardName)}"`
             : cardName;
 
-        const set = selectedSet 
-            ? ` set:${selectedSet},s${selectedSet},p${selectedSet}` 
+        const set = addPageState.selectedSet 
+            ? ` set:${addPageState.selectedSet},s${addPageState.selectedSet},p${addPageState.selectedSet}` 
             : '';
 
 
@@ -82,11 +91,11 @@ export default function AddPage(){
             : '/api/scryfall/cards/?query=' + encodeURIComponent(cardName + set) + "&page=" + page;
   
         //fetch new data only if the new search query is different than what we already fetched
-        if( endpoint != fetchedQuery ){
+        if( endpoint != addPageState.fetchedQuery ){
 
-            setShowLoader(true);
+            addPageState.showLoader = true;
+            updatePageState();
 
-            
             fetch(endpoint)
             .then(response => response.json())
             .then(data => 
@@ -98,38 +107,27 @@ export default function AddPage(){
                             searchCards(data.data[0].name, true, false, true, 1);     
                         }
 
-                        setShowLoader(false);
+                        addPageState.showLoader = false;
+                        updatePageState();
                         return;
                     }
 
-                
-                    //set the api results
-                    setApiResults(data);  
-
-                    //show suggestions
-                    setShowSuggestions(_showSuggestions);                   
-                    
-                    setShowPrints(_showPrints); 
-
-                    //set the new fetched query value
-                    setFetchedQuery(endpoint);
-                    
-                    setShowLoader(false);
-                    setGeneralResultsPage(page);
-                    setShowResults(_showResults);
+                    addPageState.apiResults = data;
+                    addPageState.showSuggestions = _showSuggestions;
+                    addPageState.showPrints = _showPrints;
+                    addPageState.fetchedQuery = endpoint;
+                    addPageState.showLoader = false;
+                    addPageState.generalResultsPage = page;
+                    addPageState.showResults = _showResults;
+                    updatePageState();
                                                                               
                 }
             );
-        } else { 
-            setShowSuggestions(false);          
-            setShowResults(true);
+        } else {
+            addPageState.showSuggestions = false;
+            addPageState.showResults = true;
+            updatePageState();
         }
-    }
-
-    const changeSearchText = (newText: string)=>{
-        setSearchText(newText);
-        //clear the pagination
-        setGeneralResultsPage(0);
     }
 
     //search handler
@@ -141,19 +139,24 @@ export default function AddPage(){
                 ()=>searchCards(event.target.value, false, true), 1200 
             );        
         }
-        changeSearchText(event.target.value);
-        setShowResults(false);
-        setIsTyping(true); 
-       // setApiResults(apiInitial)
-        setShowSuggestions(false);  //user has started typing - don't show suggestions until we have results   
+
+        addPageState.searchText = event.target.value;
+        addPageState.generalResultsPage = 0;
+        addPageState.showResults = false;
+        addPageState.isTyping = true;
+        addPageState.showSuggestions = false; //user has started typing - don't show suggestions until we have results   
+        updatePageState();
     }
 
     //submit handler 
     const submitHandler = (event: React.FormEvent<Element>) => {
-        event.preventDefault();        
-        setShowSuggestions(false); // user has submitted an entry, do not show any suggestions
+        event.preventDefault();    
+
+        addPageState.showSuggestions = false; // user has submitted an entry, do not show any suggestions
+        updatePageState();
         clearInterval(searchTimeout);
-        searchCards(searchText, true, false, false, 0);
+        searchCards(addPageState.searchText, true, false, false, 0);
+
     }
 
     //click handler
@@ -170,81 +173,89 @@ export default function AddPage(){
                     }
                 }
             }
-            const cardName = clickedElement.dataset.name ? clickedElement.dataset.name : '';     
-            setShowSuggestions(false);                    
-            changeSearchText(cardName);            
+            const cardName = clickedElement.dataset.name ? clickedElement.dataset.name : '';            
+            
+            addPageState.showSuggestions = false;
+            addPageState.searchText = cardName;
+            addPageState.generalResultsPage = 0;
+            updatePageState();             
+             
             searchCards(cardName, true, false, true,1);     
         }
     }
 
     //changes to oposite
-    const focusHandler = () => {            
-        setisFocused(!isFocused);                
+    const focusHandler = () => {               
+        addPageState.isFocused = !addPageState.isFocused;
+        updatePageState();           
     }
 
     const getCardSets = () => {
         ApiCardHelper.getAllSets()
             .then( setsList => {
-                setCardSets(setsList.data);
+                addPageState.cardSets = setsList.data;
+                updatePageState();
             });
     }
 
     const setChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedSet(event.target.value);
-        //setGeneralResultsPage(0);
+        addPageState.selectedSet = event.target.value;
+        updatePageState();
     }
 
     const backButtonHandler = (event: React.MouseEvent<Element, MouseEvent>) => {  
-        setShowPrints(false);
-        setApiResults(previousState.results);
-        setSearchText(previousState.searchText);
-        setFetchedQuery(previousState.query);
-        setGeneralResultsPage(previousState.page);
+
+        addPageState.showPrints = false;
+        addPageState.apiResults = addPageState.previousState.results;
+        addPageState.searchText = addPageState.previousState.searchText;
+        addPageState.fetchedQuery = addPageState.previousState.query;
+        addPageState.generalResultsPage = addPageState.previousState.page;
+        updatePageState();
     }
 
     const updatePageResults = ( page: number) => {
-        page !== 0 && searchCards(searchText, true, false, false, page);
+        page !== 0 && searchCards(addPageState.searchText, true, false, false, page);
     }
 
     //get the sets on load
     useEffect(getCardSets,[false]); //can leave [] so it never updates, but setting false explicitely to remember it is not meant to update
 
     useEffect(function(){
-       previousState.cardId && !showPrints ? window.location.href = router.pathname+"#" + previousState.cardId : '';
-    },[apiResults])
+       addPageState.previousState.cardId && !addPageState.showPrints ? window.location.href = router.pathname+"#" + addPageState.previousState.cardId : '';
+    },[addPageState.apiResults])
 
     
     return (
         <>
             <h1>Add Cards</h1>
             <SearchByName 
-                cardSearchText={searchText} 
+                cardSearchText={addPageState.searchText} 
                 cardSearchHandler={searchHandler}
                 focusHandler={focusHandler}
                 clickHandler={clickHandler}
                 submitHandler={submitHandler}
                 setChangeHandler={setChangeHandler}
-                cards={apiResults.data && apiResults.data.map(card =>card.name)} //show the suggestion only when user hasn't picked one
-                sets={cardSets}
-                showSuggestions={showSuggestions}
-                isTyping={isTyping}
-                isFocused={isFocused}
+                cards={addPageState.apiResults.data && addPageState.apiResults.data.map(card =>card.name)} //show the suggestion only when user hasn't picked one
+                sets={addPageState.cardSets}
+                showSuggestions={addPageState.showSuggestions}
+                isTyping={addPageState.isTyping}
+                isFocused={addPageState.isFocused}
             />
 
-            {showLoader &&
+            {addPageState.showLoader &&
                 <LoaderAnimation/>
             }
 
-            {showResults && 
+            {addPageState.showResults && 
                 <SearchResults 
-                    apiResults={apiResults} 
-                    showPrints={showPrints}
+                    apiResults={addPageState.apiResults} 
+                    showPrints={addPageState.showPrints}
                     clickHandler={clickHandler}
                     backButtonHandler={backButtonHandler}
-                    fetchedQuery={fetchedQuery}
+                    fetchedQuery={addPageState.fetchedQuery}
                     updatePageResults={updatePageResults}
-                    generalResultsPage={generalResultsPage}
-                    previousState={previousState}/>
+                    generalResultsPage={addPageState.generalResultsPage}
+                    previousState={addPageState.previousState}/>
             }
         </>
     )
