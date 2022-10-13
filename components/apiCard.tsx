@@ -4,8 +4,8 @@ import { CollectionCardMenu } from "./collection-card-menu";
 import styles from "../styles/card.module.scss";
 import { CardQuantity } from "../types/cardQuantity";
 import { ApiCardHelper } from "../util/apiCardHelpers";
-import { helpers } from "../util/helpers";
 import { CardDetails } from "./cardDetails";
+import {setHelper} from "../util/sets";
 
 function showCardImage(imageUri:string, name:string, type:string, key: number = 1) {
     const imageClass = type=='print' ? " " + styles.imagePrint : '';
@@ -27,7 +27,7 @@ function showCardImage(imageUri:string, name:string, type:string, key: number = 
 
 function showCardDetails(data:ApiCard, showPrints:boolean){
     const collectorsData = ApiCardHelper.getCollectorsData(data);
-    const setCode = helpers.getCardSet(data.set);
+    const setCode = setHelper.getCardSet(data.set);
     const className = !showPrints ? styles.cardNameLink : styles.cardName;
 
     return(

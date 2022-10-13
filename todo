@@ -1,25 +1,9 @@
 Doing:
 
-
-Reports
-[x] Link on the homepage and menu to report page
-[x] Plan what we want to see in report
-
-[] Free plan doesn't allow me to do $sum so I can return all the totals I need, will need to do that on the front end, possibly use a web worker?
-  [x] Regular Cards Qty: 
-  [x] Foil Cards Qty:
-  [x] Unique cards:
-  [x] Total Card Qty:
-
-
-  [x] Sum worth of rares and mythics total: 
-  [x] Foil Cards worth:
-  [x] Regular Cards worth: 
-  [x] Sum worth of collection total: 
-
-  [] How many of each card. Common, Uncommon, Rare, Mythic
-    [] continue writing out logic for this
-  [x] Set quantity
+Bug fix:
+[x] Issue with sets
+  [x] HOw are we setting the set? Do we use parent_set_code? Using setHelper.getCardSet We remove the first letter, in hindsight it may have been better to just keep the last three letters. But for consistency going to keep it as is. 
+[x] Make sure we're only pulling paper sets and cards
 
 
 remove @ts-ignore in Collection DB modal where necessary.
@@ -65,6 +49,7 @@ We need to reset the card text whenever we use the back button on prints. Only h
 
 ===============================
 Future features:
+
 
 [] Add a way to go back to previuos search
 [] When clicking on a card to view the print, there should be a way to return to the results list
@@ -139,6 +124,26 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+Reports
+[x] Link on the homepage and menu to report page
+[x] Plan what we want to see in report
+
+[] Free plan doesn't allow me to do $sum so I can return all the totals I need, will need to do that on the front end, possibly use a web worker?
+  [x] Regular Cards Qty: 
+  [x] Foil Cards Qty:
+  [x] Unique cards:
+  [x] Total Card Qty:
+
+
+  [x] Sum worth of rares and mythics total: 
+  [x] Foil Cards worth:
+  [x] Regular Cards worth: 
+  [x] Sum worth of collection total: 
+
+  [] How many of each card. Common, Uncommon, Rare, Mythic
+    [] continue writing out logic for this
+  [x] Set quantity
 
 Set promo bug
 [x] Fix: Set such as strixhaven mystical archive is not showing when searching by set. I think there is an issue with the set code. Start by confirming the card Eliminate. See the version: set. The fix was to modify the condition. First check if sets matched, if not, try to match whatever is in the db for those cards with no parent set. The problem is that some sets have more than three letters, when we save them we save them as a three letter set. Also, some child sets have their own unique set letters that are different from the parent example: STX and STA, it is different than pSTX, STA is its own child that needs to be displayed.

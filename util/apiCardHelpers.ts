@@ -1,5 +1,4 @@
 import { ApiCard } from "../types/apiCard";
-import { helpers } from "./helpers";
 import { ApiResultsList } from "../types/apiResultsList";
 
 
@@ -18,10 +17,6 @@ export const ApiCardHelper = {
         return hasFoil;
     },
 
-     // added this check since scryfall had pvow marked as expansion
-    isRegularSet: function (apiSet: string ): boolean{
-        return apiSet.length > helpers.getOfficialCardLimit() ?  false : true;
-    },
 
     hasData: function(results:ApiResultsList){
         const hasData = results

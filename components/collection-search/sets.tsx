@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { ApiSet } from "../../types/apiSet";
 import { SelectorClasses } from "../../types/jsClasses";
 import { DisplayListItem, SelectorListType, SelectorListTypeItem } from "../../types/searchTypes";
-import { ApiCardHelper } from "../../util/apiCardHelpers";
-import { helpers } from "../../util/helpers";
+import { setHelper } from "../../util/sets";
 import {SearchSelector} from "./searchSelector";
 
 type SearchSetsProps = {
@@ -39,11 +38,15 @@ export function SearchSets({selectedItems, classes, queryKey, selectorClickHandl
                         break;
                     }
 
+                    if(!setHelper.isAllowedSet(scryfallSet)){
+                        continue;
+                    }
+
                     response.data.forEach( (set:string) =>{
                         // scryfall broke the 3 letter mtg set convetion, so some sets on scryfall have more then 3 letters such as hrt20
                         // parent_set_code is set for scryfall sets such as promo and tokens, the parent is the set we want, so ignore the child
                         // lastly, if none of the above worked, convert the set into three letters and check againts it
-                        if(  scryfallSet.code == set || (!scryfallSet.parent_set_code && helpers.getCardSet(scryfallSet.code) == set)) {
+                        if( scryfallSet.code == set || (!scryfallSet.parent_set_code && setHelper.getCardSet(scryfallSet.code) == set )) {
                             searchSets.push({name: scryfallSet.name, uri:scryfallSet.icon_svg_uri, value:set});
                         }
                     })

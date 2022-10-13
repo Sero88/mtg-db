@@ -1,8 +1,8 @@
 import { ApiCard, CardFace} from "../types/apiCard";
-import { helpers } from "./helpers";
 import { CollectionCardFace, CollectionCardType, Version, VersionQuery } from "../types/collectionCard";
 import { ApiCardHelper } from "./apiCardHelpers";
 import { CardQuantity } from "../types/cardQuantity";
+import { setHelper } from "./sets";
 
 
 export const CollectionCard= {
@@ -165,7 +165,7 @@ export const CollectionCard= {
         const collectorsData = ApiCardHelper.getCollectorsData(apiData);
         const version = {} as VersionQuery;
 
-        version.set = helpers.getCardSet(apiData.set);
+        version.set = setHelper.getCardSet(apiData.set);
         version.scryfallId = apiData.id;
         version.oracleId = apiData.oracle_id;
         version.isPromo = apiData.promo;
