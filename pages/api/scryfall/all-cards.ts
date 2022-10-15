@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const body = await data.text();
     // const acceptId = ['08d1dd97-2675-4953-ab95-d47d23abfe05']
     try {
-        fs.writeFileSync(path.join(process.cwd(),'/data/scryfall-default-cards.json'), body);
+        fs.writeFileSync(path.join(process.cwd(),'/public/data/scryfall-default-cards.json'), body);
         const date = new Date();
         res.send('successfully saved data' + date.toDateString() );
     } catch(err) {
