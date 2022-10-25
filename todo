@@ -1,10 +1,7 @@
 Doing:
 
-Bug fix:
-[x] Issue with sets
-  [x] HOw are we setting the set? Do we use parent_set_code? Using setHelper.getCardSet We remove the first letter, in hindsight it may have been better to just keep the last three letters. But for consistency going to keep it as is. 
-[x] Make sure we're only pulling paper sets and cards
-
+[x] API Endpoint to spit out complete card collection with their versions
+  [x] Emulate `queryWithVersions` to get cards with their versions.
 
 remove @ts-ignore in Collection DB modal where necessary.
 
@@ -124,6 +121,12 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+Bug fix:
+[x] Issue with sets
+  [x] HOw are we setting the set? Do we use parent_set_code? Using setHelper.getCardSet We remove the first letter, in hindsight it may have been better to just keep the last three letters. But for consistency going to keep it as is. 
+[x] Make sure we're only pulling paper sets and cards
+
 
 Reports
 [x] Link on the homepage and menu to report page

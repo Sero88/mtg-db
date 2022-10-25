@@ -68,7 +68,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const searchQueryResults = await cardCollection.getCards(searchQuery);
 
             if(searchQueryResults.status == ApiResponseEnum.success){
-                res.status(200).json(helpers.collectionApiResponse('success', 'Flavor text retrieved successfully', searchQueryResults.data));
+                res.status(200).json(helpers.collectionApiResponse('success', 'Search was successful', searchQueryResults.data));
             } else {
                 res.status(400).json(helpers.collectionApiResponse('error', 'Unable to get search data.'));
             }

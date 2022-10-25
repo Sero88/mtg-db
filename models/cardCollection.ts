@@ -452,4 +452,20 @@ export class CardCollection{
        const results = await this.db.collection(process.env.DATABASE_TABLE_VERSIONS).find().toArray();
        return this.responseObject(ApiResponseEnum.success, results);
     }
+
+    async getAllCardsWithVersions() {
+        const queryWithVersions = [  {
+            $lookup:
+                {
+                    from: process.env.DATABASE_TABLE_VERSIONS,
+                    localField: "oracleId",
+                    foreignField: "oracleId",
+                    as: "versions"
+                }
+            },     
+        ]
+
+        const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).aggregate(queryWithVersions).toArray();
+        return this.responseObject(ApiResponseEnum.success, results);
+    }
 }
