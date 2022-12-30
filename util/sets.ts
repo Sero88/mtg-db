@@ -6,6 +6,7 @@ export const allowedSets = [
     "core",
     "expansion",
     "masters",
+    "draft_innovation"
     //"commander",
     //"promo",
 ];
