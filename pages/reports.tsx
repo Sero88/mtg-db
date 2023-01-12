@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { CardRarityEnum } from "../util/enums/rarityEnums";
 import { QuantityRarityTable } from "../components/reports/rarityQuantity";
 import styles from "../styles/reports.module.scss";
+import { UpdatePrices } from "../util/update-prices";
 
 export default function ReportsPage(){
 
@@ -29,7 +30,13 @@ export default function ReportsPage(){
         total: 0,
     }
 
+
     const [reportData, setReportData] = useState({quantity, prices});
+    const [dateTimeOfUpdate, setDateTimeOfUpdate] = useState(new Date());
+
+    const updateDateTimeOfUpdate = (date: Date) => {
+        setDateTimeOfUpdate(date);
+    }
     useEffect(() => {
         const endpoint = '';
         fetch('/api/collection/reports?action=cardsTotal')
@@ -94,7 +101,7 @@ export default function ReportsPage(){
                 setReportData({quantity, prices});
             })
             
-    },[]);
+    },[dateTimeOfUpdate]);
 
     
 
@@ -119,6 +126,10 @@ export default function ReportsPage(){
                 <p><span>Foil Cards:</span>  ${reportData.prices.foil.toFixed(2)}</p>
                 <p><span>Rares and Mythics only:</span>  ${reportData.prices.rares.toFixed(2)}</p>
                 <p><span>Total Cards:</span>  ${reportData.prices.total.toFixed(2)}</p>
+            </div>
+
+            <div className={styles.reportSection}>
+                 <UpdatePrices updateDoneCallback={updateDateTimeOfUpdate}/>
             </div>
             
         </div>

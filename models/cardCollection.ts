@@ -1,6 +1,6 @@
 import {connectToDatabase} from "../util/mongodb";
 import { CollectionCard } from "../util/collectionCard";
-import { ApiCard } from "../types/apiCard";
+import { ApiCard, ApiCardPrices} from "../types/apiCard";
 import { CardQuantity } from "../types/cardQuantity";
 import { CardStatsType, ColorsSelectorType, SearchObject, SelectorListTypeItem } from "../types/searchTypes";
 import { helpers } from "../util/helpers";
@@ -466,6 +466,22 @@ export class CardCollection{
         ]
 
         const results = await this.db.collection(process.env.DATABASE_TABLE_CARDS).aggregate(queryWithVersions).toArray();
+        return this.responseObject(ApiResponseEnum.success, results);
+    }
+
+    async updatePrices(scryfallId:string, prices: ApiCardPrices) {
+        const filter = {scryfallId: {$eq: scryfallId}};
+        const update = {
+            $set: {
+                prices:
+                    {
+                        regular:prices.usd, 
+                        foil: prices.usd_foil
+                    }
+            }
+        }
+
+        const results = await this.db.collection(process.env.DATABASE_TABLE_VERSIONS).findOneAndUpdate(filter, update)
         return this.responseObject(ApiResponseEnum.success, results);
     }
 }

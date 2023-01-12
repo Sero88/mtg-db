@@ -1,10 +1,12 @@
 Doing:
 
-[x] API Endpoint to spit out complete card collection with their versions
-  [x] Emulate `queryWithVersions` to get cards with their versions.
+[x] update prices using util page, on the front end
+  [x] create the stepper (steps runner)
+  [x] insert the logic for each step
+[x] add util as button on the reports page
+  
 
 remove @ts-ignore in Collection DB modal where necessary.
-
 
 Search Functionality:
 Card Name (unique) (Card)
@@ -121,6 +123,11 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+[x] API Endpoint to spit out complete card collection with their versions
+  [x] Emulate `queryWithVersions` to get cards with their versions.
+
+
 
 Bug fix:
 [x] Issue with sets
