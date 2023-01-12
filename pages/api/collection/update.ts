@@ -23,17 +23,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return;
     }
 
-    const {card, action, quantity, type} = JSON.parse(req.body);
+    const {action} = JSON.parse(req.body);
     
     switch (action){
         case 'set': 
+            const {card, quantity, type} = JSON.parse(req.body);
             const setResponse = await cardCollection.setQuantity(card, quantity, type);
             ('status' in setResponse && setResponse.status == ApiResponseEnum.error) || !('data' in setResponse)
                 ? res.status(400).json(helpers.collectionApiResponse('error', 'something went wrong, unable to set card quantity in collection'))
                 : res.status(200).json(helpers.collectionApiResponse('success', ApiResponseEnum[ApiResponseEnum.success], setResponse.data));
 
             break;
+            
+        case 'updatePrices':
+            const {scryfallId, prices} = JSON.parse(req.body);
+            const updateResponse = await cardCollection.updatePrices(scryfallId, prices);
+            ('status' in updateResponse && updateResponse.status == ApiResponseEnum.error) || !('data' in updateResponse)
+            ? res.status(400).json(helpers.collectionApiResponse('error', 'something went wrong, unable to update price'))
+            : res.status(200).json(helpers.collectionApiResponse('success', ApiResponseEnum[ApiResponseEnum.success], updateResponse.data));
 
+            break;
         default:
             res.status(400).json(helpers.collectionApiResponse('error','unable to perform action'));
     }

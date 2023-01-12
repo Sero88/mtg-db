@@ -13,7 +13,7 @@ export type ApiCard = {
     set_name: string,
     set_type: string,
     promo: boolean,
-    prices: {usd: string|null, usd_foil:string|null},
+    prices: ApiCardPrices,
     finishes: string[],
     
     //can be missing or nullable
@@ -28,6 +28,11 @@ export type ApiCard = {
     card_faces?: CardFace[],
     promo_types?: string[],
     
+}
+
+export type ApiCardPrices = {
+    usd: string|null, 
+    usd_foil:string|null
 }
 
 export type CardFace = {
