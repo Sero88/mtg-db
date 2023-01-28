@@ -484,4 +484,9 @@ export class CardCollection{
         const results = await this.db.collection(process.env.DATABASE_TABLE_VERSIONS).findOneAndUpdate(filter, update)
         return this.responseObject(ApiResponseEnum.success, results);
     }
+
+    async countVersions(){
+        const results = await this.db.collection(process.env.DATABASE_TABLE_VERSIONS).countDocuments();
+        return this.responseObject(ApiResponseEnum.success, results);
+    }
 }

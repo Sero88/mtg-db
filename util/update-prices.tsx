@@ -1,10 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, ReactElement } from 'react';
 import Loader from '../components/loader-animation';
 import { CollectionCardType, Version } from '../types/collectionCard';
 
 type failedUpdate = {
     card: CollectionCardType,
     version: Version
+}
+
+type UpdateCard = {
+    total: number,
+    current: number,
 }
 
 export function UpdatePrices({updateDoneCallback}:{updateDoneCallback:(date:Date)=>void}) {
@@ -14,13 +19,19 @@ export function UpdatePrices({updateDoneCallback}:{updateDoneCallback:(date:Date
     const [collectionData, setCollectionData] = useState([]);
     const [scryfallMappedData, setScryfallMappedData] = useState(new Map());
     const [failedToUpdateCards, setFailedToUpdateCards] = useState([] as failedUpdate[])
+    const [cardUpdate, setCardUpdate] = useState({total: 0, current: 0} as UpdateCard)
     const stateRef = useRef();
 
     const retrieveCollection = async () => {
         const response = await fetch('/api/collection/')
         const collectionCards = await response.json()
 
+        const versionCountResponse = await fetch('api/collection/versions?action=count')
+        const versionCount = await(versionCountResponse.json());
+
+
         setCollectionData(collectionCards);
+        setCardUpdate((prev) => ({...prev, total: versionCount?.data}));
     }
 
     const retrieveScryfall = async () => {
@@ -64,9 +75,11 @@ export function UpdatePrices({updateDoneCallback}:{updateDoneCallback:(date:Date
                     ? (await fetch('/api/collection/update',{
                         method:'put',
                         body: JSON.stringify({scryfallId: version.scryfallId, prices: newPrices, action:'updatePrices'})
-                    }))
-
+                        }))
+                        
                     : failedToUpdateCards.push({card, version});
+                
+                setCardUpdate((prevState)=>{ return {...prevState, current: prevState.current + 1} })
             }
         }
 
@@ -92,10 +105,10 @@ export function UpdatePrices({updateDoneCallback}:{updateDoneCallback:(date:Date
     }
 
     const initialSteps = [
-        {name:'Retrieving collection data', completed: false, callback: async() => retrieveCollection()},
-        {name:'Getting new card data', completed: false, callback: async() =>retrieveScryfall()},
-        {name:'Updating collection data with new prices', completed: false, callback: () => updateCollection()},
-        {name:'Preparing data for download', completed: false, callback: () => prepareCollection()}
+        {id: 'retrieveCollection', name:'Retrieving collection data', completed: false, callback: async() => retrieveCollection()},
+        {id: 'retrieveScryfall', name:'Getting new card data', completed: false, callback: async() =>retrieveScryfall()},
+        {id: 'updateCollection', name:'Updating collection data with new prices', completed: false, callback: () => updateCollection()},
+        {id: 'prepareDownload', name:'Preparing data for download', completed: false, callback: () => prepareCollection()}
     ]
 
     const [steps] = useState(initialSteps);
@@ -122,7 +135,9 @@ export function UpdatePrices({updateDoneCallback}:{updateDoneCallback:(date:Date
    
     const createdFailedCardList = () => {
         return(
-            failedToUpdateCards.map( cardObj => <li>{cardObj.card.name} ({cardObj.version.set})</li>)
+            <ul>
+                {failedToUpdateCards.map( cardObj => <li>{cardObj.card.name} ({cardObj.version.set})</li>)}
+            </ul>
         )
     }
 
@@ -143,24 +158,24 @@ export function UpdatePrices({updateDoneCallback}:{updateDoneCallback:(date:Date
 
     let showSteps = [];
     for(let i = 0 ; i<=currentStep && i < steps.length; i++){
-        showSteps.push(<li key={i}>{steps[i]?.name}</li>)
+
+        const stepName = steps[i]?.name
+        let stepInfo:ReactElement | string = '';
+
+        if(steps[i].id == 'updateCollection'){
+           stepInfo = <ul><li>{`Card ${cardUpdate.current} of ${cardUpdate.total}`}</li></ul>
+        }
+        
+        showSteps.push(<li key={i}>{stepName}{stepInfo}</li>)
     }
 
     return(
         <>
             {
-                inProgress && 
-                <>
-                    {showSteps} 
-                    <Loader />
-                </>
-            }
-
-            {
                 currentStep == steps.length
                 ? (<>
-                    
-                    {showSteps} 
+                    <h2>Updating</h2>
+                    <ul>{showSteps}</ul>
                     <h3>Price update results:</h3>
                     {showErrors()} 
                     </>)
