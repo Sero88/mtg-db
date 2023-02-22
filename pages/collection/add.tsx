@@ -9,6 +9,9 @@ import {useRouter} from 'next/router';
 import { PreviousStateType } from '../../types/previousState';
 import { ApiCardHelper } from "../../util/apiCardHelpers";
 
+import { NameSearch } from "../../components/collection-add/NameSearch";
+import { SetSearch } from "../../components/collection-add/SetSearch";
+
 let searchTimeout: NodeJS.Timeout;
 
 export default function AddPage(){
@@ -26,8 +29,14 @@ export default function AddPage(){
         query:  '',
         results: apiInitial,
         searchText: '', 
-        cardId: '', 
+        cardId: '',
         page: 0
+    }
+
+    const [searchText, setSearchText] = useState('');
+
+    const searchTextChange = (newSearchText:string) => {
+        setSearchText(newSearchText)
     }
 
     const [addPageState, setAddPageState] = useState({
@@ -228,6 +237,10 @@ export default function AddPage(){
     return (
         <>
             <h1>Add Cards</h1>
+            <div>
+                <NameSearch searchText={searchText} searchTextChange={searchTextChange} />
+            </div>
+
             <SearchByName 
                 cardSearchText={addPageState.searchText} 
                 cardSearchHandler={searchHandler}
