@@ -1,10 +1,32 @@
 Doing:
 
-[x] update prices using util page, on the front end
-  [x] create the stepper (steps runner)
-  [x] insert the logic for each step
-[x] add util as button on the reports page
-  
+* Refactoring the add page
+NOTES:
+Page
+- SubmitHandler
+
+SetSearch
+
+NameSearch
+-SearchHandler can be moved here - then it sets the parent's text value
+-- So the implementation of of NameSearch, shouldn't be known by the parent, the parent only cares about having the state search text so it can pass it to its children
+
+shared
+submit handler
+
+Mindset: do little at a time. Focus on improving small chunks.
+[x] search by name component is doing too much
+  [x] Controlled component setup on change
+  [x] Add tests now - 
+  [x] setup on focus and on blur functionality - no longer needed]
+[x] Extract the set component into its own file
+  [x] Add tests to component and helpers it uses
+[] remove the types into their own files under /types
+[] analyze the search results and break down into smaller components
+[] for card wrappers - print vs general - extract interweaved logic to their own utility function
+
+
+
 
 remove @ts-ignore in Collection DB modal where necessary.
 
@@ -123,6 +145,13 @@ OracleId: string (same across reprinted card editions, but don't really need it.
 
 ======================================
 DONE
+
+
+[x] update prices using util page, on the front end
+  [x] create the stepper (steps runner)
+  [x] insert the logic for each step
+[x] add util as button on the reports page
+  
 
 [x] API Endpoint to spit out complete card collection with their versions
   [x] Emulate `queryWithVersions` to get cards with their versions.

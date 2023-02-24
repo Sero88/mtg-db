@@ -1,5 +1,5 @@
 import {fireEvent, render, screen} from '@testing-library/react'
-import {NameSearch} from '../components/collection-add/NameSearch'
+import {NameSearch} from './NameSearch'
 
 const testSearchText = 'test';
 const searchTextHandler = jest.fn();
