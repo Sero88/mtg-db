@@ -21,6 +21,17 @@ Mindset: do little at a time. Focus on improving small chunks.
   [x] setup on focus and on blur functionality - no longer needed]
 [x] Extract the set component into its own file
   [x] Add tests to component and helpers it uses
+[x] Card Suggestions extract from search by text (since it uses both card name and set it belongs to add page)
+  [x] Add unit tests
+[] Start refactoring search functionality utilizing search name and set.
+  i: For now utilize Results component as is to show results
+  [] Research ReactQuery - caching benefits.
+  
+  
+[] Use composition for Results - ResultsGeneral and ResultsPrint
+
+
+
 [] remove the types into their own files under /types
 [] analyze the search results and break down into smaller components
 [] for card wrappers - print vs general - extract interweaved logic to their own utility function

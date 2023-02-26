@@ -1,0 +1,34 @@
+@import './variables.scss';
+
+.searchSuggestions{
+    box-shadow: 1px 3px 6px -1px #ccdc;
+    padding: 2rem;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+
+    .suggestionsTitle{
+        font-style: oblique;
+        color: $dark-green;
+        display: inline-block;
+        margin-bottom: 1.25rem;
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    ul{
+        padding: 0 ;
+        margin: 0;
+        list-style: none;
+
+        li {
+            margin-bottom: 1rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+
+            &:hover{
+                color: $dark-green;
+                font-weight: bold;
+            }
+        }
+    }
+}
