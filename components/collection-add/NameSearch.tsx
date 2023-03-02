@@ -2,13 +2,13 @@
 import styles from '../../styles/search.module.scss';
 
 type NameSearchProps = {
-    searchText: string
-    searchTextChange: (newSearchText:string) => void
+    cardName: string
+    cardNameChange: (newSearchText:string) => void
 }
 
-export const NameSearch = ({searchText, searchTextChange}:NameSearchProps) => {
+export const NameSearch = ({cardName, cardNameChange}:NameSearchProps) => {
     const onChange = (event:React.ChangeEvent<HTMLInputElement>) => {
-        searchTextChange(event.target.value)
+        cardNameChange(event.target.value)
     }
     
     return (
@@ -18,7 +18,7 @@ export const NameSearch = ({searchText, searchTextChange}:NameSearchProps) => {
                 type="text" 
                 name="cardName" 
                 onChange={onChange} 
-                value={searchText}
+                value={cardName}
                 autoComplete="off"
             />
         </label>
