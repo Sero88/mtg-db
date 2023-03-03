@@ -1,9 +1,9 @@
 
-import { useEffect, useState } from 'react';
 import styles from '../../styles/search.module.scss';
 import { ApiSet } from '../../types/apiSet';
-import { ApiCardHelper } from '../../util/apiCardHelpers';
 import { setHelper } from '../../util/sets';
+import LoaderAnimation from '../loader-animation';
+import { useGetSets } from '../../hooks/useGetSets';
 
 type SetSearchProps = {
     selectedSet: string
@@ -11,25 +11,27 @@ type SetSearchProps = {
 }
 
 export const SetSearch = ({selectedSet, setChangeHandler}:SetSearchProps) => {
-    const [sets, setSets] = useState([]);
+    const {isLoading, error, data} = useGetSets();
+
     const onChangeSet = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setChangeHandler(event.target.value);
     }
 
-    useEffect( () => {
-        ApiCardHelper.getAllSets()
-            .then( setsList => {
-                setSets(setsList.data)
-            });
-    }, [])
+    
+    if(isLoading){
+        return (<LoaderAnimation />)
+    }
 
+    if(error){
+        return <p>Error: Unable to get sets</p>
+    }
 
     return (
         <label className={styles.setField}><span>Card Set: </span>
             <select value={selectedSet} onChange={onChangeSet}>
                 <option value="">All sets</option>
                 {
-                    sets.map( (set:ApiSet, index:number) => {
+                    data.map( (set:ApiSet, index:number) => {
                     
                         if( setHelper.isAllowedSearchSet(set) ){
                             return  (
