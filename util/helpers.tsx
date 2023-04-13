@@ -7,6 +7,13 @@ import { Version } from "../types/collectionCard";
 export const helpers = {
     collectionLimit: 4, //limit of each card in collection
 
+    apiResponse: function(success:boolean, data:unknown = undefined){
+        return {
+            success,
+            data
+        }
+    },
+
     collectionApiResponse: function(status:string, message:string, data = {}){
         return {
             status,
