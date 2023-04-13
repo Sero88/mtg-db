@@ -25,7 +25,14 @@ Mindset: do little at a time. Focus on improving small chunks.
   [x] Add unit tests
 [] Start refactoring search functionality utilizing search name and set.
   i: For now utilize Results component as is to show results
-  [] Research ReactQuery - caching benefits.
+  i: Do we need to move state to SearchResults instead? - Depends if we want to show card suggestions
+    [x] remove Card suggestions, not really needed, then change search until form is submitted
+      i:this will simplyfy interaction and code a lot more. Card suggestions aren't really helpful.
+  i: have two functions generalSearch and printSearch
+  [x] Research ReactQuery - caching benefits.
+    i: very similar to apollo, but used with fetch, instead of GraphQL
+    i: let's use it for practice and deduping + caching sound really good
+
   
   
 [] Use composition for Results - ResultsGeneral and ResultsPrint

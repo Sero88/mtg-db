@@ -1,11 +1,9 @@
 import React, {useState} from "react";
-import { SearchResults } from "../../components/collection-add/SearchResults";
-import { SearchCardData } from "../../types/addPage";
-import { SearchForm } from "../../components/collection-add/SearchForm";
-import { useGeneralCardSearch } from "../../hooks/useGeneralCardSearch";
-import { QueryResult } from "../../components/QueryResult";
-
-
+import { SearchResults} from "@/components/collection-add/SearchResults";
+import { SearchForm } from "@/components/collection-add/SearchForm";
+import { SearchCardData } from "@/types/addPage";
+import { useGeneralCardSearch } from "@/hooks/useGeneralCardSearch";
+import { QueryResult } from "@/components/QueryResult";
 
 export default function AddPage(){
     const [searchCardData, setSearchCardData,] = useState<SearchCardData>({
@@ -15,7 +13,6 @@ export default function AddPage(){
 
     const [page, setPage] = useState(1);
     const querySearchResponse = useGeneralCardSearch({searchCardData, page});
-
 
     const handleSearchFormSubmit = ( newSearchCardData:SearchCardData) => {
         setSearchCardData({...newSearchCardData});

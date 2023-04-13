@@ -1,7 +1,7 @@
 import {useQuery} from 'react-query';
-import { SearchCardData } from '../types/addPage';
+import { SearchCardData } from '@/types/addPage';
 import axios from 'axios';
-import { ApiCard } from '../types/apiCard';
+import { ApiCard } from '@/types/apiCard';
 
 type useGeneralCardSearchProps = {
     searchCardData: SearchCardData,
