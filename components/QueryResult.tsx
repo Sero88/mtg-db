@@ -7,7 +7,7 @@ export function QueryResult ( {queryResult, children, errorMessage="Something we
     }
     
     if(queryResult.error){
-        return <p>{errorMessage}</p>
+        return <p>Error: {errorMessage}</p>
     }
 
     if(queryResult.data){

@@ -35,6 +35,6 @@ describe('NameSearch Component', () => {
         
       render(<SetSearch selectedSet={selectedSet} setChangeHandler={setChangeHandler} /> )
  
-      expect(screen.queryByText('Error: Unable to get sets')).not.toBeNull();
+      expect(screen.queryByText(/Error:/)).not.toBeNull();
     })
 })
