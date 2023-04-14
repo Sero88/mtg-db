@@ -3,5 +3,6 @@ import { UseQueryResult } from "react-query"
 
 export type QueryResultProps = {
     queryResult: UseQueryResult
+    errorMessage?:string
     children: ReactElement
 }
