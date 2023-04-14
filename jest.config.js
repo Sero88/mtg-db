@@ -20,11 +20,10 @@ const customJestConfig = {
   // For example:
 
   moduleNameMapper: {
-    '@/(.*)$': '<rootDir>/src/$1',
     '^@/components/(.*)$': '<rootDir>/components/$1',
     '^@/pages/(.*)$': '<rootDir>/pages/$1',
     '^@/models/(.*)$': '<rootDir>/models/$1',
-    '^@/utils/(.*)$': '<rootDir>/util/$1',
+    '^@/util/(.*)$': '<rootDir>/util/$1',
     '^@/types/(.*)$': '<rootDir>/types/$1',
     '^@/hooks/(.*)$': '<rootDir>/hooks/$1',
   },

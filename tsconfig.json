@@ -28,7 +28,7 @@
       "@/pages/*": [
         "pages/*"
       ],
-      "@/utils/*": [
+      "@/util/*": [
         "util/*"
       ],
       "@/types/*": [
