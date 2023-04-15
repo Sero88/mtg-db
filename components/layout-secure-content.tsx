@@ -4,31 +4,29 @@ import Header from "./header";
 import Footer from "./footer";
 
 type PropsWithChildren = {
-    children: JSX.Element
-}
+	children: JSX.Element;
+};
 
-export default function LayoutSecureContent({children} : PropsWithChildren){
-    const [session, loading]  = useSession();
+export default function LayoutSecureContent({ children }: PropsWithChildren) {
+	const [session, loading] = useSession();
 
-    //if still loading return null
-    if(typeof window !== 'undefined' && loading) return null; 
+	if (loading) {
+		return null;
+	}
 
-    //if there is no session show access denied
-    if(!session) {
-        return <AccessDenied/>;
-    }
-    
-    //show the content
-    return(
-        <>
-            <Header/>
-            <main>
-                <div className="wrapper">
-                    {children}
-                </div>
-            </main>
-            <Footer />
-            
-        </>
-    );
+	//if there is no session show access denied
+	if (!session) {
+		return <AccessDenied />;
+	}
+
+	//show the content
+	return (
+		<>
+			<Header />
+			<main>
+				<div className="wrapper">{children}</div>
+			</main>
+			<Footer />
+		</>
+	);
 }
