@@ -1,10 +1,9 @@
 Doing:
 
--   Refactoring the add page
-    NOTES:
-    Page
-
-*   SubmitHandler
+* Refactoring the add page
+NOTES:
+Page
+- SubmitHandler
 
 SetSearch
 
@@ -17,30 +16,35 @@ submit handler
 
 Mindset: do little at a time. Focus on improving small chunks.
 [x] search by name component is doing too much
-[x] Controlled component setup on change
-[x] Add tests now -
-[x] setup on focus and on blur functionality - no longer needed]
+  [x] Controlled component setup on change
+  [x] Add tests now - 
+  [x] setup on focus and on blur functionality - no longer needed]
 [x] Extract the set component into its own file
-[x] Add tests to component and helpers it uses
+  [x] Add tests to component and helpers it uses
 [x] Card Suggestions extract from search by text (since it uses both card name and set it belongs to add page)
-[x] Add unit tests
+  [x] Add unit tests
 [] Start refactoring search functionality utilizing search name and set.
-i: For now utilize Results component as is to show results
-i: Do we need to move state to SearchResults instead? - Depends if we want to show card suggestions
-[x] remove Card suggestions, not really needed, then change search until form is submitted
-i:this will simplyfy interaction and code a lot more. Card suggestions aren't really helpful.
-i: have two functions generalSearch and printSearch
-[x] Research ReactQuery - caching benefits.
-i: very similar to apollo, but used with fetch, instead of GraphQL
-i: let's use it for practice and deduping + caching sound really good
-[x] Add linter and formatter to vscode.
-[x] Add test script to run when build
+  i: For now utilize Results component as is to show results
+  i: Do we need to move state to SearchResults instead? - Depends if we want to show card suggestions
+    [x] remove Card suggestions, not really needed, then change search until form is submitted
+      i:this will simplyfy interaction and code a lot more. Card suggestions aren't really helpful.
+  i: have two functions generalSearch and printSearch
+  [x] Research ReactQuery - caching benefits.
+    i: very similar to apollo, but used with fetch, instead of GraphQL
+    i: let's use it for practice and deduping + caching sound really good
 
+  
+  
 [] Use composition for Results - ResultsGeneral and ResultsPrint
+
+
 
 [] remove the types into their own files under /types
 [] analyze the search results and break down into smaller components
 [] for card wrappers - print vs general - extract interweaved logic to their own utility function
+
+
+
 
 remove @ts-ignore in Collection DB modal where necessary.
 
@@ -53,27 +57,26 @@ Stats(cmc, power, toughness, loyalty) (unique) (Card)
 Sets (unique) (Version)
 Rarity (unique) (Version)
 
+
 ================================
 Things I have learned
-
--   Planning is very important. I think one important planning tool is design. Designing the entire search page would have saved me time refactoring some of code to make it DRYer. (example reusing the checklist and search types)
+* Planning is very important. I think one important planning tool is design. Designing the entire search page would have saved me time refactoring some of code to make it DRYer. (example reusing the checklist and search types) 
 
 ================================
 
 ================================
 Future enhancements
 Refactor structure a little
+* Move add components to a new Add Folder to differentiate between collection and add components
 
--   Move add components to a new Add Folder to differentiate between collection and add components
-
--   [] Refactor Text symbols so it uses list? -- AddSymbols and \_searchList are different kinds of lists, they do share some similarities, but not the same. We could probably make the addsymbols list comply with \_searchList
+* [] Refactor Text symbols so it uses list? -- AddSymbols and _searchList are different kinds of lists, they do share some similarities, but not the same. We could probably make the addsymbols list comply with _searchList
+ 
 
 Learn more about indexes and to DB where needed
-
--   [] lear more about nosql injection - learn about vulnerabilities. Familiar with mysql, but not with nosql
+* [] lear more about nosql injection - learn about vulnerabilities. Familiar with mysql, but not with nosql
 
 ================================
-Bugs:
+Bugs: 
 
 +2 mace search
 AFR set has a card card called +2 Mace, when I try to click on it to add to db I see a blank page
@@ -82,8 +85,10 @@ Add two cards non foil after you fix the issue.
 Reset the Card Text
 We need to reset the card text whenever we use the back button on prints. Only happens when the user types a new name since the the search text is replaced whenever the user types a new name (being replaced as the user types not when submit- part of change handler for the input).
 
+
 ===============================
 Future features:
+
 
 [] Add a way to go back to previuos search
 [] When clicking on a card to view the print, there should be a way to return to the results list
@@ -100,23 +105,25 @@ Future features:
 ===============================
 NOTES About project
 
-DB:
+
+DB: 
 Currently using MongoDB, free version, but has a cap of 500MB. Will keep an eye on it after adding more cards. May need to move to AWS. Also backups are not enabled by default. Maybe manually create one every week or so.
 
-About:
-The site will basically be a user API to access the database. Without logging in, the user won't have access.
+About: 
+The site will basically be a user API to access the database. Without logging in, the user won't have access. 
 
 Calling scryfall API
-This is the structure of how the db will be saved. Pretty much just data
-that pertains to our collection.
+This is the structure of how the db will be saved. Pretty much just data 
+that pertains to our collection. 
 
-Treat cards that are two-cards-in-one separate. If the card_face object exists, save the other face in a separate table.
+Treat cards that are two-cards-in-one separate. If the card_face object exists, save the other face in a separate table. 
 These type of cards won't count against total. Will have their own entries, but when doing search will join these tables with $lookup
 
 ID (automatically by MongoDB)
 (don't need scryfall id because we will hold many different types/sets)
 
-CARD OBJECT:
+
+CARD OBJECT: 
 scryfallId: string
 name: string
 colorIdentity: string[],
@@ -128,13 +135,14 @@ rarity: string
 collectionNumber: string,
 types: string[], //breaking down typeline into array to have separate searchable values
 
+
 //optional params for each card
 loyalty: number|null
-keywords: string[] | [],
+keywords: string[] | [], 
 promoTypes: string[]
 
 //face properties - each card has at least one face
-cardFaces:
+cardFaces: 
 Each card is going to have a face, regardless if it only has one.
 Face properties:
 mana_cost: string | null ( we need to write a regular expression to convert mana_cost value if dual cards)
@@ -143,65 +151,73 @@ image_uri = using image_uris field get one url (normal)
 
 //optional face properties
 power: string | null
-toughness: string | null
+toughness: string | null 
 flavor_text: string|null
+
 
 //Discarded
 legalities: {} // i don't think i need this for lover's standard
 cardFaceType: "normal|multiface" // we don't need this as a field. Can get value from getting card face count
 OracleId: string (same across reprinted card editions, but don't really need it.
 
+
 ======================================
 DONE
 
+
 [x] update prices using util page, on the front end
-[x] create the stepper (steps runner)
-[x] insert the logic for each step
+  [x] create the stepper (steps runner)
+  [x] insert the logic for each step
 [x] add util as button on the reports page
+  
 
 [x] API Endpoint to spit out complete card collection with their versions
-[x] Emulate `queryWithVersions` to get cards with their versions.
+  [x] Emulate `queryWithVersions` to get cards with their versions.
+
+
 
 Bug fix:
 [x] Issue with sets
-[x] HOw are we setting the set? Do we use parent_set_code? Using setHelper.getCardSet We remove the first letter, in hindsight it may have been better to just keep the last three letters. But for consistency going to keep it as is.
+  [x] HOw are we setting the set? Do we use parent_set_code? Using setHelper.getCardSet We remove the first letter, in hindsight it may have been better to just keep the last three letters. But for consistency going to keep it as is. 
 [x] Make sure we're only pulling paper sets and cards
+
 
 Reports
 [x] Link on the homepage and menu to report page
 [x] Plan what we want to see in report
 
 [] Free plan doesn't allow me to do $sum so I can return all the totals I need, will need to do that on the front end, possibly use a web worker?
-[x] Regular Cards Qty:
-[x] Foil Cards Qty:
-[x] Unique cards:
-[x] Total Card Qty:
+  [x] Regular Cards Qty: 
+  [x] Foil Cards Qty:
+  [x] Unique cards:
+  [x] Total Card Qty:
 
-[x] Sum worth of rares and mythics total:
-[x] Foil Cards worth:
-[x] Regular Cards worth:
-[x] Sum worth of collection total:
 
-[] How many of each card. Common, Uncommon, Rare, Mythic
-[] continue writing out logic for this
-[x] Set quantity
+  [x] Sum worth of rares and mythics total: 
+  [x] Foil Cards worth:
+  [x] Regular Cards worth: 
+  [x] Sum worth of collection total: 
+
+  [] How many of each card. Common, Uncommon, Rare, Mythic
+    [] continue writing out logic for this
+  [x] Set quantity
 
 Set promo bug
 [x] Fix: Set such as strixhaven mystical archive is not showing when searching by set. I think there is an issue with the set code. Start by confirming the card Eliminate. See the version: set. The fix was to modify the condition. First check if sets matched, if not, try to match whatever is in the db for those cards with no parent set. The problem is that some sets have more than three letters, when we save them we save them as a three letter set. Also, some child sets have their own unique set letters that are different from the parent example: STX and STA, it is different than pSTX, STA is its own child that needs to be displayed.
 
 Search card: modal functionality
 [x] close modal functionality
-[x] Work on styles for the modal window.
+[x] Work on styles for the modal window. 
 [x] The next thing is to tackle is viewing cards from results page. If clicked we show all info about the card.
 [x] Add promo info to version. Check Kianne
 [x] plan it:
-[x] modal or page: modal. This way I don't have to query the db again. I already have the data.
-[x] what data do we show:
-_ Image of selected version
-_ Different versions of card, Set #collection number (foil), price, quantity in db.
-_ Magic Core Set 2021 #17 (Foil) $7.50 2
-_ Clicking on version swaps the image with version. Highlights the current one.
-[x] can dual face cards show both faces on hover: during search we need to add this functionality. During page view, it will just show both faces
+    [x] modal or page: modal. This way I don't have to query the db again. I already have the data.
+    [x] what data do we show:
+        * Image of selected version
+        * Different versions of card, Set #collection number (foil), price, quantity in db.
+          * Magic Core Set 2021 #17 (Foil)   $7.50  2
+        * Clicking on version swaps the image with version. Highlights the current one.
+    [x] can dual face cards show both faces on hover: during search we need to add this functionality. During page view, it will just show both faces
 
 Work on bugs.
 
@@ -215,118 +231,116 @@ Search set order
 Sort sets (in search) by release date. You can do this by going through the set array vs the collection array. Check count of the collection array to avoid looping through all the items in scryfall set array.
 
 Rarity
+* [x] Plan the interface: similar to colors, going to have a checklist. No conditionals necessary for this one, similar to sets, where if you select a set, only the selected items under it are included.
+* [x] query the db
+* [x] Start coding interface
+** [x] Think more about special/bonus rarity, do we need it, if not included, how to incorporate cards in search?
 
--   [x] Plan the interface: similar to colors, going to have a checklist. No conditionals necessary for this one, similar to sets, where if you select a set, only the selected items under it are included.
--   [x] query the db
--   [x] Start coding interface
-        \*\* [x] Think more about special/bonus rarity, do we need it, if not included, how to incorporate cards in search?
 
 Sets
-
--   [x] plan sets: for this it does make sense to use the searchable list. Selector search. Won't use IS/NOT functionality. Will have set icon on list.
--   [x] Do refactoring on Type search handlers. Make them unique to types. Search sets will have its own handlers to avoid confusion and easier to modify and add icons
--   [x] Begin writing api endpoint to get all sets to populate list of sets from collection
-        \*\* [x] There is an issue when searching for sets, due to the structure of versions, we use versions with child objects so I can udpate version.id via upsert. If it was an array it couldn't be update but it can be easily queried.
+* [x] plan sets: for this it does make sense to use the searchable list. Selector search. Won't use IS/NOT functionality. Will have set icon on list.
+* [x] Do refactoring on Type search handlers. Make them unique to types. Search sets will have its own handlers to avoid confusion and easier to modify and add icons
+* [x] Begin writing api endpoint to get all sets to populate list of sets from collection
+** [x] There is an issue when searching for sets, due to the structure of versions, we use versions with child objects so I can udpate version.id via upsert. If it was an array it couldn't be update but it can be easily queried. 
 
 I tried using a subquery. My intention is to first extract all the distinct versions, then from the results of those versions, I would need to get the distinct sets. However, neither the $lookup nor aggregate work because they return the top most document, not the inner sub object. It is dealing with objects, with collection objects, not with array data. I could possibly run an aggreate or lookup but everytime the result of these is an collection object, not a single value, because it is looking for objects.
 
 It is not possible to run a distinct command inside aggregate, but even if I was able to do chain two distinct commands inside, at the end aggregate would return objects. WAIT: if I can return objects with based on unique sets, this would solve the issue, but I cannot link distinct commands inside aggregate
 
-You can also get distinct value on aggregation by using {group: {$_id:"$versions"}} but in order to link another group value into this, I need to know the name of the keys. Once again this is the issue, that it is an object inside an object, rather than an array with object values.
+You can also get distinct value on aggregation by using {group: {$_id:"$versions"}} but in order to link another group value into this, I need to know the name of the keys. Once again this is the issue, that it is an object inside an object, rather than an array with object values. 
 
-The distinct command on the other hand does return array of unique versions, but from here I cannot chain another distinct command to filter through those values to get the distinct sets. I can do it with JS, I can go through all values and get unique value from distinct results, but I rather have the structure be correct.
+The distinct command on the other hand does return array of unique versions, but from here I cannot chain another distinct command to filter through those values to get the distinct sets. I can do it with JS, I can go through all values and get unique value from distinct results, but I rather have the structure be correct. 
 
-Here it sounds like it is a structure issue. The very nature of the data structure for Card and Versions, already sounds like two separate collections. This has been a natural progression I have discovered as I have continued to develop this app. I have arrived at this conclusion.
+Here it sounds like it is a structure issue. The very nature of the data structure for Card and Versions, already sounds like two separate collections. This has been a natural progression I have discovered as I have continued to develop this app. I have arrived at this conclusion. 
 
 I tried using aggregate, but it does not allow distinct values
 
 So my alternatives are the following:
+* Separate the data into two separate collections Cards and Versions
+* Find a way to due attribute pattern design, versions becomes an array with object values, but I need a way to update upsert these values
+* pull down distict versions and then with JS get unique set values
+So the best solution is to separate them, versions will be on their own table, the way they will point back to the Card is via the oracle_id.x
 
--   Separate the data into two separate collections Cards and Versions
--   Find a way to due attribute pattern design, versions becomes an array with object values, but I need a way to update upsert these values
--   pull down distict versions and then with JS get unique set values
-    So the best solution is to separate them, versions will be on their own table, the way they will point back to the Card is via the oracle_id.x
-
-**_ [x] Continue refactoring - get collection data and update react component after updating card quantity
-_** [x] Continue refactoring - begin with search functionalities
-\*\*\* [x] Finish changing Image to img, also is there a way to continue using but with optimization turned off, otherwise set srcset as well. FIX: there is an "unoptimized" prop to prevent optimization.
-
--   [x] write code to get sets from database with icons (will need to query for all sets then get the image). Or when saving set, save the image url associated with the set?
--   [x] apply new db format to prod db.
--   [x] Fix issue with sets, showing promo instead of regular name - also check the query, I think what we have in the db not what we pull from scryfall
+*** [x] Continue refactoring - get collection data and update react component after updating card quantity
+*** [x] Continue refactoring - begin with search functionalities
+*** [x] Finish changing Image to img, also is there a way to continue using but with optimization turned off, otherwise set srcset as well. FIX: there is an "unoptimized" prop to prevent optimization.
+* [x] write code to get sets from database with icons (will need to query for all sets then get the image). Or when saving set, save the image url associated with the set?
+* [x] apply new db format to prod db. 
+* [x] Fix issue with sets, showing promo instead of regular name - also check the query, I think what we have in the db not what we pull from scryfall
 
 Stats selector
-[x] plan how the query will be constructed:
+[x] plan how the query will be constructed: 
 ** {X} in mana value is considered 0, so {X}{G} has a mana value of 1 not 2, because {X} can be 0
 ** {'cardFaces.manaValue': {$ne: 1}}, 
 ** [x] "*" are considered less than 0, we will include them for searches were is 0, or >=0, < 0, or <=0. 
 *** for less than 0, will use zero (for $lte too), this will include cards with asterics, is okay: {'cardFaces.toughness':{$lt:"0"}}
-**_ Greater than 0 we use 0: {'cardFaces.toughness':{$gt:"0"}} - we don't include the asterics since it is considered a no value
-_** Greater or equal 0 we use {$or:[{'cardFaces.toughness':{$gte:"0"}}, {'cardFaces.toughness':{$eq:"*"}} ]} to include asterics and zero
-*** When number is equal to 0, we use or to include asterics{ 'types':{$in:['Creature']}, $or:[{'cardFaces.toughness':{$eq:"\*"}},{'cardFaces.toughness':{$eq:"0"}}] }
+*** Greater than 0 we use 0: {'cardFaces.toughness':{$gt:"0"}} - we don't include the asterics since it is considered a no value 
+*** Greater or equal 0 we use {$or:[{'cardFaces.toughness':{$gte:"0"}}, {'cardFaces.toughness':{$eq:"*"}} ]} to include asterics and zero
+*** When number is equal to 0, we use or to include asterics{ 'types':{$in:['Creature']}, $or:[{'cardFaces.toughness':{$eq:"*"}},{'cardFaces.toughness':{$eq:"0"}}] }
 [x] plan how the user will interact with these
-
--   [x] All four fields will be displayed, user can change wether is >, >=, <, <=, =, ≠
--   [x] Fields with no value entered will not be considered in query
--   [x] Work on field states
+* [x] All four fields will be displayed, user can change wether is >, >=, <, <=, =, ≠
+* [x] Fields with no value entered will not be considered in query
+* [x] Work on field states
 
 Colors Search
-
--   [x] Plan out how user is going to use this field
-        ** [x] Similar to Types, going to abstract types component to be able to do different types of add/remove lists (set and color) total of three different components using this.
-        ** [x] Not sure how I feel about search list selector for colors. I think it works best if it is a checklist rather than a select list. Went with checkbox list.
-        **\* [x] Work on color state and then backend for query
-        \*\***[x] How are we going to handle colorless. Do conditionals apply? Either color or colorless can be chosen. Conditionals only apply to colors. Colorless doesn't make sense to have them.
-        **\* Maybe not so, with colors there are three types we can search: exactly, including and any of the selected. With sets, we don't allow partials, sets include selected sets only. We can create this separately, or just have the condition of search be its own unique thing for each component (yeah!).
-        \*\*** [x] Refactor Types component to use composition model (parent / child, specialization/generic) \***\* [x] Colors pass icon to list and fix click of items to selected list
-        \*\*\*** [x] Refactor query (mongodb) side for type partials
-        \*\*\* Regarding the exact match with colors, you can use the size array operator : {colorIdentity: {$all:['B','R','U'], $size: 3}}
+* [x] Plan out how user is going to use this field
+** [x] Similar to Types, going to abstract types component to be able to do different types of add/remove lists (set and color) total of three different components using this.
+** [x] Not sure how I feel about search list selector for colors. I think it works best if it is a checklist rather than a select list. Went with checkbox list.
+*** [x] Work on color state and then backend for query
+****[x] How are we going to handle colorless. Do conditionals apply? Either color or colorless can be chosen. Conditionals only apply to colors. Colorless doesn't make sense to have them.
+*** Maybe not so, with colors there are three types we can search: exactly, including and any of the selected. With sets, we don't allow partials, sets include selected sets only. We can create this separately, or just have the condition of search be its own unique thing for each component (yeah!). 
+**** [x] Refactor Types component to use composition model (parent / child, specialization/generic)
+**** [x] Colors pass icon to list and fix click of items to selected list
+***** [x] Refactor query (mongodb) side for type partials 
+*** Regarding the exact match with colors, you can use the size array operator : {colorIdentity: {$all:['B','R','U'], $size: 3}}
 
 Begin with the Type search
+* [x] add partials option
+* [x] style it
+* [x] Plan out how user is going to use this field
+* [x] Get all the types from the DB and show them sorted alphatically in a list
+** [x] User can click on list and add them to list 
+** [x] Any item added to list can be IS or is NOT
+** [x] Either user can directly type on this list or not type and click to add from populated list. 
+*** [X] This list must be searchable though
 
--   [x] add partials option
--   [x] style it
--   [x] Plan out how user is going to use this field
--   [x] Get all the types from the DB and show them sorted alphatically in a list
-        ** [x] User can click on list and add them to list
-        ** [x] Any item added to list can be IS or is NOT
-        ** [x] Either user can directly type on this list or not type and click to add from populated list. \*** [X] This list must be searchable though
 
 Text Search functionality
-
--   The symbols are auto-populating now. Time to style a little and work on click functionality to add text to items
-    ** Finished adding symbol functionality. Next test text search as a whole and fix any new bugs \*** Fix regular expression issue with duplicates.
+* The symbols are auto-populating now. Time to style a little and work on click functionality to add text to items
+** Finished adding symbol functionality. Next test text search as a whole and fix any new bugs
+*** Fix regular expression issue with duplicates.
 
 Done with card name search, time to start text search
 
 Currently, the search form and results are in a different page. I want to combine these. Have the search and the results be on one page, but only update results when user clicks the submit button for the form. It will update results on demand. When clicking on a card, it will either open a modal or a separate window. Modal can have a link to open a separate window. This is to avoid saving and populating data when user goes from one page to another. It makes more sense for this type of functionality to be on demand. Might use a class instead of state function hooks this time around to update state all at once, not one by one. The tedious part of last time was hitting the back button, I had to keep track of previuos state, with search, that is not the case. There is no 'back' button, the search changes only when you modify the form.
+* I have the name field ready using react state. Query for results when user submits form.
+* Search results are now loading correctly using states. Add loading Animation. 
 
--   I have the name field ready using react state. Query for results when user submits form.
--   Search results are now loading correctly using states. Add loading Animation.
 
 Building foundation for search functionality along with search by name
+* Before building queries, set the code then continue with name query (Done)
+* Create a Results page - how much can we reuse - refactor to take both types api and collection card? - Continue working on Card parent object
+* CardDetails is a shared component. Continue testing for apiCard. Then commit before you continue to implement it for CollectionCards.
+* For results, we need to display only unique, this can be done by using the Oracle_id, since that is unique among all different versions of cards, but will need to do two separate queries. Also, if 
 
--   Before building queries, set the code then continue with name query (Done)
--   Create a Results page - how much can we reuse - refactor to take both types api and collection card? - Continue working on Card parent object
--   CardDetails is a shared component. Continue testing for apiCard. Then commit before you continue to implement it for CollectionCards.
--   For results, we need to display only unique, this can be done by using the Oracle_id, since that is unique among all different versions of cards, but will need to do two separate queries. Also, if
 
 Update cards table to cards_v2
-
--   update the manaValue of cards there was an issue with the value when it is only one color
--   will need to import each card to new format, can add missing data such as mana_cost
+* update the manaValue of cards there was an issue with the value when it is only one color
+* will need to import each card to new format, can add missing data such as mana_cost
 
 Refactoring Db v2 - phase 2
+* Do one little test before you move on, then begin planning code to take current records to new db.
+** Found inconsistencies with null and empty values. I fixed these and added comments. Collection db is not the same as scryfall. Scryfall also contains inconsistencies, such as: keywords is always passed and is not null, but it can be empty, why is this not a nullable field since it does not apply to all cards.
 
--   Do one little test before you move on, then begin planning code to take current records to new db.
-    \*\* Found inconsistencies with null and empty values. I fixed these and added comments. Collection db is not the same as scryfall. Scryfall also contains inconsistencies, such as: keywords is always passed and is not null, but it can be empty, why is this not a nullable field since it does not apply to all cards.
 
 Refactoring DB v2 - phase 1
 we get disntict oracle id, then query for those, we would still get multiples of the same card. Think about a solution
-**\* We're now grouping card by oracle ID and each card has different versions.
-\*\*** For some reason Scryfall has more than the regular set of rarity - special and bonus. WTF - Continue working on this, move rarity to version? Special are common, but will it stay this way forever, need to either set all special to be common, or add these rarities to my search form. Some cards such as Eternal Witness is an uncommon, but Time Spiral has it marked as Special, so I will include special rarity cards as a separate rarity. \***\* Solve issue with missing manaValue - do we need to do something with the data already entered on production.
-\*\*** Adding mana cost to saved data per card face \***\* Test changes. Verify everything is working correctly. Fix any errors when adding or removing cards (make sure functionality is back to normal). Commit push then move on to planning database update cards_v2 table.
-\*\*\*** Map the versions on search results. Once we receive those we need to go through the card object and assign quantities.
+*** We're now grouping card by oracle ID and each card has different versions.
+**** For some reason Scryfall has more than the regular set of rarity - special and bonus. WTF - Continue working on this, move rarity to version? Special are common, but will it stay this way forever, need to either set all special to be common, or add these rarities to my search form. Some cards such as Eternal Witness is an uncommon, but Time Spiral has it marked as Special, so I will include special rarity cards as a separate rarity.
+**** Solve issue with missing manaValue - do we need to do something with the data already entered on production.
+**** Adding mana cost to saved data per card face
+**** Test changes. Verify everything is working correctly. Fix any errors when adding or removing cards (make sure functionality is back to normal). Commit push then move on to planning database update cards_v2 table.
+***** Map the versions on search results. Once we receive those we need to go through the card object and assign quantities. 
 
 One Sided card with Dual Cards
 Kitsune is currently missing its imageUri. I think this is because it has two faces, so the image uri is in the main card not the face, need to modify check. Fixed. Had if check set to to true instead of false, causing empty images. Have refactored code as well to reduce repeated code.
@@ -334,9 +348,10 @@ Kitsune is currently missing its imageUri. I think this is because it has two fa
 Add a max of 4
 Add a maximum of 4 cards to each? that way we avoid mistakes of entering more
 
-"Back to results" link issue
+"Back to results" link issue 
 Back to results when searching for an exact card name, there shouldn't be a back to results link.
 Fix: made a check to verify there is a previous state with results list. There is still a small issue that, let's say I search set cards M21 then set the set to all and search for Elvish Mystic (which is not in M21) Elvish Mystic will show the Go back to results list link and it will take you back to the previous list. Not a breaking bug, but we may need to reset the previous state if it causes issues (not likely since it is a back button after all).
+
 
 Different Languages
 Seeing cards with different languages. Need to verify I'm querying just for english language cards
@@ -344,57 +359,60 @@ Seeing cards with different languages. Need to verify I'm querying just for engl
 Search by name, changed my mind
 When searching if you type something new, the results will clear. If you type back to what you previously had, it doesn't search nor show the results you had. (idea to fix: when doing check if endpoint == query if is the same, turn show results back on.)
 
+
 PVOW is not a regular set
-PVOW is showing as a set that can be selected. Scryfall had this as "expansion" instead of "promo". FIX: Since regular sets only have 3 chars. Added check to only show sets with 3 chars.
+PVOW is showing as a set that can be selected. Scryfall had this as "expansion" instead of "promo". FIX:  Since regular sets only have 3 chars. Added check to only show sets with 3 chars.
+
 
 Set Quantities Linked
 When adding cards, sometimes if you go too fast between foil and regular, if regular wasn't set before you added foil, it will set it to the previous state since it hasn't changed before you made the change. My suggestion is, update each field separately or add feedback, or both. Thinking of separately may be better.
 FIX: We don't want to separate the quantities when updating because when removing we need to know whether both are 0. What if I add a type, and in the update I only update the respective property in the object leaving the other alone. Will that respect it or overwrite it and leave it with only one property?
---Found a way to only update a property of a nested object. However this breaks the type collectionCard object a little. Need to find a way to fix this. Other option is to separate again two values being optional, but I already have various entries I don't want to modify. Will keep moving forward with object containing two.
+--Found a way to only update a property of a nested object.  However this breaks the type collectionCard object a little. Need to find a way to fix this. Other option is to separate again two values being optional, but I already have various entries I don't want to modify. Will keep moving forward with object containing two.
 ---Extend type with interface and then use both. Interface vs Type
+
 
 nonfoil promo cards
 For some promo cards such as pre-release, some don't have a non-foil version. Add if statement to check this either with price, or finishes field
 
+
 Need to adjust set quantity, if card is set to 0, have a temp solution in place.
 
+
 We will now have foil quantity and regular quantity. Continue adding foil quantity
+* continue testing quantity and quantityFoil, something is tripping the foil quantity
+* Prices has been added. For Quantity, do we need to use only one field: quantity: regular, foil, or keep them separated as two? Think about it in terms of searching. Check your current queries for ideas.
 
--   continue testing quantity and quantityFoil, something is tripping the foil quantity
--   Prices has been added. For Quantity, do we need to use only one field: quantity: regular, foil, or keep them separated as two? Think about it in terms of searching. Check your current queries for ideas.
-
-Pricing
-
--   Since foils are priced differently will add another input for foils, will save array of prices: regular, foil(optional). Will have to update foils as well.
+Pricing 
+* Since foils are priced differently will add another input for foils, will save array of prices: regular, foil(optional). Will have to update foils as well.
 
 Pagination
 Set update doesn't update cards quantity on the results page when adding. -- Looks like this wasn't a bug, but rather how the api works. For the search request it limits it to 175 cards.
 I need to add pagination functionality.
 
 Continue working on pagination
-
--   There is an issue with resetting the pagination. Looks like when I use the state in the search card function for add.tsx, it gives me the previous value. I wonder if I can useEffect to update searchCards instead of calling it directly.
--   Looks like the pagination is now working correctly. Need to do more testing, clean code and push.
+* There is an issue with resetting the pagination. Looks like when I use the state in the search card function for add.tsx, it gives me the previous value. I wonder if I can useEffect to update searchCards instead of calling it directly.
+* Looks like the pagination is now working correctly. Need to do more testing, clean code and push.
 
 Do quick final test and push latest changes. Deploy.
 
--   Code cleanup
--   Work on access denied page and making sure only shared email can access site
+
+* Code cleanup
+* Work on access denied page and making sure only shared email can access site
 
 After that we can work on styles to make it presentable so we can start using it at least to populate new cards we get. We can use the search for later on.
+* Fix Bugs
 
--   Fix Bugs
+* Work on the daily flavor text functionality.
+** Figure out how to do the daily text functionality. Do we make a call to collections/search and pass a param or use another api file, collection/search/flavor
+*** Continue working on passing GET string of arrays (we may need to think of another if we hit URL limit too)
+**** Change daily flavor text functionality so it passess the card name as well so we can display it, not only the text
 
--   Work on the daily flavor text functionality.
-    ** Figure out how to do the daily text functionality. Do we make a call to collections/search and pass a param or use another api file, collection/search/flavor \*** Continue working on passing GET string of arrays (we may need to think of another if we hit URL limit too)
-    \*\*\*\* Change daily flavor text functionality so it passess the card name as well so we can display it, not only the text
-
--   add a favicon to header
--   Continue working on styling the search form of the add page
--   Before continuing make sure you commit and push changes. Keep commits small
--   Make sure to style the suggestion list and add cursor pointer
--   Finish navigation styles for both mobile and desktop
--   Continue working on styles for the main page
+* add a favicon to header
+* Continue working on styling the search form of the add page
+* Before continuing make sure you commit and push changes. Keep commits small
+* Make sure to style the suggestion list and add cursor pointer
+* Finish navigation styles for both mobile and desktop
+* Continue working on styles for the main page
 
 Add a loading animation to give the user feedback when cards are being fetched.
 
@@ -402,22 +420,23 @@ Fix Bugs
 
 Order bug
 When loading results, sort by number ascending, not descending. FIX: after setting the order you can set the direction parameter. Set it to "asc"
-
+ 
 Retain loader bug
 When you hit enter twice on the add page for card name the loader will stick around. We need to remove the loader animation when query does not happen. FIX: added a setShowLoader(false) when code returns due to query being the same.
 
 Set Bug
-Will also need to fix set issue. Not show sets or allow multiple sets to be chosen, or similar sets are checked, when user selects kaldheim, all the kaldheim sets available are checked. Probable_FIX: remove promo sets but add them in the search, they seem to be prefixed with a "p" for promos. Commander products are ones we usually don't buy, except for commander legends, but that is not a "commander" product per se, according to scryfall. FIX: In the collection data I'm just tracking the three-digit code for set. When I search scryfall I use the prefixes 's' and 'p' to get all type of cards under that set. 's' is for pre release and 'p' is for promo. These are technically sets created by scryfall.
+Will also need to fix set issue. Not show sets or allow multiple sets to be chosen, or similar sets are checked, when user selects kaldheim, all the kaldheim sets available are checked. Probable_FIX: remove promo sets but add them in the search, they seem to be prefixed with a "p" for promos. Commander products are ones we usually don't buy, except for commander legends, but that is not a "commander" product per se, according to scryfall. FIX: In the collection data I'm just tracking the three-digit code for set. When I search scryfall I use the prefixes 's' and 'p' to get all type of cards under that set. 's' is for pre release and 'p' is for promo. These are technically sets created by scryfall. 
 
 Search Bug
-\*When searching for progenitus I'm shown all prints rather than general cards. May be an issue of how I'm searching for cards. Since the word "progenitus" is part of other cards, getting prints?
+*When searching for progenitus I'm shown all prints rather than general cards. May be an issue of how I'm searching for cards. Since the word "progenitus" is part of other cards, getting prints?
 FIX: Had to add exact card name when searching for prints (could have also added oracleID since it is unique among all cards with same name but different sets)
+
 
 Do we need to refactor some of the React code? A: not at the moment, maybe later on we will have to refactor the search results a little bit to unite with collection search when the search functionality is built
 
 fix typescript errors + Remember to add optional values for card
 
-Organize update (api) code. Move DB to its own model module.
+Organize update (api) code. Move DB to its own model module. 
 
 Rewrite how we get the collection number I think it can only be p or s, but may want to all letters in case more are added. We're not interested in them only the set code.
 
@@ -429,14 +448,15 @@ Continue Testing add functionality. Once it is working correctly remember to pus
 
 Push Add functionality to git.
 
-Continue working on building card collection object. Build one field at a time. Just got done with collection number and types.
+Continue working on building card collection object. Build one field at a time. Just got done with collection number and types. 
 After that continue with mana_cost values.
 
 Work on setting promo and their types. It will make it easy to search later on.
 
 Continue figuring out how to handle CMC. Do we need mana_cost in our collection data? Regarding CMC, There are many variations, {U}, {2/U}, {G/B}. Solve for these and continue looking for more variations. Cards that can help troubleshoot are: avalanche, biomass, beseech the queen.
 
-Continue working on cardFaces. Images are tricky because not all multiface cards have different images, such as kitsune. The "Layout" is different.
+
+Continue working on cardFaces. Images are tricky because not all multiface cards have different images, such as kitsune. The "Layout" is different. 
 
 Adding collection card object to add functionality. Issue: faces, where do I place some of the data, inside the face? But for normal cards, we also have to search inside face. - yeah I guess that is how it will work. We can proceed this way and modify as necessary. Or make a quick prototype and try to query different data.
 
@@ -446,63 +466,68 @@ Ran into an issue. Projection for find query not working. Can't limit the query 
 
 We can now add to the db. Finetune the response you get from the update query. Fix headers sent error. Finish adding cards functionality then proceed to combine when making a search.
 
+
 Continue working on add functionality. I have passed the card object from the PUT request, now is time to pass it to the db. Upsert and add one to the quantity.
 Add functionality
 
-**_ continue combining collection with results data - working on getting collection without creating an infinite loop
-_** does the collection have a set array and there keep quantity. --> No, it is better to have an object for each card, since one set can have multiple types of the same card
+*** continue combining collection with results data - working on getting collection without creating an infinite loop
+*** does the collection have a set array and there keep quantity. --> No, it is better to have an object for each card, since one set can have multiple types of the same card
 
-**\* We will show results and query both the collection and the API
-\*\*** Since the card component is going to be used on both the "add" and "search" functionalities the card state will be in search Results along with the handler to add/remove cards.
-\*\*\*\* [cont] we will pass getCollection data from search to card component
+*** We will show results and query both the collection and the API
+**** Since the card component is going to be used on both the "add" and "search" functionalities the card state will be in search Results along with the handler to add/remove cards.
+**** [cont] we will pass getCollection data from search to card component
 
--   Add the set selection functionality (any set - or specify the set)
-    **_ Read about hooks for React - we need to get the sets after the components are mounted
-    _** Add an allowed set_type list for sets to avoid showing irrelevant sets. Then continue with the listener for set change.
-    \*\*\* Finish testing sets. Then move on to adding the add functionality.
+
+* Add the set selection functionality (any set - or specify the set)
+*** Read about hooks for React - we need to get the sets after the components are mounted
+*** Add an allowed set_type list for sets to avoid showing irrelevant sets. Then continue with the listener for set change.
+*** Finish testing sets. Then move on to adding the add functionality.
+
 
 I just added the listener functioanlity for add card collection menu. Next step is to add a card to the database.
-
--   Solve issue about game:paper, to only show paper sets and also issue about collection number and set_type. Showing collection number with promo next to it. P for prmo, S for prerelease
+* Solve issue about game:paper, to only show paper sets and also issue about collection number and set_type. Showing collection number with promo next to it. P for prmo, S for prerelease
 
 Follows what we're adding to the db in our collection. The same fields.
+* Plan it - when search have a + sign to add to collection or remove
+** Add card will depend on the name of the card in order to search the API
+*  Make sure you distinguish between promos
 
--   Plan it - when search have a + sign to add to collection or remove
-    \*\* Add card will depend on the name of the card in order to search the API
--   Make sure you distinguish between promos
+**** show prints when user searches for specific card or if the general results show only one of that card (general results only show one, but can have many prints)
+**** troubleshoot issue with missing results - fine tune what shows when. Right now results are dissapearing b/c it resets to false, do we need to separat
+**** Finish suggestion functionality - pass the name to the input field
+****delete the suggestions after user chooses one
+*** continue working on getting search results working with typescript - plan it if necessary take some time to get the Typescript down
 
-\***\* show prints when user searches for specific card or if the general results show only one of that card (general results only show one, but can have many prints)
-\*\*** troubleshoot issue with missing results - fine tune what shows when. Right now results are dissapearing b/c it resets to false, do we need to separat \***\* Finish suggestion functionality - pass the name to the input field
-\*\***delete the suggestions after user chooses one
-\*\*\* continue working on getting search results working with typescript - plan it if necessary take some time to get the Typescript down
+*** We will do an autocomplete functionality after a certain pause in typing
 
-\*\*\* We will do an autocomplete functionality after a certain pause in typing
+*** continue writing down the fields that we want to store in the database and thus create a type: card
+**** quickly review fields and then continue with next task of querying the api for a card and showing results
+**** organize todo. Then architect scryfall api call better. Do we need a repository structure - probably not. But we do need to structure it better, maybe move Scryfall functionality to its own class
+**** Continue figuring out when to show the suggestion box. May have to move to search by name rather than suggestion box
 
-**\* continue writing down the fields that we want to store in the database and thus create a type: card
-\*\*** quickly review fields and then continue with next task of querying the api for a card and showing results \***\* organize todo. Then architect scryfall api call better. Do we need a repository structure - probably not. But we do need to structure it better, maybe move Scryfall functionality to its own class
-\*\*** Continue figuring out when to show the suggestion box. May have to move to search by name rather than suggestion box
 
 Develop search functionality
+* Plan it, view scryfall to get ideas. 
 
--   Plan it, view scryfall to get ideas.
-
-Develop the header
-\*Setup icons and add them to the navigation links
+Develop the header 
+*Setup icons and add them to the navigation links
 Develop the home page structure
 
-Authentication
 
--   Set up authentication on App.js - if user is not logged in, take user to the logging page
-    \*\* Continue figuring out how to make sure user is authenticated. Remember - if using front-end then you
-    need to use client-side rendering - otherwise you can use back-end for everything.
+Authentication
+* Set up authentication on App.js - if user is not logged in, take user to the logging page
+** Continue figuring out how to make sure user is authenticated. Remember - if using front-end then you 
+need to use client-side rendering - otherwise you can use back-end for everything. 
 
 ==> So in order to make sure the user is signed, we will use a <secureLayout> component that first check whether
-the user is logged in to know what type of data to show.
-Q: Will this be pre-rendered or will we need to do server side rendering or even client side - fetch as needed.
-Answer: Client side, because it will use UseEffect by react to update when session changes. So it depends on client side code!,
-but the regular static page is the login page message.
+the user is logged in to know what type of data to show. 
+Q: Will this be pre-rendered or will we need to do server side rendering or even client side - fetch as needed. 
+Answer:  Client side, because it will use UseEffect by react to update when session changes. So it depends on client side code!, 
+but the regular static page is the login page message. 
+
 
 Start creating todo outline and planning
 
--   get familiar with authentication
--   get familiar with authorization - how to know when user is logged in.
+* get familiar with authentication
+* get familiar with authorization - how to know when user is logged in.
+
