@@ -1,8 +1,7 @@
 import { useQuery } from "react-query";
 import { SearchCardData } from "@/types/addPage";
-import axios from "axios";
-import { ApiCard } from "@/types/apiCard";
-import { CardSearchResultsTypeEnum } from "@/types/cardSearchResultsTypeEnum";
+import { CardSearchResultsTypeEnum } from "@/types/enums/cardSearchResultsTypeEnum";
+import { makeGeneralSearch, makePrintSearch } from "@/util/cardSearch";
 
 type useCardSearchProps = {
 	searchCardData: SearchCardData;
@@ -15,11 +14,14 @@ export function useCardSearch({ searchCardData, page }: useCardSearchProps) {
 			return undefined;
 		}
 
-		const generalResults = await makeGeneralSearch(searchCardData, page);
 		let printResults = undefined;
+		const generalResults = await makeGeneralSearch(searchCardData, page);
 
 		if (generalResults?.length == 1) {
-			printResults = await makePrintSearch(searchCardData);
+			printResults = await makePrintSearch({
+				cardName: generalResults[0].name,
+				setCode: searchCardData.setCode,
+			});
 		}
 
 		return {
@@ -29,24 +31,4 @@ export function useCardSearch({ searchCardData, page }: useCardSearchProps) {
 				: CardSearchResultsTypeEnum.GENERAL,
 		};
 	});
-}
-
-async function makeGeneralSearch(searchCardData: SearchCardData, page: number) {
-	const setParam = searchCardData.setCode
-		? ` set:${searchCardData.setCode},s${searchCardData.setCode},p${searchCardData.setCode}`
-		: "";
-
-	const searchEndpoint =
-		"/api/scryfall/cards/?query=" +
-		encodeURIComponent(searchCardData.cardName + setParam) +
-		"&page=" +
-		page;
-
-	const results = await axios.get(searchEndpoint);
-
-	return results?.data?.data as ApiCard[];
-}
-
-async function makePrintSearch(searchCardData: SearchCardData) {
-	return [];
 }

@@ -1,5 +1,5 @@
 import { ApiCard } from "@/types/apiCard";
-import { CardSearchResultsTypeEnum } from "@/types/cardSearchResultsTypeEnum";
+import { CardSearchResultsTypeEnum } from "@/types/enums/cardSearchResultsTypeEnum";
 
 type SearchResultsProps = {
 	cardData:
