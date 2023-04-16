@@ -1,21 +1,26 @@
-import { ApiCard } from "../../types/apiCard";
+import { ApiCard } from "@/types/apiCard";
+import { CardSearchResultsTypeEnum } from "@/types/cardSearchResultsTypeEnum";
 
 type SearchResultsProps = {
-    cardData: ApiCard[] | undefined
-}
+	cardData:
+		| {
+				data: ApiCard[];
+				type: CardSearchResultsTypeEnum;
+		  }
+		| undefined;
+};
 
-export const SearchResults = ({cardData}:SearchResultsProps) => {
+export const SearchResults = ({ cardData }: SearchResultsProps) => {
+	if (!cardData?.data?.length) {
+		return <p>No cards matched your search.</p>;
+	}
 
-    if(!cardData?.length){
-        return <p>No card(s) found.</p>
-    }
-    
-    return( 
-        <>
-            <h2>Search Results</h2>
-            {cardData.map( (card:ApiCard) => {
-                return <p>{card.name}</p>
-            })}
-        </>
-    )
-}
+	return (
+		<>
+			<h2>Search Results</h2>
+			{cardData?.data?.map((card: ApiCard, index) => {
+				return <p key={index}>{card.name}</p>;
+			})}
+		</>
+	);
+};
