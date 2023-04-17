@@ -2,7 +2,7 @@ import { SearchCardData } from "@/types/addPage";
 import { ApiCard } from "@/types/apiCard";
 import axios from "axios";
 
-export async function makeGeneralSearch(searchCardData: SearchCardData, page: number) {
+export async function makeGeneralSearch(searchCardData: SearchCardData, page: number = 1) {
 	const setParam = getSetParameter(searchCardData.setCode);
 
 	const searchEndpoint =
