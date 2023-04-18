@@ -1,5 +1,5 @@
-import { cardsApiMock } from "./cardApi.mock";
+import { elvishMystic, nissaVastwoodSeer } from "./cardApi.mock";
 
-export const cardSearchResults = {
-	data: cardsApiMock,
-};
+export const generalSearchMock = { data: [elvishMystic, nissaVastwoodSeer] };
+export const generalSearchWithOneResultMock = { data: [elvishMystic] };
+export const printSearchMock = { data: [elvishMystic] };

@@ -1,7 +1,7 @@
 import { SearchCardData } from "@/types/addPage";
 import { makeGeneralSearch, makePrintSearch } from "./cardSearch";
 import axios from "axios";
-import { cardSearchResults } from "@/mocks/cardSearch.mock";
+import { generalSearchMock as cardSearchResults } from "@/mocks/cardSearch.mock";
 
 const axiosSpy = jest.spyOn(axios, "get");
 axiosSpy.mockResolvedValue({ data: cardSearchResults });

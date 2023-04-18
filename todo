@@ -23,7 +23,7 @@ Mindset: do little at a time. Focus on improving small chunks.
   [x] Add tests to component and helpers it uses
 [x] Card Suggestions extract from search by text (since it uses both card name and set it belongs to add page)
   [x] Add unit tests
-[] Start refactoring search functionality utilizing search name and set.
+[x] Start refactoring search functionality utilizing search name and set.
   i: For now utilize Results component as is to show results
   i: Do we need to move state to SearchResults instead? - Depends if we want to show card suggestions
     [x] remove Card suggestions, not really needed, then change search until form is submitted
@@ -33,12 +33,13 @@ Mindset: do little at a time. Focus on improving small chunks.
     i: very similar to apollo, but used with fetch, instead of GraphQL
     i: let's use it for practice and deduping + caching sound really good
 
-  
+[] Begin refactoring search results.
+    i: have two functions generalSearch and printSearch
+
+[] Add tests to add page
+
   
 [] Use composition for Results - ResultsGeneral and ResultsPrint
-
-
-
 [] remove the types into their own files under /types
 [] analyze the search results and break down into smaller components
 [] for card wrappers - print vs general - extract interweaved logic to their own utility function
