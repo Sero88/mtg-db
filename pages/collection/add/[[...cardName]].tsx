@@ -4,8 +4,9 @@ import { SearchForm } from "@/components/collection-add/SearchForm";
 import { SearchCardData } from "@/types/addPage";
 import { QueryResult } from "@/components/QueryResult";
 import { useCardSearch } from "@/hooks/useCardSearch";
+import { GetServerSideProps } from "next/types";
 
-export default function AddPage() {
+export default function AddPage({ cardName }: { cardName: string }) {
 	const [searchCardData, setSearchCardData] = useState<SearchCardData>({
 		cardName: "",
 		setCode: "",
@@ -17,6 +18,10 @@ export default function AddPage() {
 	const handleSearchFormSubmit = (newSearchCardData: SearchCardData) => {
 		setSearchCardData({ ...newSearchCardData });
 	};
+
+	//todo remove after testing 👇
+	console.log("cardName", cardName);
+	//todo remove after testing 👆
 
 	return (
 		<>
@@ -31,3 +36,12 @@ export default function AddPage() {
 		</>
 	);
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const cardName = context.params?.cardName?.[0] ?? "";
+	return {
+		props: {
+			cardName,
+		},
+	};
+};

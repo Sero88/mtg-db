@@ -1,5 +1,7 @@
 import { ApiCard } from "@/types/apiCard";
 import { CardSearchResultsTypeEnum } from "@/types/enums/cardSearchResultsTypeEnum";
+import { SearchResultsGeneral } from "../SearchResultsGeneral";
+import { SearchResultsPrint } from "../SearchResultsPrint";
 
 type SearchResultsProps = {
 	cardData:
@@ -16,11 +18,15 @@ export const SearchResults = ({ cardData }: SearchResultsProps) => {
 	}
 
 	return (
-		<>
+		<div>
 			<h2>Search Results</h2>
-			{cardData?.data?.map((card: ApiCard, index) => {
-				return <p key={index}>{card.name}</p>;
-			})}
-		</>
+			<div>
+				{cardData.type === CardSearchResultsTypeEnum.GENERAL ? (
+					<SearchResultsGeneral cardData={cardData?.data} />
+				) : (
+					<SearchResultsPrint />
+				)}
+			</div>
+		</div>
 	);
 };
