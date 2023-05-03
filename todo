@@ -44,7 +44,10 @@ Mindset: do little at a time. Focus on improving small chunks.
 [] analyze the search results and break down into smaller components
 [] for card wrappers - print vs general - extract interweaved logic to their own utility function
 
-
+BUGS: 
+[] image issue, double face card showing error
+[x] search for card general, click on it, click search again, click on same card, results stay because the url didn't change -- FIX: No longer adding card to URL. 
+  i- possibly use context so we can more easily trigger new search data
 
 
 remove @ts-ignore in Collection DB modal where necessary.
