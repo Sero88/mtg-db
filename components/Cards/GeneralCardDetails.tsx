@@ -1,21 +1,19 @@
 import { ApiCard } from "@/types/apiCard";
 import styles from "@/styles/card.module.scss";
-import Link from "next/link";
+import { useContext } from "react";
 
 type CardDetailsProps = {
 	data: ApiCard;
+	clickHandler: Function;
 };
-export function GeneralCardDetails({ data }: CardDetailsProps) {
-	const cardLink = `/collection/add/${encodeURIComponent(data.name)}`;
+export function GeneralCardDetails({ data, clickHandler }: CardDetailsProps) {
 	return (
 		<div className={styles.cardDetails}>
-			<Link href={cardLink}>
-				<a>
-					<strong className={styles.cardNameLink} data-name={data.name}>
-						{data.name}
-					</strong>
-				</a>
-			</Link>
+			<p>
+				<strong className={styles.cardNameLink} onClick={() => clickHandler(data.name)}>
+					{data.name}
+				</strong>
+			</p>
 		</div>
 	);
 }

@@ -30,6 +30,7 @@ describe("CardListItems component", () => {
 			<CardListItems
 				cards={generalSearchMock.data}
 				type={CardSearchResultsTypeEnum.GENERAL}
+				clickHandler={jest.fn()}
 			/>
 		);
 
@@ -38,7 +39,11 @@ describe("CardListItems component", () => {
 
 	it("should display Print list card item when type is print", () => {
 		render(
-			<CardListItems cards={printSearchMock.data} type={CardSearchResultsTypeEnum.PRINT} />
+			<CardListItems
+				cards={printSearchMock.data}
+				type={CardSearchResultsTypeEnum.PRINT}
+				clickHandler={jest.fn()}
+			/>
 		);
 
 		expect(printCardSpy).toHaveBeenCalledTimes(printSearchMock.data.length);

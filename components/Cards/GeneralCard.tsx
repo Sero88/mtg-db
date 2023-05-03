@@ -6,21 +6,24 @@ import { ApiCard } from "@/types/apiCard";
 
 type GeneralCardProps = {
 	data: ApiCard;
+	clickHandler: Function;
 };
 
-export function GeneralCard({ data }: GeneralCardProps) {
-	const cardImageUrl = data.image_uris?.normal ?? "";
+export function GeneralCard({ data, clickHandler }: GeneralCardProps) {
+	const cardImageUrl = data.image_uris?.normal
+		? data.image_uris?.normal
+		: data.card_faces?.[0].image_uris?.normal;
 
 	return (
 		<div className={styles.card}>
-			<div className={styles.imageCollectionWrapper}>
+			<div className={styles.imageCollectionWrapper} onClick={() => clickHandler(data.name)}>
 				<CardImage
-					imageUri={cardImageUrl}
+					imageUri={cardImageUrl ?? ""}
 					name={data.name}
 					type={CardSearchResultsTypeEnum.GENERAL}
 				/>
 			</div>
-			<GeneralCardDetails data={data} />
+			<GeneralCardDetails data={data} clickHandler={clickHandler} />
 		</div>
 	);
 }

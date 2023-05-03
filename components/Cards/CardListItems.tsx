@@ -8,16 +8,17 @@ import { PrintCard } from "./PrintCard";
 type CardListItems = {
 	cards: ApiCard[];
 	type: CardSearchResultsTypeEnum;
+	clickHandler: Function;
 };
-export function CardListItems({ cards, type }: CardListItems) {
+export function CardListItems({ cards, type, clickHandler }: CardListItems) {
 	const listOfCards = cards?.map((card: ApiCard, index) => {
-		return (
+		return type === CardSearchResultsTypeEnum.GENERAL ? (
 			<li id={helpers.convertNameToId(card.name)} className={styles.cardWrapper} key={index}>
-				{type === CardSearchResultsTypeEnum.GENERAL ? (
-					<GeneralCard data={card} />
-				) : (
-					<PrintCard data={card} />
-				)}
+				<GeneralCard data={card} clickHandler={clickHandler} />
+			</li>
+		) : (
+			<li className={styles.cardWrapper} key={index}>
+				<PrintCard data={card} />
 			</li>
 		);
 	});
